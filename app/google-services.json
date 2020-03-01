@@ -1,0 +1,139 @@
+{
+  "project_info": {
+    "project_number": "947400722633",
+    "firebase_url": "https://eaglecabs.firebaseio.com",
+    "project_id": "eaglecabs",
+    "storage_bucket": "eaglecabs.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947400722633:android:52e54c8624178ad5",
+        "android_client_info": {
+          "package_name": "com.eaglecabs.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947400722633-ii69jpl06c4nqbu5j7noeue9eb7e6j01.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eaglecabs.app",
+            "certificate_hash": "c360c9ff99484a8dc5024781eaf8136a8eb58ee1"
+          }
+        },
+        {
+          "client_id": "947400722633-2rv8j04kppt7dn572366tk5purj8dga4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eaglecabs.app",
+            "certificate_hash": "9da7ffa7812e5c3e41a22c86f350dfcdd351d306"
+          }
+        },
+        {
+          "client_id": "947400722633-0cimt5lrc85787hs32akmrdj2nc9r09t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eaglecabs.app",
+            "certificate_hash": "bfc5cfc24e1ba6730b73875c498453c7ce6c244b"
+          }
+        },
+        {
+          "client_id": "947400722633-4ur8bmnlv2urm2knoos0qh98da2e435e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa-MPTlvKARbC__t5GPLLXUMx8A-7ChnI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947400722633-4ur8bmnlv2urm2knoos0qh98da2e435e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "947400722633-46bdb80kc1gc5cuj8hjaommg0b7tv024.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.appoets.eagle.user"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:947400722633:android:b26212d386afc652",
+        "android_client_info": {
+          "package_name": "com.eaglecabs.provider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "947400722633-jnfmrk1bjb9pcor54i87qfpiodq4rqpv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eaglecabs.provider",
+            "certificate_hash": "c360c9ff99484a8dc5024781eaf8136a8eb58ee1"
+          }
+        },
+        {
+          "client_id": "947400722633-giknn4h3d06pit0smvjhkpnqjrpbp143.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eaglecabs.provider",
+            "certificate_hash": "179726892aabd2c12f905871531c3e533eb874e0"
+          }
+        },
+        {
+          "client_id": "947400722633-qlhj8qkh01j1s1n74ujv8ov99md26vvo.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eaglecabs.provider",
+            "certificate_hash": "bfc5cfc24e1ba6730b73875c498453c7ce6c244b"
+          }
+        },
+        {
+          "client_id": "947400722633-bvv6uqo66fpmo0el61ru3if54b22lbnt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.eaglecabs.provider",
+            "certificate_hash": "8a25c228b28912231b9ff565a132c73ad819575a"
+          }
+        },
+        {
+          "client_id": "947400722633-4ur8bmnlv2urm2knoos0qh98da2e435e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCa-MPTlvKARbC__t5GPLLXUMx8A-7ChnI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "947400722633-4ur8bmnlv2urm2knoos0qh98da2e435e.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "947400722633-46bdb80kc1gc5cuj8hjaommg0b7tv024.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.appoets.eagle.user"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
