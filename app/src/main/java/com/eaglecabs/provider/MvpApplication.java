@@ -6,10 +6,12 @@ import android.location.Location;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
+import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;
 import com.eaglecabs.provider.common.ConnectivityReceiver;
 import com.eaglecabs.provider.common.SharedHelper;
 
+import io.fabric.sdk.android.Fabric;
 import java.text.NumberFormat;
 import java.util.Currency;
 import java.util.Locale;
@@ -33,6 +35,7 @@ public class MvpApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        Fabric.with(this, new Crashlytics());
         Stetho.initializeWithDefaults(this);
         mInstance = this;
 

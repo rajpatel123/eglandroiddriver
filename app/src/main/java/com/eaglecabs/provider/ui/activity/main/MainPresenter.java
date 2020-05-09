@@ -100,7 +100,7 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
                         new Consumer() {
                             @Override
                             public void accept(Object throwable) throws Exception {
-                               //MainPresenter.this.getMvpView().onError((Throwable) throwable);
+                               //SchedulePresenter.this.getMvpView().onError((Throwable) throwable);
                             }
                         });
 

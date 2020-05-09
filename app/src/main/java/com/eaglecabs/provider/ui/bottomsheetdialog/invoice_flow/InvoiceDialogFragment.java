@@ -1,6 +1,8 @@
 package com.eaglecabs.provider.ui.bottomsheetdialog.invoice_flow;
 
 import android.content.Intent;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.widget.NestedScrollView;
@@ -20,6 +22,8 @@ import com.eaglecabs.provider.data.network.model.Request_;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -233,19 +237,30 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
         hideLoading();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     String convertDateFormat(String date) {
+        String newDateString = null;
 
         if (TextUtils.isEmpty(date)){
-            return "";
+
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+            LocalDateTime now = LocalDateTime.now();
+
+            newDateString = new SimpleDateFormat("dd-MMM-yyyy hh:mm a", Locale.getDefault()).format(dtf.format(now));
+
+
+        }else{
+            SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
+            try {
+
+
+                Date newDate = spf.parse(date);
+                newDateString = new SimpleDateFormat("dd-MMM-yyyy hh:mm a", Locale.getDefault()).format(newDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
-        String newDateString = null;
-        SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
-        try {
-            Date newDate = spf.parse(date);
-            newDateString = new SimpleDateFormat("dd-MMM-yyyy hh:mm a", Locale.getDefault()).format(newDate);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
         return newDateString;
     }
 }

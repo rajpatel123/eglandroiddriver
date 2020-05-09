@@ -1,9 +1,16 @@
 apply plugin: 'com.android.application'
+
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 apply plugin: 'io.fabric'
 
 //def BASE_URL = '"http://15.206.179.164/"'
 def BASE_URL = '"https://eagleindia.org/"'
+def BASE_URL_DEV = '"http://15.206.179.164/"'
 def BASE_IMAGE_URL = '"https://eagleindia.org/storage/"'
+def BASE_IMAGE_URL_DEV = '"http://15.206.179.164/storage/"'
 def CLIENT_SECRET = '"C6e7Lwqo8pr0oabsnTKNr0PkO7zWzarQQQh8em0o"'
 def CLIENT_ID = '"2"'
 def DEVICE_TYPE = '"android"'
@@ -15,14 +22,13 @@ android {
         applicationId "com.eaglecabs.provider"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 20
+        versionCode 21
         versionName "2.6"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
 
-        buildConfigField "String", "BASE_URL", BASE_URL
-        buildConfigField "String", "BASE_IMAGE_URL", BASE_IMAGE_URL
+
         buildConfigField "String", "CLIENT_SECRET", CLIENT_SECRET
         buildConfigField "String", "CLIENT_ID", CLIENT_ID
         buildConfigField "String", "DEVICE_TYPE", DEVICE_TYPE
@@ -46,10 +52,19 @@ android {
 
     buildTypes {
         release {
+            buildConfigField "String", "BASE_URL", BASE_URL
+            buildConfigField "String", "BASE_IMAGE_URL", BASE_IMAGE_URL
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
             debuggable true
+        }
+
+        debug {
+            buildConfigField "String", "BASE_URL", BASE_URL_DEV
+            buildConfigField "String", "BASE_IMAGE_URL", BASE_IMAGE_URL_DEV
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
     compileOptions {

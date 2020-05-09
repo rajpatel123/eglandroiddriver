@@ -1,6 +1,7 @@
 package com.eaglecabs.provider.data.network;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.MvpApplication;
@@ -61,6 +62,7 @@ public class APIClient  {
         public Response intercept(@NonNull Chain chain) throws IOException {
 
             Request.Builder builder = chain.request().newBuilder();
+            Log.d("access-token", "Bearer "+SharedHelper.getKey(MvpApplication.getInstance(), "access_token"));
             builder.addHeader("X-Requested-With", "XMLHttpRequest");
             builder.addHeader("Authorization", "Bearer "+SharedHelper.getKey(MvpApplication.getInstance(), "access_token"));
 

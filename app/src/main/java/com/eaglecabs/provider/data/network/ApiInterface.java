@@ -1,5 +1,7 @@
 package com.eaglecabs.provider.data.network;
 
+import com.eaglecabs.provider.data.models.CityResponse;
+import com.eaglecabs.provider.data.scheduledrides.ScheduledReidesResponse;
 import com.google.gson.JsonObject;
 import com.eaglecabs.provider.data.network.model.AddressResponse;
 import com.eaglecabs.provider.data.network.model.Document;
@@ -29,6 +31,7 @@ import java.util.Map;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -81,6 +84,16 @@ public interface ApiInterface{
 
     @GET("api/provider/profile/documents")
     Observable<List<Document>> documents();
+
+
+
+
+    @GET("api/user/getallcity")
+    Observable<CityResponse> getAllCities();
+
+
+    @GET("api/provider/driver/available_trips")
+    Observable<List<ScheduledReidesResponse>> getAllScheduledRides();
 
     @Multipart
     @POST("api/provider/profile/documents")

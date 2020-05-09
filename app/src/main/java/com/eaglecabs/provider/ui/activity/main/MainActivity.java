@@ -56,6 +56,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chaos.view.PinView;
 import com.eaglecabs.provider.common.GPSTrackers;
+import com.eaglecabs.provider.ui.activity.scheduled.EagleScheduledRidesAcrivity;
 import com.github.javiersantos.appupdater.AppUpdater;
 import com.github.javiersantos.appupdater.enums.Display;
 import com.github.javiersantos.appupdater.enums.UpdateFrom;
@@ -332,6 +333,8 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             Log.e("Earning","outside");
         } else if (id == R.id.nav_summary) {
             startActivity(new Intent(MainActivity.this, SummaryActivity.class));
+        } else if (id == R.id.nav_scheduled_trips) {
+            startActivity(new Intent(MainActivity.this, EagleScheduledRidesAcrivity.class));
         } else if (id == R.id.nav_help) {
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (id == R.id.nav_share) {

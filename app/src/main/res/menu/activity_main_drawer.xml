@@ -9,6 +9,10 @@
             android:id="@+id/nav_your_trips"
             android:title="@string/your_trips" />
         <item
+            android:id="@+id/nav_scheduled_trips"
+            android:title="@string/scheduled_trips" />
+
+        <item
             android:id="@+id/nav_earnings"
             android:title="@string/earnings" />
         <item

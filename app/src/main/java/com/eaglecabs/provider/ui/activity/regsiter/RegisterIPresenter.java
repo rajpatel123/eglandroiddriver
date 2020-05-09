@@ -14,5 +14,6 @@ public interface RegisterIPresenter<V extends RegisterIView> extends MvpPresente
     void register( @PartMap Map<String, RequestBody> params, @Part List<MultipartBody.Part> file);
     void verifyMobileAlreadyExits(Object mobile);
     void sendOTP(Object obj);
+    void getAllCities();
 
 }

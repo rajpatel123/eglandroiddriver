@@ -4,7 +4,11 @@ import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -13,6 +17,17 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eaglecabs.provider.BuildConfig;
+import com.eaglecabs.provider.R;
+import com.eaglecabs.provider.base.BaseActivity;
+import com.eaglecabs.provider.common.CommonValidation;
+import com.eaglecabs.provider.common.SharedHelper;
+import com.eaglecabs.provider.data.models.CityResponse;
+import com.eaglecabs.provider.data.models.Result;
+import com.eaglecabs.provider.data.network.model.MyOTP;
+import com.eaglecabs.provider.data.network.model.User;
+import com.eaglecabs.provider.ui.activity.main.MainActivity;
+import com.eaglecabs.provider.ui.activity.otp.OTPActivity;
 import com.facebook.accountkit.Account;
 import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitCallback;
@@ -22,15 +37,6 @@ import com.facebook.accountkit.PhoneNumber;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
-import com.eaglecabs.provider.BuildConfig;
-import com.eaglecabs.provider.R;
-import com.eaglecabs.provider.base.BaseActivity;
-import com.eaglecabs.provider.common.CommonValidation;
-import com.eaglecabs.provider.common.SharedHelper;
-import com.eaglecabs.provider.data.network.model.MyOTP;
-import com.eaglecabs.provider.data.network.model.User;
-import com.eaglecabs.provider.ui.activity.main.MainActivity;
-import com.eaglecabs.provider.ui.activity.otp.OTPActivity;
 
 import org.json.JSONObject;
 
@@ -82,10 +88,15 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
     @BindView(R.id.contact_2)
     EditText contact2;
 
+    @BindView(R.id.citySP)
+    Spinner citySP;
+
+
     @BindView(R.id.dial_code)
     Spinner dialCode;
 
-    RegisterPresenter<RegisterActivity> presenter= new RegisterPresenter<>();
+    RegisterPresenter<RegisterActivity> presenter = new RegisterPresenter<>();
+    private String cityName;
 
     @Override
     public int getLayoutId() {
@@ -140,14 +151,23 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
     }
 
 
+    void getCities() {
+        presenter.getAllCities();
+    }
+
+
     void register() {
 
+        if (cityName.equalsIgnoreCase("Select your City")){
+            Toast.makeText(RegisterActivity.this,"Please select your city",Toast.LENGTH_LONG).show();
+            return;
+        }
         //All the String parameters, you have to put like
         Map<String, RequestBody> map = new HashMap<>();
 
         map.put("first_name", toRequestBody(txtFirstName.getText().toString()));
         map.put("last_name", toRequestBody(txtLastName.getText().toString()));
-        //map.put("email", toRequestBody(txtEmail.getText().toString()));
+        map.put("city", toRequestBody(cityName));
         map.put("mobile", toRequestBody(txtPhoneNumber.getText().toString()));
         map.put("password", toRequestBody("123456"));
         map.put("password_confirmation", toRequestBody("123456"));
@@ -227,6 +247,38 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
         intent.putExtra("country_code", String.valueOf(dialCode.getSelectedItem()));
         intent.putExtra("otp", String.valueOf(otp.getOtp()));
         startActivityForResult(intent, PICK_OTP_VERIFY);
+
+    }
+
+    @Override
+    public void onSuccess(CityResponse cityResponse) {
+
+        if (cityResponse != null && cityResponse.getResult() != null && cityResponse.getResult().size() > 0) {
+            Result result = new Result();
+            result.setCityName("Select your City");
+
+            cityResponse.getResult().add(0,result);
+
+            CustomAdapter adapter = new CustomAdapter(RegisterActivity.this,
+                    R.layout.listitems_layout, R.id.title, cityResponse.getResult());
+
+
+            citySP.setAdapter(adapter);
+            citySP.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> arg0, View arg1,
+                                           int arg2, long arg3) {
+                    int index = arg0.getSelectedItemPosition();
+
+                    cityName = cityResponse.getResult().get(index).getCityName();
+
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> arg0) {
+                }
+            });
+        }
 
     }
 
@@ -311,10 +363,36 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
         } else if (requestCode == PICK_OTP_VERIFY && resultCode == Activity.RESULT_OK) {
             registration_layout.setVisibility(View.VISIBLE);
             mobile_layout.setVisibility(View.GONE);
+            getCities();
+
 
             Toast.makeText(this, "Thanks your Mobile is successfully verified, Please enter your First Name and Last Name to create your account", Toast.LENGTH_SHORT).show();
         }
     }
 
+
+    public class CustomAdapter extends ArrayAdapter<Result> {
+
+        LayoutInflater flater;
+
+        public CustomAdapter(Activity context, int resouceId, int textviewId, List<Result> list) {
+
+            super(context, resouceId, textviewId, list);
+            flater = context.getLayoutInflater();
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+
+            Result rowItem = getItem(position);
+
+            View rowview = flater.inflate(R.layout.listitems_layout, null, true);
+
+            TextView txtTitle = (TextView) rowview.findViewById(R.id.title);
+            txtTitle.setText(rowItem.getCityName());
+
+            return rowview;
+        }
+    }
 
 }

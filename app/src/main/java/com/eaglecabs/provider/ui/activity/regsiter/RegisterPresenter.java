@@ -3,6 +3,7 @@ package com.eaglecabs.provider.ui.activity.regsiter;
 import android.widget.Toast;
 
 import com.eaglecabs.provider.base.BasePresenter;
+import com.eaglecabs.provider.data.models.CityResponse;
 import com.eaglecabs.provider.data.network.APIClient;
 import com.eaglecabs.provider.data.network.model.MyOTP;
 import com.eaglecabs.provider.data.network.model.Status;
@@ -79,4 +80,24 @@ public class RegisterPresenter<V extends RegisterIView> extends BasePresenter<V>
                             RegisterPresenter.this.getMvpView().onError((Throwable) throwable);
                         });
     }
+
+    @Override
+    public void getAllCities() {
+        Observable modelObservable = APIClient.getAPIClient().getAllCities();
+        getMvpView().showLoading();
+        modelObservable.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(trendsResponse -> {
+                            getMvpView().hideLoading();
+                            RegisterPresenter.this.getMvpView().onSuccess((CityResponse) trendsResponse);
+                        },
+                        (Consumer) throwable -> {
+                            getMvpView().hideLoading();
+                            RegisterPresenter.this.getMvpView().onError((Throwable) throwable);
+                        });
+
+    }
+
+
+
 }
