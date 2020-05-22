@@ -23,9 +23,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:paddingTop="10dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
 
                 <ImageView
                     android:id="@+id/sorcr"
@@ -157,7 +157,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/_2sdp"
-                    android:text="Paid Fare"
+                    android:text="Payment Mode"
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_tiny" />
 
@@ -177,20 +177,24 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:ellipsize="end"
                 android:singleLine="true"
+                android:background="@drawable/round_label2"
+                android:ellipsize="end"
+                android:padding="5dp"
                 android:text="@string/reject"
-                android:textColor="@color/red" />
+                android:textColor="@color/white" />
 
             <TextView
                 android:id="@+id/btnAccept"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
+                android:background="@drawable/round_label1"
                 android:ellipsize="end"
+                android:padding="5dp"
                 android:singleLine="true"
                 android:text="@string/accept"
-                android:textColor="@color/green" />
+                android:textColor="@color/white" />
 
         </LinearLayout>
 

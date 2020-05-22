@@ -33,8 +33,32 @@ public class SchedulePresenter<V extends ScheduledIView> extends BasePresenter<V
 
     }
 
+
+
+
+    @Override
+    public void acceptManual(Integer id, Object arrivalTime) {
+        Observable modelObservable = APIClient.getAPIClient().acceptRequestManual("", id, arrivalTime,1);
+        modelObservable.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(trendsResponse -> getMvpView().onSuccessAccept(trendsResponse),
+                        throwable -> getMvpView().onError((Throwable) throwable));
+
+    }
+
     @Override
     public void cancel(Integer id) {
+        Observable modelObservable = APIClient.getAPIClient().rejectRequest( id);
+        modelObservable.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(trendsResponse -> getMvpView().onSuccessCancel(trendsResponse),
+                        throwable -> getMvpView().onError((Throwable) throwable));
+    }
+
+
+
+ @Override
+    public void cancelManual(Integer id) {
         Observable modelObservable = APIClient.getAPIClient().rejectRequest( id);
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())

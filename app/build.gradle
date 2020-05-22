@@ -22,8 +22,8 @@ android {
         applicationId "com.eaglecabs.provider"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 21
-        versionName "2.6"
+        versionCode 22
+        versionName "2.7"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true

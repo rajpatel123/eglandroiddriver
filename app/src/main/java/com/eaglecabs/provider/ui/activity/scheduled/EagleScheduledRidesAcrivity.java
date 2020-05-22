@@ -134,12 +134,12 @@ public class EagleScheduledRidesAcrivity extends BaseActivity implements Schedul
     @Override
     public void acceptRide(ScheduledReidesResponse scheduledReidesResponse) {
         showLoading();
-        presenter.accept(scheduledReidesResponse.getId(), 10);
+        presenter.acceptManual(scheduledReidesResponse.getId(), 10);
     }
 
     @Override
     public void rejectRide(ScheduledReidesResponse shScheduledReidesResponse, int pos) {
         showLoading();
-        presenter.accept(shScheduledReidesResponse.getId(), 0);
+        presenter.cancelManual(shScheduledReidesResponse.getId());
     }
 }

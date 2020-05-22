@@ -58,16 +58,17 @@ public class ScheduledTripsAdapter extends RecyclerView.Adapter<ScheduledTripsAd
         holder.lblDate.setText("Departure Date: "+scheduledReidesResponse.getScheduleAt());
         holder.lblBookingid.setText("Booking Id: "+scheduledReidesResponse.getBookingId());
         holder.lblSeviceName.setText("Service Type :"+scheduledReidesResponse.getServiceType().getName());
-        holder.lblFare.setText("Total Fare Rs. " + scheduledReidesResponse.getTotalAmount());
+        holder.lblBookingType.setText("Trip :"+scheduledReidesResponse.getDay());
+        holder.lblFare.setText("Total Fare: Rs. " + scheduledReidesResponse.getTotalAmount());
         holder.lblPaymentMode.setText("Payment Mode: " + scheduledReidesResponse.getPaymentMode());
-        holder.lblPaymentMode.setText("Booking Type: " + scheduledReidesResponse.getServiceType().getName());
+        holder.lblPaid.setText("Paid fare:  Rs. " + scheduledReidesResponse.getPaid());
 
-        if (scheduledReidesResponse.getPaid()>0){
-            holder.lblPaid.setText("Paid fare Rs. " + scheduledReidesResponse.getPaid());
-            holder.lblPaid.setVisibility(View.VISIBLE);
-        }else{
-            holder.lblPaid.setVisibility(View.GONE);
-        }
+//        if (scheduledReidesResponse.getPaid()>0){
+//            holder.lblPaid.setText("Paid fare Rs. " + scheduledReidesResponse.getPaid());
+//            holder.lblPaid.setVisibility(View.VISIBLE);
+//        }else{
+//            holder.lblPaid.setVisibility(View.GONE);
+//        }
 
 
         // Glide.with(context).load(scheduledReidesResponse.get()).apply(RequestOptions.placeholderOf(R.drawable.ic_launcher_background).dontAnimate().error(R.drawable.ic_launcher_background)).into(holder.staticMap);

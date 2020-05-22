@@ -10,5 +10,7 @@ public interface ScheduleIPresenter<V extends ScheduledIView> extends MvpPresent
 
     void getScheduledRides();
     void accept(Integer id, Object arrivalTime);
+    void acceptManual(Integer id, Object arrivalTime);
     void cancel(Integer id);
+    void cancelManual(Integer id);
 }

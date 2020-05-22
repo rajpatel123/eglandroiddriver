@@ -1,18 +1,16 @@
 package com.eaglecabs.provider.data.network;
 
+import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.data.models.CityResponse;
-import com.eaglecabs.provider.data.scheduledrides.ScheduledReidesResponse;
-import com.google.gson.JsonObject;
 import com.eaglecabs.provider.data.network.model.AddressResponse;
 import com.eaglecabs.provider.data.network.model.Document;
-import com.eaglecabs.provider.data.network.model.MyOTP;
-import com.eaglecabs.provider.data.network.model.Notification;
-import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.data.network.model.EarningsList;
 import com.eaglecabs.provider.data.network.model.ForgotResponse;
 import com.eaglecabs.provider.data.network.model.Help;
 import com.eaglecabs.provider.data.network.model.HistoryDetail;
 import com.eaglecabs.provider.data.network.model.HistoryList;
+import com.eaglecabs.provider.data.network.model.MyOTP;
+import com.eaglecabs.provider.data.network.model.Notification;
 import com.eaglecabs.provider.data.network.model.OTPResponse;
 import com.eaglecabs.provider.data.network.model.Rating;
 import com.eaglecabs.provider.data.network.model.ServicesModel;
@@ -23,6 +21,8 @@ import com.eaglecabs.provider.data.network.model.TripResponse;
 import com.eaglecabs.provider.data.network.model.User;
 import com.eaglecabs.provider.data.network.model.Vehicle;
 import com.eaglecabs.provider.data.network.model.WalletResponse;
+import com.eaglecabs.provider.data.scheduledrides.ScheduledReidesResponse;
+import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 import java.util.List;
@@ -31,7 +31,6 @@ import java.util.Map;
 import io.reactivex.Observable;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.Field;
@@ -51,7 +50,7 @@ import retrofit2.http.QueryMap;
  * Created by Lenovo on 02-04-2018.
  */
 
-public interface ApiInterface{
+public interface ApiInterface {
 
 /*    @GET("worldD")
     Observable<PlacesModel> doPlaces(@Query(value = "type", encoded = true) String type, @Query(value = "location", encoded = true) String location, @Query(value = "keyword", encoded = true) String key);
@@ -59,7 +58,6 @@ public interface ApiInterface{
     @FormUrlEncoded
     @POST("api/provider/oauth/token")
     Observable<Object> getAddress(@FieldMap HashMap<String, Object> params);*/
-
 
 
     @FormUrlEncoded
@@ -75,7 +73,6 @@ public interface ApiInterface{
     Observable<Token> loginFacebook(@FieldMap HashMap<String, Object> params);
 
 
-
     @GET("https://maps.googleapis.com/maps/api/geocode/json?components=country:in&sensor=true&key=AIzaSyCg1Hwub1dxL5-Nh7roJ-sMncjNT-LqC2o")
     Observable<Object> getPlaces();
 
@@ -84,8 +81,6 @@ public interface ApiInterface{
 
     @GET("api/provider/profile/documents")
     Observable<List<Document>> documents();
-
-
 
 
     @GET("api/user/getallcity")
@@ -147,8 +142,17 @@ public interface ApiInterface{
     @POST("api/provider/trip/{request_id}")
     Observable<Object> acceptRequest(@Field("dummy") String dummy, @Path("request_id") Integer request_id, @Query("arrival_time") Object arrivalTime);
 
+
+    @FormUrlEncoded
+    @POST("api/provider/trip/{request_id}")
+    Observable<Object> acceptRequestManual(@Field("dummy") String dummy, @Path("request_id") Integer request_id, @Query("arrival_time") Object arrivalTime, @Query("manual_accept") Object manual_accept);
+
     @DELETE("api/provider/trip/{request_id}")
     Observable<Object> rejectRequest(@Path("request_id") Integer request_id);
+
+
+    @DELETE("api/provider/trip/{request_id}")
+    Observable<Object> cancelManual(@Path("request_id") Integer request_id);
 
     @FormUrlEncoded
     @POST("api/provider/cancel")
@@ -227,7 +231,6 @@ public interface ApiInterface{
     @FormUrlEncoded
     @POST("api/provider/instant-ride")
     Observable<OTPResponse> instantRideEstimateFare(@FieldMap HashMap<String, Object> params);
-
 
 
     @FormUrlEncoded
