@@ -16,6 +16,7 @@ import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseFragment;
 import com.eaglecabs.provider.common.SharedHelper;
 import com.eaglecabs.provider.common.fcm.MyFirebaseMessagingService;
+import com.eaglecabs.provider.data.models.UpcomingAcceptedTripsModel;
 import com.eaglecabs.provider.data.network.model.HistoryList;
 import com.eaglecabs.provider.ui.activity.upcoming_detail.UpcomingTripDetailActivity;
 import com.eaglecabs.provider.ui.adapter.UpcomingTripAdapter;
@@ -39,7 +40,7 @@ public class UpcomingTripFragment extends BaseFragment implements UpcomingTripIV
     ProgressBar progressBar;
 
     Unbinder unbinder;
-    List<HistoryList> list = new ArrayList<>();
+    List<UpcomingAcceptedTripsModel> list = new ArrayList<>();
     UpcomingTripPresenter<UpcomingTripFragment> presenter = new UpcomingTripPresenter<>();
     Context context;
 
@@ -67,7 +68,7 @@ public class UpcomingTripFragment extends BaseFragment implements UpcomingTripIV
     }
 
     @Override
-    public void onSuccess(List<HistoryList> historyList) {
+    public void onSuccess(List<UpcomingAcceptedTripsModel> historyList) {
         progressBar.setVisibility(View.GONE);
         list.clear();
         list.addAll(historyList);
@@ -94,14 +95,14 @@ public class UpcomingTripFragment extends BaseFragment implements UpcomingTripIV
     }
 
     @Override
-    public void redirectClick(HistoryList historyList) {
+    public void redirectClick(UpcomingAcceptedTripsModel historyList) {
         Intent intent = new Intent(context, UpcomingTripDetailActivity.class);
         intent.putExtra("request_id", historyList.getId());
         startActivity(intent);
     }
 
     @Override
-    public void cancelRide(HistoryList historyList, int pos) {
+    public void cancelRide(UpcomingAcceptedTripsModel historyList, int pos) {
         SharedHelper.putKey(getContext(), "cancel_id", String.valueOf(historyList.getId()));
         cancelRequestPopup();
     }

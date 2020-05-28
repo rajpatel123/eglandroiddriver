@@ -42,7 +42,7 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
 
     @Override
     public void getTrip(HashMap<String, Object> params) {
-        Observable modelObservable = APIClient.getAPIClient().getTrip(params);
+        Observable modelObservable = APIClient.getAPIClient().getTrip(params,1);
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trendsResponse -> getMvpView().onSuccess((TripResponse) trendsResponse),
@@ -82,7 +82,7 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
     @Override
     public void getTripLocationUpdate(HashMap<String, Object> params) {
 
-        Observable modelObservable = APIClient.getAPIClient().getTrip(params);
+        Observable modelObservable = APIClient.getAPIClient().getTrip(params,1);
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trendsResponse -> getMvpView().onSuccessLocationUpdate((TripResponse) trendsResponse),
