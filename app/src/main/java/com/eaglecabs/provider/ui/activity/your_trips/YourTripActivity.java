@@ -43,7 +43,7 @@ public class YourTripActivity extends BaseActivity implements YourTripIView {
 
 
         tabs.addTab(tabs.newTab().setText(getString(R.string.past)));
-      //  tabs.addTab(tabs.newTab().setText(getString(R.string.upcoming)));
+        tabs.addTab(tabs.newTab().setText(getString(R.string.upcoming)));
 
         adapter = new TabPagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
         container.setAdapter(adapter);
@@ -83,7 +83,7 @@ public class YourTripActivity extends BaseActivity implements YourTripIView {
                 case 0:
                     return new PastTripFragment();
                 case 1:
-                  //  return new UpcomingTripFragment();
+                    return new UpcomingTripFragment();
                 default:
                     return null;
             }

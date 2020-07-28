@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.eaglecabs.provider.R;
+import com.eaglecabs.provider.data.models.UpcomingAcceptedTripsModel;
 import com.eaglecabs.provider.data.network.model.HistoryList;
 
 import java.util.List;
@@ -23,17 +24,17 @@ import java.util.List;
  */
 public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapter.MyViewHolder> {
 
-    private List<HistoryList> list;
+    private List<UpcomingAcceptedTripsModel> list;
     private Context context;
 
     private ClickListener clickListener;
 
-    public UpcomingTripAdapter(List<HistoryList> list, Context con) {
+    public UpcomingTripAdapter(List<UpcomingAcceptedTripsModel> list, Context con) {
         this.list = list;
         this.context = con;
     }
 
-    public void setList(List<HistoryList> list) {
+    public void setList(List<UpcomingAcceptedTripsModel> list) {
         this.list = list;
     }
 
@@ -42,8 +43,8 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
     }
 
     public interface ClickListener {
-        void redirectClick(HistoryList historyList);
-        void cancelRide(HistoryList historyList, int pos);
+        void redirectClick(UpcomingAcceptedTripsModel historyList);
+        void cancelRide(UpcomingAcceptedTripsModel historyList, int pos);
     }
 
     @NonNull
@@ -55,13 +56,13 @@ public class UpcomingTripAdapter extends RecyclerView.Adapter<UpcomingTripAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
-        HistoryList historyList = list.get(position);
+        UpcomingAcceptedTripsModel historyList = list.get(position);
 
-        holder.lblDate.setText(historyList.getScheduleAt());
+        holder.lblDate.setText(historyList.getOutLeave());
         holder.lblBookingid.setText(historyList.getBookingId());
-        holder.lblSeviceName.setText(historyList.getServicetype().getName());
+        holder.lblSeviceName.setText(historyList.getServiceRequired());
 
-        Glide.with(context).load(historyList.getStaticMap()).apply(RequestOptions.placeholderOf(R.drawable.ic_launcher_background).dontAnimate().error(R.drawable.ic_launcher_background)).into(holder.staticMap);
+        Glide.with(context).load(historyList.getRouteKey()).apply(RequestOptions.placeholderOf(R.drawable.ic_launcher_background).dontAnimate().error(R.drawable.ic_launcher_background)).into(holder.staticMap);
 
     }
 

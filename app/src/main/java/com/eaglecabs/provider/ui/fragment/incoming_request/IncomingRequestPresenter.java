@@ -11,7 +11,7 @@ public class IncomingRequestPresenter<V extends IncomingRequestIView> extends Ba
 
     @Override
     public void accept(Integer id, Object arrivalTime) {
-        Observable modelObservable = APIClient.getAPIClient().acceptRequest("", id, arrivalTime);
+        Observable modelObservable = APIClient.getAPIClient().acceptRequest("", id, arrivalTime,1);
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trendsResponse -> getMvpView().onSuccessAccept(trendsResponse),

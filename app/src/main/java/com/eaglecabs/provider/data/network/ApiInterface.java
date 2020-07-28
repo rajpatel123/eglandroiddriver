@@ -2,6 +2,7 @@ package com.eaglecabs.provider.data.network;
 
 import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.data.models.CityResponse;
+import com.eaglecabs.provider.data.models.UpcomingAcceptedTripsModel;
 import com.eaglecabs.provider.data.network.model.AddressResponse;
 import com.eaglecabs.provider.data.network.model.Document;
 import com.eaglecabs.provider.data.network.model.EarningsList;
@@ -115,7 +116,7 @@ public interface ApiInterface {
     Observable<Object> logout(@FieldMap HashMap<String, Object> params);
 
     @GET("api/provider/trip")
-    Observable<TripResponse> getTrip(@QueryMap HashMap<String, Object> params);
+    Observable<TripResponse> getTrip(@QueryMap HashMap<String, Object> params, @Query("manual_accept") int manual_accept);
 
 
     @FormUrlEncoded
@@ -140,12 +141,12 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("api/provider/trip/{request_id}")
-    Observable<Object> acceptRequest(@Field("dummy") String dummy, @Path("request_id") Integer request_id, @Query("arrival_time") Object arrivalTime);
+    Observable<Object> acceptRequest(@Field("dummy") String dummy, @Path("request_id") Integer request_id, @Query("arrival_time") Object arrivalTime, @Query("manual_accept") int manual_accept);
 
 
     @FormUrlEncoded
     @POST("api/provider/trip/{request_id}")
-    Observable<Object> acceptRequestManual(@Field("dummy") String dummy, @Path("request_id") Integer request_id, @Query("arrival_time") Object arrivalTime, @Query("manual_accept") Object manual_accept);
+    Observable<Object> acceptRequestManual(@Field("dummy") String dummy, @Path("request_id") Integer request_id, @Query("arrival_time") Object arrivalTime, @Query("manual_accept") int manual_accept);
 
     @DELETE("api/provider/trip/{request_id}")
     Observable<Object> rejectRequest(@Path("request_id") Integer request_id);
@@ -179,6 +180,10 @@ public interface ApiInterface {
 
     @GET("api/provider/requests/upcoming")
     Observable<List<HistoryList>> getUpcoming();
+
+
+    @GET("api/provider/driver/upcommingtrip")
+    Observable<List<UpcomingAcceptedTripsModel>> getAcceptedUpcoming();
 
 
     @GET("api/provider/requests/upcoming/details")
