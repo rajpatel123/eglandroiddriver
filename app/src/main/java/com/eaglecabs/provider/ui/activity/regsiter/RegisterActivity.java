@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -42,8 +43,11 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -90,6 +94,14 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
 
     @BindView(R.id.citySP)
     Spinner citySP;
+    @BindView(R.id.dailyRidesCHK)
+    CheckBox dailyRidesCHK;
+    @BindView(R.id.rentalsRidesCHK)
+    CheckBox rentalsRidesCHK;
+    @BindView(R.id.outStationRidesCHK)
+    CheckBox outStationRidesCHK;
+
+    Set<Integer> serviceType = new HashSet<>();
 
 
     @BindView(R.id.dial_code)
@@ -108,6 +120,43 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
         ButterKnife.bind(this);
         presenter.attachView(this);
         registration_layout.setVisibility(View.GONE);
+
+        dailyRidesCHK.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    serviceType.add(1);
+                } else {
+                    serviceType.remove(1);
+                }
+            }
+        });
+
+        rentalsRidesCHK.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    serviceType.add(2);
+                } else {
+                    serviceType.remove(2);
+                }
+            }
+        });
+
+
+        outStationRidesCHK.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    serviceType.add(3);
+                } else {
+                    serviceType.remove(3);
+                }
+            }
+        });
+
+
     }
 
 
@@ -139,11 +188,13 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
         } else if (!txtPassword.getText().toString().equals(txtConfirmPassword.getText().toString())) {
             Toasty.error(this, getString(R.string.password_should_be_same), Toast.LENGTH_SHORT, true).show();
             return false;
-        } else if (!chkTerms.isChecked()) {
-            Toasty.error(this, "Please Accept Terms and Conditions", Toast.LENGTH_SHORT, true).show();
+        } */ else if (serviceType.size() < 1) {
+
+            Toasty.success(this, "Please select at least 1 service type!", Toast.LENGTH_SHORT, true).show();
             return false;
 
-        }*/ else {
+
+        } else {
             return true;
         }
 
@@ -158,8 +209,28 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
 
     void register() {
 
-        if (cityName.equalsIgnoreCase("Select your City")){
-            Toast.makeText(RegisterActivity.this,"Please select your city",Toast.LENGTH_LONG).show();
+        if (cityName.equalsIgnoreCase("Select your City")) {
+            Toast.makeText(RegisterActivity.this, "Please select your city", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+
+
+        String serviceTypes = null;
+        StringBuilder builder = new StringBuilder();
+
+        if (serviceType.size() > 0) {
+            Iterator<Integer> it = serviceType.iterator();
+            while (it.hasNext()) {
+                builder.append(it.next() + ",");
+            }
+
+
+            serviceTypes = builder.substring(0, builder.length() - 1);
+
+
+        } else {
+            Toasty.success(this, "Please select at least 1 service type!", Toast.LENGTH_SHORT, true).show();
             return;
         }
         //All the String parameters, you have to put like
@@ -177,6 +248,7 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
         map.put("device_id", toRequestBody(SharedHelper.getKeyFCM(this, "device_id")));
         map.put("device_type", toRequestBody(BuildConfig.DEVICE_TYPE));
         map.put("country_code", toRequestBody(String.valueOf(dialCode.getSelectedItem())));
+        map.put("service_type", toRequestBody(String.valueOf(serviceTypes)));
         List<MultipartBody.Part> parts = new ArrayList<>();
         presenter.register(map, parts);
     }
@@ -257,7 +329,7 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
             Result result = new Result();
             result.setCityName("Select your City");
 
-            cityResponse.getResult().add(0,result);
+            cityResponse.getResult().add(0, result);
 
             CustomAdapter adapter = new CustomAdapter(RegisterActivity.this,
                     R.layout.listitems_layout, R.id.title, cityResponse.getResult());

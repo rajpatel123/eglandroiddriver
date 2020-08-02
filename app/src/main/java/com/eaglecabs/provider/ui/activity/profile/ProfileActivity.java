@@ -4,9 +4,12 @@ package com.eaglecabs.provider.ui.activity.profile;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -28,8 +31,11 @@ import com.eaglecabs.provider.ui.activity.change_password.ChangePasswordActivtiy
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -75,6 +81,14 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
     @BindView(R.id.fleet)
     EditText fleet;
 
+    @BindView(R.id.dailyRidesCHK)
+    CheckBox dailyRidesCHK;
+    @BindView(R.id.rentalsRidesCHK)
+    CheckBox rentalsRidesCHK;
+    @BindView(R.id.outStationRidesCHK)
+    CheckBox outStationRidesCHK;
+
+    Set<Integer> serviceType = new HashSet<>();
     File imgFile = null;
     ProfilePresenter<ProfileActivity> presenter = new ProfilePresenter<>();
 
@@ -89,6 +103,8 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
         presenter.attachView(this);
         presenter.getProfile();
         setTitle(R.string.profile);
+
+
     }
 
 
@@ -121,6 +137,24 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
 
 
     void profileUpdate() {
+        String serviceTypes = null;
+        StringBuilder builder = new StringBuilder();
+
+        if (serviceType.size() > 0) {
+            Iterator<Integer> it = serviceType.iterator();
+            while (it.hasNext()) {
+                builder.append(it.next() + ",");
+            }
+
+
+            serviceTypes = builder.substring(0, builder.length() - 1);
+
+
+        } else {
+            Toasty.success(this, "Please select at least 1 service type!", Toast.LENGTH_SHORT, true).show();
+            return;
+        }
+
 
         Map<String, RequestBody> map = new HashMap<>();
         map.put("first_name", toRequestBody(txtFirstName.getText().toString()));
@@ -129,6 +163,7 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
         map.put("mobile", toRequestBody(txtPhoneNumber.getText().toString()));
         map.put("emergency_contact1", toRequestBody(emergencyMobile1.getText().toString()));
         map.put("emergency_contact2", toRequestBody(emergencyMobile2.getText().toString()));
+        map.put("service_type", toRequestBody(serviceTypes));
 
         MultipartBody.Part filePart = null;
         if (imgFile != null)
@@ -155,12 +190,37 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
         emergencyMobile2.setText(user.getEmergencyContact2());
         txtService.setText("");
 
+        if (!TextUtils.isEmpty(user.getService_type()) && user.getService_type().length() > 0) {
+            String types[] = user.getService_type().split(",");
+            dailyRidesCHK.setChecked(false);
+            rentalsRidesCHK.setChecked(false);
+            outStationRidesCHK.setChecked(false);
+
+            if (types.length > 0) {
+                for (String type : types) {
+                    if (type.equalsIgnoreCase( "1")) {
+                        dailyRidesCHK.setChecked(true);
+                        serviceType.add(1);
+                    } else if (type.equalsIgnoreCase( "2")) {
+                        rentalsRidesCHK.setChecked(true);
+                        serviceType.add(2);
+
+                    } else if (type.equalsIgnoreCase( "3")) {
+                        outStationRidesCHK.setChecked(true);
+                        serviceType.add(3);
+
+                    }
+                }
+            }
+        }
+
+
         Fleet fleet = user.getFleet();
         fleetLayout.setVisibility(fleet == null ? View.GONE : View.VISIBLE);
         if (fleet != null) {
             this.fleet.setText(fleet.getCompany());
             SharedHelper.putKey(activity(), "fleet_id", String.valueOf(fleet.getId()));
-            if(user.getProviderVehicle() != null){
+            if (user.getProviderVehicle() != null) {
                 SharedHelper.putKey(activity(), "fleet_vehicle_id", String.valueOf(user.getProviderVehicle().getFleetVehicleId()));
             }
         }
@@ -172,6 +232,42 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
         SharedHelper.putKey(this, "user_name", user.getFirstName() + " " + user.getLastName());
         Glide.with(activity()).load(BuildConfig.BASE_IMAGE_URL + user.getAvatar()).apply(RequestOptions.placeholderOf(R.drawable.user).dontAnimate().error(R.drawable.user)).into(imgProfile);
         //Toast.makeText(activity(), "Profile updated successfully", Toast.LENGTH_SHORT).show();
+
+        dailyRidesCHK.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+
+                if (isChecked) {
+                    serviceType.add(1);
+                } else {
+                    serviceType.remove(1);
+                }
+            }
+        });
+
+        rentalsRidesCHK.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    serviceType.add(2);
+                } else {
+                    serviceType.remove(2);
+                }
+            }
+        });
+
+
+        outStationRidesCHK.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    serviceType.add(3);
+                } else {
+                    serviceType.remove(3);
+                }
+            }
+        });
+
     }
 
 
@@ -186,7 +282,10 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
 
     @Override
     public void onError(Throwable e) {
+
         hideLoading();
+        finish();
+
     }
 
     @Override
@@ -248,7 +347,8 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
     }

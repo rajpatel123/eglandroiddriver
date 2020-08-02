@@ -20,20 +20,34 @@ import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.NotificationCompat;
+import android.telecom.Call;
 import android.util.Log;
 
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.common.kalman.KalmanLocationManager;
+import com.eaglecabs.provider.data.network.APIClient;
 import com.eaglecabs.provider.ui.activity.main.MainActivity;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.JsonObject;
 
 import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
+
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
+
+import static com.eaglecabs.provider.base.BaseActivity.DATUM;
+import static com.eaglecabs.provider.data.network.APIClient.getAPIClient;
 
 /**
  * Created by santhosh@appoets.com on 11-10-2017.
  */
 
 
-public class GPSTracker extends Service{
+public class GPSTracker extends Service {
 
     String NOTIFICATION_CHANNEL_ID = "com.example.simpleapp";
 
@@ -73,7 +87,7 @@ public class GPSTracker extends Service{
         public void onLocationChanged(Location location) {
 
 
-            Log.e("onLocationChanged", "onLocationChanged"+location.getLatitude());
+            Log.e("onLocationChanged", "onLocationChanged" + location.getLatitude());
 
 
             /*// GPS location
@@ -90,8 +104,14 @@ public class GPSTracker extends Service{
             if (location.getProvider().equals(KalmanLocationManager.KALMAN_PROVIDER)) {
 
                 //LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
-                Log.d("MYLOcation", location.getLatitude() +" "+location.getLongitude());
+                Log.d("MYLOcation", location.getLatitude() + " " + location.getLongitude());
                 EventBus.getDefault().postSticky(location);
+                Observable<Object> call = APIClient.getAPIClient().serverLocationUpdate(location.getLatitude(), location.getLongitude());
+
+                call.subscribeOn(Schedulers.computation())
+                        .observeOn(AndroidSchedulers.mainThread());
+
+                pushNotification(new LatLng(location.getLatitude(),location.getLongitude()),location);
             }
         }
 
@@ -145,7 +165,7 @@ public class GPSTracker extends Service{
             Notification notification = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
                     .setSmallIcon(R.mipmap.ic_launcher)
                     .setContentTitle(getString(R.string.app_name))
-                    .setContentText(getString(R.string.app_name)+"- Current location sharing")
+                    .setContentText(getString(R.string.app_name) + "- Current location sharing")
                     .setContentIntent(pendingIntent).build();
 
             startForeground(1, notification);
@@ -212,7 +232,7 @@ public class GPSTracker extends Service{
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID);
         Notification notification = notificationBuilder.setOngoing(true)
                 .setSmallIcon(R.drawable.ic_stat_ic_notification)
-                .setContentTitle(getString(R.string.app_name)+ "- Current location sharing")
+                .setContentTitle(getString(R.string.app_name) + "- Current location sharing")
                 .setPriority(NotificationManager.IMPORTANCE_MAX)
                 .setCategory(Notification.CATEGORY_SERVICE)
                 .setOngoing(true)
@@ -224,7 +244,41 @@ public class GPSTracker extends Service{
         startForeground(2, notification);
     }
 
+
+    private void pushNotification(LatLng latlng, Location location) {
+
+        if (DATUM == null) {
+            return;
+        }
+
+        if (DATUM.getStatus().equalsIgnoreCase("ACCEPTED") || DATUM.getStatus().equalsIgnoreCase("STARTED") || DATUM.getStatus().equalsIgnoreCase("ARRIVED") ||
+                DATUM.getStatus().equalsIgnoreCase("PICKEDUP") || DATUM.getStatus().equalsIgnoreCase("DROPPED")) {
+
+            JsonObject jPayload = new JsonObject();
+            JsonObject jData = new JsonObject();
+
+            jData.addProperty("latitude", latlng.latitude);
+            jData.addProperty("longitude", latlng.longitude);
+            jPayload.addProperty("to", "/topics/" + DATUM.getId());
+            jPayload.addProperty("priority", "high");
+            jPayload.add("data", jData);
+
+
+        }
+
+        if (DATUM.getStatus().equalsIgnoreCase("PICKEDUP")) {
+            if (DATUM.getIsTrack().equalsIgnoreCase("YES")) {
+                HashMap<String, Object> map1 = new HashMap<>();
+                map1.put("latitude", latlng.latitude);
+                map1.put("longitude", latlng.longitude);
+                // presenter.calculateDistance(map1, DATUM.getId());
+                // serverlatlng = location;
+            }
+        }
+
+    }
 }
+
 
 /*public class GPSTracker extends Service {
     private static final String TAG = "GPSTracker";

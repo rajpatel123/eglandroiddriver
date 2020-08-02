@@ -46,6 +46,18 @@ public class User {
     @SerializedName("city")
     @Expose
     private String city;
+
+    public String getService_type() {
+        return service_type;
+    }
+
+    public void setService_type(String service_type) {
+        this.service_type = service_type;
+    }
+
+    @SerializedName("service_type")
+    @Expose
+    private String service_type;
     @SerializedName("country_code")
     @Expose
     private String countryCode;

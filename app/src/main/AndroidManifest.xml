@@ -246,6 +246,8 @@
             </intent-filter>
         </receiver>
         -->
+
+        <receiver android:name=".LocationReceiver"/>
         <receiver
             android:name=".common.ConnectivityReceiver"
             android:enabled="true">

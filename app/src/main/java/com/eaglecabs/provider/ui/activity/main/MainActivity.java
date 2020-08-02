@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
@@ -55,24 +56,6 @@ import com.akexorcist.googledirection.util.DirectionConverter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chaos.view.PinView;
-import com.eaglecabs.provider.common.GPSTrackers;
-import com.eaglecabs.provider.ui.activity.scheduled.EagleScheduledRidesAcrivity;
-import com.github.javiersantos.appupdater.AppUpdater;
-import com.github.javiersantos.appupdater.enums.Display;
-import com.github.javiersantos.appupdater.enums.UpdateFrom;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MapStyleOptions;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.Task;
-import com.google.gson.JsonObject;
 import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.MvpApplication;
 import com.eaglecabs.provider.R;
@@ -80,7 +63,7 @@ import com.eaglecabs.provider.base.BaseActivity;
 import com.eaglecabs.provider.common.ChatHeadService;
 import com.eaglecabs.provider.common.CommonValidation;
 import com.eaglecabs.provider.common.ConnectivityReceiver;
-import com.eaglecabs.provider.common.GPSTracker;
+import com.eaglecabs.provider.common.GPSTrackers;
 import com.eaglecabs.provider.common.PolyUtils;
 import com.eaglecabs.provider.common.SharedHelper;
 import com.eaglecabs.provider.common.Utilities;
@@ -98,6 +81,7 @@ import com.eaglecabs.provider.ui.activity.invite.InviteActivity;
 import com.eaglecabs.provider.ui.activity.location_pick.LocationPickActivity;
 import com.eaglecabs.provider.ui.activity.notification.NotificationActivity;
 import com.eaglecabs.provider.ui.activity.profile.ProfileActivity;
+import com.eaglecabs.provider.ui.activity.scheduled.EagleScheduledRidesAcrivity;
 import com.eaglecabs.provider.ui.activity.splash.SplashActivity;
 import com.eaglecabs.provider.ui.activity.summary.SummaryActivity;
 import com.eaglecabs.provider.ui.activity.wallet.WalletActivity;
@@ -107,6 +91,22 @@ import com.eaglecabs.provider.ui.bottomsheetdialog.rating.RatingDialogFragment;
 import com.eaglecabs.provider.ui.fragment.incoming_request.IncomingRequestFragment;
 import com.eaglecabs.provider.ui.fragment.offline.OfflineFragment;
 import com.eaglecabs.provider.ui.fragment.status_flow.StatusFlowFragment;
+import com.github.javiersantos.appupdater.AppUpdater;
+import com.github.javiersantos.appupdater.enums.Display;
+import com.github.javiersantos.appupdater.enums.UpdateFrom;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.Task;
+import com.google.gson.JsonObject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -120,6 +120,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 
+import br.com.safety.locationlistenerhelper.core.LocationTracker;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -131,6 +132,7 @@ import static com.eaglecabs.provider.MvpApplication.PERMISSIONS_REQUEST_ACCESS_F
 import static com.eaglecabs.provider.MvpApplication.PICK_LOCATION_REQUEST_CODE;
 import static com.eaglecabs.provider.MvpApplication.mLastKnownLocation;
 
+@RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
 public class MainActivity extends BaseActivity implements MainIView, NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraIdleListener, DirectionCallback,
         ConnectivityReceiver.ConnectivityReceiverListener {
 
@@ -178,7 +180,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     TextView instantDestination, estimateFare;
     String server_otp = "", user_id_now = "";
     PinView pinView;
-
+    private LocationTracker locationTracker;
     TextView lblMenuName, lblMenuEmail, lblLoginHours, lblWalletMessage;
     CircleImageView imgMenu;
     ImageView imgStatus;
@@ -272,6 +274,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 .start();
 
         showFloatingView(activity(), true);
+
+
+        locationTracker = new LocationTracker("my.action")
+                .setInterval(10)
+                .setGps(true)
+                .setNetWork(false)
+                .start(getBaseContext());
     }
 
     @Override
@@ -308,6 +317,10 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         unregisterReceiver(internetReceiver);
         EventBus.getDefault().unregister(this);
         if (gpsServiceIntent != null) stopService(gpsServiceIntent);
+
+        if (locationTracker != null)
+            locationTracker.stopLocationService(this);
+
     }
 
     private boolean isServiceRunning() {
@@ -328,9 +341,9 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         if (id == R.id.nav_your_trips) {
             startActivity(new Intent(this, YourTripActivity.class));
         } else if (id == R.id.nav_earnings) {
-            Log.e("Earning","inside");
+            Log.e("Earning", "inside");
             startActivity(new Intent(MainActivity.this, EarningsActivity.class));
-            Log.e("Earning","outside");
+            Log.e("Earning", "outside");
         } else if (id == R.id.nav_summary) {
             startActivity(new Intent(MainActivity.this, SummaryActivity.class));
         } else if (id == R.id.nav_scheduled_trips) {
@@ -611,7 +624,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
     }
 
-    private String minitueToHourMin(String min){
+    private String minitueToHourMin(String min) {
         String value = null;
         SimpleDateFormat sdf = new SimpleDateFormat("mm", Locale.getDefault());
         try {
@@ -834,7 +847,10 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
     @Subscribe(sticky = true, threadMode = ThreadMode.MAIN)
     public void getEvent(final Location location) {
+        // location.setLatitude(28.787750);
+        //location.setLongitude(77.261420);
         mLastKnownLocation = location;
+
         SharedHelper.putKey(this, "current_latitude", String.valueOf(location.getLatitude()));
         SharedHelper.putKey(this, "current_longitude", String.valueOf(location.getLongitude()));
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
