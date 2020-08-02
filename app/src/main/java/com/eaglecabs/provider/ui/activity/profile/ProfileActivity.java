@@ -282,7 +282,6 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
 
     @Override
     public void onError(Throwable e) {
-
         hideLoading();
         finish();
 
