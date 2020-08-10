@@ -4,6 +4,7 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cf0023a31105bad3afffe76a130514e0/firebase-jobdispatcher-0.8.5/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cf0023a31105bad3afffe76a130514e0/firebase-jobdispatcher-0.8.5/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cf0023a31105bad3afffe76a130514e0/firebase-jobdispatcher-0.8.5/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/cf0023a31105bad3afffe76a130514e0/firebase-jobdispatcher-0.8.5/res" />
     </CLASSES>

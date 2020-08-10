@@ -45,14 +45,40 @@
                 android:orientation="vertical">
 
 
-                <TextView
-                    android:id="@+id/lblUserName"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="end"
-                    android:singleLine="true"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="@dimen/_13ssp" />
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center|left"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/lblUserName"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:layout_weight="2"
+                        android:text="Raj Patel"
+                        android:singleLine="true"
+                        android:textColor="@color/colorPrimaryText"
+                        android:textSize="@dimen/_13ssp" />
+
+
+                    <TextView
+                        android:id="@+id/rideTypes"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:text=""
+                        android:layout_marginEnd="5dp"
+                        android:background="@color/colorPrimary"
+                        android:padding="2dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/_13ssp" />
+
+                </LinearLayout>
 
 
                 <RatingBar
@@ -149,6 +175,74 @@
                 android:padding="4dp"
                 android:textColor="@color/colorPrimaryText"
                 android:textSize="@dimen/_11ssp" />
+
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/outStationLL"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_margin="10dp"
+            android:visibility="gone"
+            android:background="@drawable/button_border"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:id="@+id/leaveTimeLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
+                    android:text="Departure Date"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="@dimen/_10ssp" />
+
+                <TextView
+                    android:id="@+id/leaveTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/_13ssp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/returnTimeLL"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:singleLine="true"
+                    android:text="Return Date"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorSecondaryText"
+                    android:textSize="@dimen/_10ssp" />
+
+                <TextView
+                    android:id="@+id/returnTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/_13ssp" />
+
+            </LinearLayout>
+
+
 
         </LinearLayout>
 

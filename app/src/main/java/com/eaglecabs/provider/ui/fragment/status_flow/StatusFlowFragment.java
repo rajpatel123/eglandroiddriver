@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,13 +26,12 @@ import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseActivity;
 import com.eaglecabs.provider.base.BaseFragment;
-import com.eaglecabs.provider.common.CommonValidation;
 import com.eaglecabs.provider.common.SharedHelper;
 import com.eaglecabs.provider.common.Utilities;
 import com.eaglecabs.provider.common.chat.ChatActivity;
 import com.eaglecabs.provider.data.network.model.Request_;
 import com.eaglecabs.provider.data.network.model.UserGetResponse;
-import com.eaglecabs.provider.ui.activity.location_pick.LocationPickActivity;
+import com.eaglecabs.provider.ui.activity.email.EmailActivity;
 import com.eaglecabs.provider.ui.activity.main.MainActivity;
 import com.eaglecabs.provider.ui.bottomsheetdialog.cancel.CancelDialogFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -46,9 +46,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
-import es.dmoral.toasty.Toasty;
 
-import static com.eaglecabs.provider.MvpApplication.PICK_LOCATION_REQUEST_CODE;
 import static com.eaglecabs.provider.base.BaseActivity.DATUM;
 import static com.eaglecabs.provider.common.fcm.MyFirebaseMessagingService.INTENT_FILTER;
 
@@ -83,10 +81,20 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
     String STATUS = "";
     Context thisContext;
 
+    MainActivity mActivity;
+    private String OTP_STATUS="";
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_status_flow;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        mActivity = (MainActivity) getActivity();
     }
 
     @Override
@@ -259,6 +267,8 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
     @Override
     public void onSuccess(Object object) {
         getActivity().getSupportFragmentManager().beginTransaction().remove(StatusFlowFragment.this).commit();
+        mActivity.getTripDetails();
+
         Intent intent = new Intent(INTENT_FILTER);
         thisContext.sendBroadcast(intent);
     }
@@ -282,6 +292,10 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                 map.put("address", getAddress(new LatLng(Double.parseDouble(SharedHelper.getKey(activity(), "current_latitude")), Double.parseDouble(SharedHelper.getKey(activity(), "current_longitude")))));
             }
             presenter.statusUpdate(map, datum.getId());
+
+
+
+
         }
 
     }
@@ -334,7 +348,9 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
         submitBtn.setOnClickListener(view1 -> {
             if (data.getOtp().equalsIgnoreCase(pinView.getText().toString())) {
                 Toast.makeText(thisContext, "OTP Verified!", Toast.LENGTH_SHORT).show();
+                OTP_STATUS="verified";
                 statusUpdateCall(STATUS);
+
                 otpDialog.dismiss();
             } else {
                 Toast.makeText(thisContext, "Wrong OTP!", Toast.LENGTH_SHORT).show();

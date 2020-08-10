@@ -63,7 +63,7 @@ public class GPSTrackers extends Service {
     Context context;
 
     private LocationManager locationManager = null;
-    private static final int LOCATION_INTERVAL = 1000;     //      1 sec
+    private static final int LOCATION_INTERVAL = 10000;     //      1 sec
     private static final float LOCATION_DISTANCE = 10f;     //      10 feet
 
     public class LocationListener implements android.location.LocationListener {

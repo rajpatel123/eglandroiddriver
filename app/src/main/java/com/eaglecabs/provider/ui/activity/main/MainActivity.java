@@ -825,14 +825,18 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            HashMap<String, Object> params = new HashMap<>();
-            if (mLastKnownLocation != null) {
-                params.put("latitude", mLastKnownLocation.getLatitude());
-                params.put("longitude", mLastKnownLocation.getLongitude());
-            }
-            presenter.getTrip(params);
+           getTripDetails();
         }
     };
+
+    public void getTripDetails() {
+        HashMap<String, Object> params = new HashMap<>();
+        if (mLastKnownLocation != null) {
+            params.put("latitude", mLastKnownLocation.getLatitude());
+            params.put("longitude", mLastKnownLocation.getLongitude());
+        }
+        presenter.getTrip(params);
+    }
 
     @Override
     protected void onStart() {

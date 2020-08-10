@@ -132,9 +132,37 @@ public class Request_ {
     @SerializedName("service_type")
     @Expose
     private ServiceType servicetype;
+
+
+    public String getOut_leave() {
+        return out_leave;
+    }
+
+    public void setOut_leave(String out_leave) {
+        this.out_leave = out_leave;
+    }
+
+    public String getOut_return() {
+        return out_return;
+    }
+
+    public void setOut_return(String out_return) {
+        this.out_return = out_return;
+    }
+
+    @SerializedName("out_leave")
+    @Expose
+    private String out_leave;
+
+
+    @SerializedName("out_return")
+    @Expose
+    private String out_return;
+
     @SerializedName("day")
     @Expose
     private String day;
+
 
     public Integer getId() {
         return id;

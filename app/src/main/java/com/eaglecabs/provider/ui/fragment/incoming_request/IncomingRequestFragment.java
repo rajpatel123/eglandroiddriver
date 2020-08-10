@@ -19,14 +19,14 @@ import com.akexorcist.googledirection.model.Leg;
 import com.akexorcist.googledirection.model.Route;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
-import com.google.android.gms.maps.model.LatLng;
-import com.eaglecabs.provider.common.SharedHelper;
 import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseActivity;
 import com.eaglecabs.provider.base.BaseFragment;
+import com.eaglecabs.provider.common.SharedHelper;
 import com.eaglecabs.provider.data.network.model.Request_;
 import com.eaglecabs.provider.ui.activity.main.MainActivity;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.math.BigDecimal;
 import java.util.Locale;
@@ -54,6 +54,26 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
     CircleImageView imgUser;
     @BindView(R.id.lblUserName)
     TextView lblUserName;
+
+    @BindView(R.id.rideTypes)
+    TextView rideTypes;
+
+
+    @BindView(R.id.outStationLL)
+    LinearLayout outStationLL;
+
+
+    @BindView(R.id.returnTimeLL)
+    LinearLayout returnTimeLL;
+
+
+    @BindView(R.id.leaveTime)
+    TextView leaveTime;
+
+
+    @BindView(R.id.returnTime)
+    TextView returnTime;
+
     @BindView(R.id.ratingUser)
     RatingBar ratingUser;
     @BindView(R.id.pickup_address)
@@ -111,6 +131,22 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
 
             if (data.getServiceRequired() != null && data.getServiceRequired().equalsIgnoreCase("rental")) {
                 dropAddressLayout.setVisibility(View.GONE);
+                rideTypes.setText("Rental");
+            } else if (data.getServiceRequired() != null && data.getServiceRequired().equalsIgnoreCase("outstation")) {
+                outStationLL.setVisibility(View.VISIBLE);
+                if (data.getDay().equalsIgnoreCase("round")) {
+                    returnTimeLL.setVisibility(View.VISIBLE);
+                    rideTypes.setText("Outstation" + "\nRound");
+                     leaveTime.setText(data.getOut_leave());
+                    returnTime.setText(data.getOut_return());
+                } else {
+                    leaveTime.setText(data.getOut_leave());
+                    returnTimeLL.setVisibility(View.GONE);
+                    rideTypes.setText("Outstation" + "\nOneway");
+                }
+            } else {
+                rideTypes.setText("Daily");
+
             }
 
             getDistance(providerLat, source);

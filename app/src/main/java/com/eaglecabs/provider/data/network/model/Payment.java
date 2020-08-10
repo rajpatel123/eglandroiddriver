@@ -74,6 +74,18 @@ public class Payment {
     @SerializedName("rental_extra_hr_price")
     @Expose
     private Double rentalExtraHrPrice;
+
+    public Double getRental_extra_minute_price() {
+        return rental_extra_minute_price;
+    }
+
+    public void setRental_extra_minute_price(Double rental_extra_minute_price) {
+        this.rental_extra_minute_price = rental_extra_minute_price;
+    }
+
+    @SerializedName("rental_extra_minute_price")
+    @Expose
+    private Double rental_extra_minute_price;
     @SerializedName("rental_extra_km_price")
     @Expose
     private Double rentalExtraKmPrice;

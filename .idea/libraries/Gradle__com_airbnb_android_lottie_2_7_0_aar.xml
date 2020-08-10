@@ -4,6 +4,7 @@
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bd739a78f8916452299431197f40ebbe/lottie-2.7.0/annotations.zip!/" />
     </ANNOTATIONS>
     <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bd739a78f8916452299431197f40ebbe/lottie-2.7.0/AndroidManifest.xml" />
       <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bd739a78f8916452299431197f40ebbe/lottie-2.7.0/jars/classes.jar!/" />
       <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/bd739a78f8916452299431197f40ebbe/lottie-2.7.0/res" />
     </CLASSES>

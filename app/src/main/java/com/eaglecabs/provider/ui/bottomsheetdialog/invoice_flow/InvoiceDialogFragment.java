@@ -86,6 +86,14 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
     TextView rentalTotalDistance;
     @BindView(R.id.rental_extra_hr_km_price)
     TextView rentalExtraHrKmPrice;
+
+    @BindView(R.id.rental_extra_KM_price)
+    TextView rental_extra_KM_price;
+
+    @BindView(R.id.rental_extra_min_price)
+    TextView rental_extra_min_price;
+
+
     @BindView(R.id.rental_travel_time)
     TextView rentalTravelTime;
     @BindView(R.id.rental_hours)
@@ -119,6 +127,7 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
         return R.layout.fragment_invoice_dialog;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void initView(View view) {
         setCancelable(false);
@@ -148,6 +157,9 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
                 peekHourCharges.setText(numberFormat.format(payment.getPeakPrice()));
                 payableAmount.setText(numberFormat.format(payment.getPayable()));
                 distanceFare.setText(numberFormat.format(payment.getDistance()));
+                rental_extra_KM_price.setText(numberFormat.format(payment.getRentalExtraKmPrice()));
+                rental_extra_min_price.setText(numberFormat.format(payment.getRental_extra_minute_price()));
+                rentalExtraHrKmPrice.setText(numberFormat.format(payment.getRentalExtraHrPrice()));
                 tax.setText(numberFormat.format(payment.getTax()));
                 tax2.setText(numberFormat.format(payment.getTax()));
                 discountLayout.setVisibility(payment.getDiscount() > 0 ? View.VISIBLE : View.GONE);
