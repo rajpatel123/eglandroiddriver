@@ -55,6 +55,9 @@ public class ScheduledTripsAdapter extends RecyclerView.Adapter<ScheduledTripsAd
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         ScheduledReidesResponse scheduledReidesResponse = list.get(position);
 
+        holder.sAddress.setText(""+scheduledReidesResponse.getSAddress());
+        holder.dAddress.setText(""+scheduledReidesResponse.getDAddress());
+
         holder.lblDate.setText("Departure Date: "+scheduledReidesResponse.getScheduleAt());
         holder.lblBookingid.setText("Booking Id: "+scheduledReidesResponse.getBookingId());
         holder.lblSeviceName.setText("Service Type :"+scheduledReidesResponse.getServiceType().getName());
@@ -92,6 +95,8 @@ public class ScheduledTripsAdapter extends RecyclerView.Adapter<ScheduledTripsAd
 
             itemView = view.findViewById(R.id.item_view);
             lblDate = view.findViewById(R.id.lblDate);
+            sAddress = view.findViewById(R.id.sAddress);
+            dAddress = view.findViewById(R.id.dAddress);
             lblBookingid = view.findViewById(R.id.lblBookingid);
             lblSeviceName = view.findViewById(R.id.lblSeviceName);
             lblFare = view.findViewById(R.id.lblFare);

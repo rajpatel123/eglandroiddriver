@@ -43,7 +43,7 @@ public class Request_ {
     private String paymentMode;
     @SerializedName("paid")
     @Expose
-    private Integer paid;
+    private Double paid;
     @SerializedName("is_track")
     @Expose
     private String isTrack;
@@ -252,11 +252,11 @@ public class Request_ {
         this.paymentMode = paymentMode;
     }
 
-    public Integer getPaid() {
+    public Double getPaid() {
         return paid;
     }
 
-    public void setPaid(Integer paid) {
+    public void setPaid(Double paid) {
         this.paid = paid;
     }
 

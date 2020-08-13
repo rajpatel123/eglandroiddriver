@@ -8,7 +8,6 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.net.Uri;
 import android.support.v7.app.AlertDialog;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,7 +30,6 @@ import com.eaglecabs.provider.common.Utilities;
 import com.eaglecabs.provider.common.chat.ChatActivity;
 import com.eaglecabs.provider.data.network.model.Request_;
 import com.eaglecabs.provider.data.network.model.UserGetResponse;
-import com.eaglecabs.provider.ui.activity.email.EmailActivity;
 import com.eaglecabs.provider.ui.activity.main.MainActivity;
 import com.eaglecabs.provider.ui.bottomsheetdialog.cancel.CancelDialogFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -267,7 +265,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
     @Override
     public void onSuccess(Object object) {
         getActivity().getSupportFragmentManager().beginTransaction().remove(StatusFlowFragment.this).commit();
-        mActivity.getTripDetails();
+        mActivity.getTripDetails(false);
 
         Intent intent = new Intent(INTENT_FILTER);
         thisContext.sendBroadcast(intent);

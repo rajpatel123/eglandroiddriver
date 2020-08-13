@@ -10,7 +10,7 @@ public interface MainIPresenter<V extends MainIView> extends MvpPresenter<V> {
 
     void getProfile();
     void logout(HashMap<String, Object> obj);
-    void getTrip(HashMap<String, Object> params);
+    void getTrip(HashMap<String, Object> params,boolean isManual);
     void providerAvailable(HashMap<String, Object> obj);
     void sendFCM(JsonObject jsonObject);
     void getTripLocationUpdate(HashMap<String, Object> params);

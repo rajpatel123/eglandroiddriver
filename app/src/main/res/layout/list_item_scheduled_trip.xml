@@ -39,7 +39,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="C-1922, 12th Ave, Gaur City 2, Ghaziabad, Uttar Pradesh 201009, India"
+                    android:text=""
 
                     android:textColor="@color/colorPrimary"
                     android:textSize="@dimen/text_tiny" />
@@ -65,7 +65,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
-                    android:text="Rishikesh, Uttarakhand, India"
+                    android:text=""
 
                     android:textColor="@color/colorSecondaryText"
                     android:textSize="@dimen/text_tiny" />

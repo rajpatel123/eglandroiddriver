@@ -1,5 +1,6 @@
 package com.eaglecabs.provider.ui.bottomsheetdialog.rating;
 
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.AppCompatRatingBar;
 import android.view.View;
@@ -15,6 +16,7 @@ import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseBottomSheetDialogFragment;
 import com.eaglecabs.provider.data.network.model.Rating;
 import com.eaglecabs.provider.data.network.model.Request_;
+import com.eaglecabs.provider.ui.activity.main.MainActivity;
 
 import java.util.HashMap;
 
@@ -39,6 +41,14 @@ public class RatingDialogFragment extends BaseBottomSheetDialogFragment implemen
     @BindView(R.id.btnSubmit)
     Button btnSubmit;
     Unbinder unbinder;
+
+    MainActivity mActivity;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (MainActivity) getActivity();
+    }
 
     RatingDialogPresenter<RatingDialogFragment> presenter = new RatingDialogPresenter<>();
 
@@ -84,6 +94,7 @@ public class RatingDialogFragment extends BaseBottomSheetDialogFragment implemen
 
     @Override
     public void onSuccess(Rating rating) {
+        mActivity.getTripDetails(false);
         Intent intent = new Intent(INTENT_FILTER);
         activity().sendBroadcast(intent);
         dismissAllowingStateLoss();

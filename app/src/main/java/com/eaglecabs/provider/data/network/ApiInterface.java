@@ -119,6 +119,10 @@ public interface ApiInterface {
     Observable<TripResponse> getTrip(@QueryMap HashMap<String, Object> params, @Query("manual_accept") int manual_accept);
 
 
+    @GET("api/provider/trip")
+    Observable<TripResponse> getTrip(@QueryMap HashMap<String, Object> params);
+
+
     @FormUrlEncoded
     @POST("api/provider/profile/available")
     Observable<Object> providerAvailable(@FieldMap HashMap<String, Object> params);

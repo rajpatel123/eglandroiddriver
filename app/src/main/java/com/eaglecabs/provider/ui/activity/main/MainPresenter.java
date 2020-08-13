@@ -41,8 +41,15 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
     }
 
     @Override
-    public void getTrip(HashMap<String, Object> params) {
-        Observable modelObservable = APIClient.getAPIClient().getTrip(params,1);
+    public void getTrip(HashMap<String, Object> params,boolean ismannual) {
+
+        Observable modelObservable;
+        if (ismannual){
+            modelObservable = APIClient.getAPIClient().getTrip(params);
+        }else{
+            modelObservable = APIClient.getAPIClient().getTrip(params,1);
+        }
+
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trendsResponse -> getMvpView().onSuccess((TripResponse) trendsResponse),

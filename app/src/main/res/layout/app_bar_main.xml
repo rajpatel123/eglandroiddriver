@@ -46,6 +46,7 @@
             android:background="@color/instant_btn"
             android:text="@string/spot_booking"
             android:textAllCaps="true"
+            android:visibility="gone"
             android:textStyle="bold"
             android:textColor="#FFF" />
 

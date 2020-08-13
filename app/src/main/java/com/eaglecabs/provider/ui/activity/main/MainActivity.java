@@ -302,7 +302,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             params.put("longitude", mLastKnownLocation.getLongitude());
         }
 
-        presenter.getTrip(params);
+        presenter.getTrip(params,true);
 
         gpsServiceIntent = new Intent(this, GPSTrackers.class);
         startService(gpsServiceIntent);
@@ -656,7 +656,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             imgStatus.setImageResource(R.drawable.banner_active);
             if (tripResponse.getRequests().isEmpty()) {
                 changeFlow("EMPTY");
-                btnInstant.setVisibility(View.VISIBLE);
+                btnInstant.setVisibility(View.GONE);
             } else {
                 btnInstant.setVisibility(View.GONE);
                 time_to_left = tripResponse.getRequests().get(0).getTimeLeftToRespond();
@@ -714,7 +714,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             params.put("longitude", mLastKnownLocation.getLongitude());
         }
 
-        presenter.getTrip(params);
+        presenter.getTrip(params,true);
 
         otpDialog.cancel();
 
@@ -825,17 +825,22 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-           getTripDetails();
+           getTripDetails(true);
         }
     };
 
-    public void getTripDetails() {
+    public void getTripDetails(boolean b) {
         HashMap<String, Object> params = new HashMap<>();
         if (mLastKnownLocation != null) {
             params.put("latitude", mLastKnownLocation.getLatitude());
             params.put("longitude", mLastKnownLocation.getLongitude());
         }
-        presenter.getTrip(params);
+
+        if (b){
+            presenter.getTrip(params,false);
+        }else{
+            presenter.getTrip(params,true);
+        }
     }
 
     @Override

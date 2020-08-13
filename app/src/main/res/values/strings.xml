@@ -247,7 +247,7 @@
     <string name="choose_vehicle">Choose Vehicle</string>
     <string name="invalid_vehicle">Please select vehicle</string>
     <string name="discount">Discount</string>
-    <string name="account_verification_desc">Your Account is not verified yet!, Please wait…</string>
+    <string name="account_verification_desc">Your account is not verified yet! Kindly upload the documents from the sidebar and verify it!!</string>
     <string name="banned_desc">Your account is disabled, please contact Eagle Cabs for further details.</string>
     <string name="offline_desc">You are offline now</string>
     <string name="notifications">Notifications</string>
