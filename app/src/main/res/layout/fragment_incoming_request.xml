@@ -13,7 +13,7 @@
         android:fontFamily="@font/clanpro_narrnews"
         android:gravity="center|bottom"
         android:padding="8dp"
-        android:text="45"
+        android:text="0"
         android:textColor="#FFF"
         android:textSize="@dimen/_18ssp" />
 

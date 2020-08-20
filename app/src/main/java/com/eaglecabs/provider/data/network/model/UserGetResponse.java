@@ -76,7 +76,7 @@ public class UserGetResponse {
     private String expiredAt;
     @SerializedName("wallet_balance")
     @Expose
-    private Integer walletBalance;
+    private Double walletBalance;
     @SerializedName("rating")
     @Expose
     private String rating;
@@ -283,11 +283,11 @@ public class UserGetResponse {
         this.expiredAt = expiredAt;
     }
 
-    public Integer getWalletBalance() {
+    public Double getWalletBalance() {
         return walletBalance;
     }
 
-    public void setWalletBalance(Integer walletBalance) {
+    public void setWalletBalance(Double walletBalance) {
         this.walletBalance = walletBalance;
     }
 

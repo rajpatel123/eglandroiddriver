@@ -82,7 +82,7 @@ public class Provider {
     private String outstationType;
     @SerializedName("wallet_balance")
     @Expose
-    private Object walletBalance;
+    private Double walletBalance;
     @SerializedName("created_at")
     @Expose
     private String createdAt;
@@ -296,11 +296,11 @@ public class Provider {
         this.outstationType = outstationType;
     }
 
-    public Object getWalletBalance() {
+    public Double getWalletBalance() {
         return walletBalance;
     }
 
-    public void setWalletBalance(Object walletBalance) {
+    public void setWalletBalance(Double walletBalance) {
         this.walletBalance = walletBalance;
     }
 

@@ -8,9 +8,9 @@ apply plugin: 'io.fabric'
 
 //def BASE_URL = '"http://15.206.179.164/"'
 def BASE_URL = '"https://eagleindia.org/"'
-def BASE_URL_DEV = '"http://15.206.179.164/"'
+def BASE_URL_DEV = '"http://52.66.104.55/"'
 def BASE_IMAGE_URL = '"https://eagleindia.org/storage/"'
-def BASE_IMAGE_URL_DEV = '"http://15.206.179.164/storage/"'
+def BASE_IMAGE_URL_DEV = '"http://52.66.104.55/storage/"'
 def CLIENT_SECRET = '"C6e7Lwqo8pr0oabsnTKNr0PkO7zWzarQQQh8em0o"'
 def CLIENT_ID = '"2"'
 def DEVICE_TYPE = '"android"'
@@ -22,8 +22,8 @@ android {
         applicationId "com.eaglecabs.provider"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 33
-        versionName "3.4"
+        versionCode 34
+        versionName "3.5"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -57,7 +57,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            debuggable true
+            debuggable false
         }
 
         debug {

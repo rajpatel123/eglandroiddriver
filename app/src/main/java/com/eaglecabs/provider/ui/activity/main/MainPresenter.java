@@ -1,13 +1,13 @@
 package com.eaglecabs.provider.ui.activity.main;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.JsonObject;
 import com.eaglecabs.provider.base.BasePresenter;
 import com.eaglecabs.provider.data.network.APIClient;
 import com.eaglecabs.provider.data.network.ApiInterface;
 import com.eaglecabs.provider.data.network.model.OTPResponse;
 import com.eaglecabs.provider.data.network.model.TripResponse;
 import com.eaglecabs.provider.data.network.model.User;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.JsonObject;
 
 import java.util.HashMap;
 
@@ -41,13 +41,15 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
     }
 
     @Override
-    public void getTrip(HashMap<String, Object> params,boolean ismannual) {
+    public void getTrip(HashMap<String, Object> params, boolean ismannual) {
 
         Observable modelObservable;
-        if (ismannual){
+        if (ismannual) {
+            modelObservable = APIClient.getAPIClient().getTrip(params, 1);
+
+        } else {
             modelObservable = APIClient.getAPIClient().getTrip(params);
-        }else{
-            modelObservable = APIClient.getAPIClient().getTrip(params,1);
+
         }
 
         modelObservable.subscribeOn(Schedulers.computation())
@@ -89,7 +91,7 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
     @Override
     public void getTripLocationUpdate(HashMap<String, Object> params) {
 
-        Observable modelObservable = APIClient.getAPIClient().getTrip(params,1);
+        Observable modelObservable = APIClient.getAPIClient().getTrip(params, 1);
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trendsResponse -> getMvpView().onSuccessLocationUpdate((TripResponse) trendsResponse),
@@ -107,7 +109,7 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
                         new Consumer() {
                             @Override
                             public void accept(Object throwable) throws Exception {
-                               //SchedulePresenter.this.getMvpView().onError((Throwable) throwable);
+                                //SchedulePresenter.this.getMvpView().onError((Throwable) throwable);
                             }
                         });
 

@@ -302,7 +302,18 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             params.put("longitude", mLastKnownLocation.getLongitude());
         }
 
-        presenter.getTrip(params,true);
+        if (getIntent() != null && getIntent().hasExtra("isNotification")) {
+            presenter.getTrip(params, false);
+            Bundle extras = getIntent().getExtras();
+            if (extras != null) {
+                if (extras.containsKey("isNotification")) {
+                    extras.remove("isNotification");
+                }
+            }
+        } else {
+            presenter.getTrip(params, true);
+
+        }
 
         gpsServiceIntent = new Intent(this, GPSTrackers.class);
         startService(gpsServiceIntent);
@@ -714,7 +725,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             params.put("longitude", mLastKnownLocation.getLongitude());
         }
 
-        presenter.getTrip(params,true);
+        presenter.getTrip(params, true);
 
         otpDialog.cancel();
 
@@ -825,7 +836,12 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-           getTripDetails(true);
+
+            if (intent.hasExtra("providerAction")) {
+                getTripDetails(false);
+            }else{
+                getTripDetails(true);
+            }
         }
     };
 
@@ -836,10 +852,10 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             params.put("longitude", mLastKnownLocation.getLongitude());
         }
 
-        if (b){
-            presenter.getTrip(params,false);
-        }else{
-            presenter.getTrip(params,true);
+        if (b) {
+            presenter.getTrip(params, false);
+        } else {
+            presenter.getTrip(params, true);
         }
     }
 

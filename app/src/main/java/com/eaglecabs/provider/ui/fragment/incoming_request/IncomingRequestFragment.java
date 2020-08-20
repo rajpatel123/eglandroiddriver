@@ -226,6 +226,7 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
         stopMediaPlayer();
 
         Intent intent = new Intent(INTENT_FILTER);
+        intent.putExtra("providerAction", 1);
         context.sendBroadcast(intent);
 
         hideLoading();
@@ -240,7 +241,8 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
         stopMediaPlayer();
         hideLoading();
         activity().getSupportFragmentManager().beginTransaction().remove(IncomingRequestFragment.this).commit();
-        Intent intent = new Intent(INTENT_FILTER);
+            Intent intent = new Intent(INTENT_FILTER);
+        intent.putExtra("providerAction", 1);
         context.sendBroadcast(intent);
     }
 

@@ -146,11 +146,11 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
             bookingId.setText(datum.getBookingId());
             startDate.setText(""+convertDateFormat(datum.getStartedAt()));
             endDate.setText(""+convertDateFormat(datum.getFinishedAt()));
-            totalDistance.setText(String.valueOf(datum.getDistance() + " km"));
             travelTime.setText(getString(R.string._min, datum.getTravelTime()));
             lblPaymentType.setText(datum.getPaymentMode());
             Payment payment = datum.getPayment();
             if (payment != null) {
+                totalDistance.setText(String.valueOf(payment.getDistance() + " km"));
                 fixed.setText(numberFormat.format(payment.getFixed()));
                 Double total = payment.getTotal() - payment.getTax();
                 totalAmount.setText(numberFormat.format(total));
