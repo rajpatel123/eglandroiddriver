@@ -98,10 +98,18 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
 
     Context context;
     CountDownTimer countDownTimer;
+    private MainActivity mActivity;
 
     @Override
     public int getLayoutId() {
         return R.layout.fragment_incoming_request;
+    }
+
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (MainActivity) getActivity();
     }
 
     @Override
@@ -162,8 +170,12 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
 
             public void onFinish() {
                 stopMediaPlayer();
+
+                mActivity.getTripDetails(false);
+
                 Intent intent = new Intent(INTENT_FILTER);
                 context.sendBroadcast(intent);
+
             }
         };
 

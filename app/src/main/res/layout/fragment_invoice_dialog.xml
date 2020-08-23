@@ -109,6 +109,37 @@
 
 
         <LinearLayout
+            android:id="@+id/tollTaxLl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:text="Toll Tax"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/text_small" />
+
+            <TextView
+                android:id="@+id/toll_tax"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/clanpro_narrnews"
+                android:gravity="end"
+                android:hint="-"
+                android:padding="8dp"
+                android:singleLine="true"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/text_small" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
             android:id="@+id/layout_normal_flow"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

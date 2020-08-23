@@ -129,6 +129,17 @@ public class Request_ {
     @Expose
     private String serviceRequired;
 
+    public Integer getTollTax() {
+        return tollTax;
+    }
+
+    public void setTollTax(Integer tollTax) {
+        this.tollTax = tollTax;
+    }
+
+    @SerializedName("toll_tax")
+    @Expose
+    private Integer tollTax;
     @SerializedName("service_type")
     @Expose
     private ServiceType servicetype;

@@ -32,6 +32,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -741,7 +742,9 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 changeFragment(null);
                 break;
             case "SEARCHING":
-                changeFragment(new IncomingRequestFragment());
+                if (!TextUtils.isEmpty(DATUM.getBookingId())){
+                    changeFragment(new IncomingRequestFragment());
+                }
                 break;
             case "ACCEPTED":
                 lblLocationType.setText(R.string.pick_up_location);
@@ -899,10 +902,8 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             googleMap.clear();
             Route route = direction.getRouteList().get(0);
             if (!route.getLegList().isEmpty()) {
-
                 Leg startLeg = route.getLegList().get(0);
                 Leg endLeg = route.getLegList().get(0);
-
                 LatLng origin = new LatLng(startLeg.getStartLocation().getLatitude(), startLeg.getStartLocation().getLongitude());
                 LatLng destination = new LatLng(endLeg.getEndLocation().getLatitude(), endLeg.getEndLocation().getLongitude());
                 googleMap.addMarker(new MarkerOptions().icon(BitmapDescriptorFactory.fromResource(R.drawable.src_icon)).position(origin)).setTag(startLeg);

@@ -67,6 +67,12 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
     TextView discount;
     @BindView(R.id.discount_layout)
     LinearLayout discountLayout;
+
+
+    @BindView(R.id.toll_tax)
+    TextView toll_tax;
+    @BindView(R.id.tollTaxLl)
+    LinearLayout tollTaxLl;
     @BindView(R.id.tax2)
     TextView tax2;
     @BindView(R.id.commission)
@@ -146,6 +152,13 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
             bookingId.setText(datum.getBookingId());
             startDate.setText(""+convertDateFormat(datum.getStartedAt()));
             endDate.setText(""+convertDateFormat(datum.getFinishedAt()));
+            if (datum.getTollTax() != null && datum.getTollTax() > 0) {
+                toll_tax.setText(numberFormat.format(datum.getTollTax()));
+                tollTaxLl.setVisibility(View.VISIBLE);
+            } else {
+                tollTaxLl.setVisibility(View.GONE);
+
+            }
             travelTime.setText(getString(R.string._min, datum.getTravelTime()));
             lblPaymentType.setText(datum.getPaymentMode());
             Payment payment = datum.getPayment();
