@@ -3,8 +3,8 @@ package com.eaglecabs.provider;
 import android.app.Application;
 import android.content.Context;
 import android.location.Location;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
+import androidx.multidex.MultiDex;
+import androidx.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.stetho.Stetho;

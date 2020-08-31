@@ -1,8 +1,8 @@
 package com.eaglecabs.provider.ui.activity.past_detail;
 
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatRatingBar;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.AppCompatRatingBar;
+import androidx.appcompat.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;

@@ -27,6 +27,10 @@
         <item
             android:id="@+id/nav_wallet"
             android:title="@string/wallet"/>
+
+        <item
+            android:id="@+id/nav_bank"
+            android:title="@string/bank"/>
         <item
             android:id="@+id/nav_help"
             android:title="@string/help" />

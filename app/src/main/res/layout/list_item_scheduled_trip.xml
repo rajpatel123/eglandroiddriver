@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/item_view"
     android:layout_width="match_parent"
@@ -105,6 +105,15 @@
                     android:textSize="@dimen/text_small" />
 
                 <TextView
+                    android:id="@+id/lblDateReturn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/clanpro_news"
+                    android:text="04th Nov 2018 09:38PM"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/text_small" />
+
+                <TextView
                     android:id="@+id/lblBookingid"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -199,4 +208,4 @@
         </LinearLayout>
 
     </LinearLayout>
-</android.support.v7.widget.CardView>
+</androidx.cardview.widget.CardView>

@@ -1,8 +1,8 @@
-<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:id="@+id/nested_scroll_view"
-    android:layout_height="wrap_content"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nested_scroll_view"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/white">
 
     <LinearLayout
@@ -50,6 +50,7 @@
                 android:textSize="@dimen/text_small" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,6 +79,7 @@
                 android:textSize="@dimen/text_small" />
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -236,7 +238,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -294,7 +297,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -362,6 +366,7 @@
                     android:textSize="@dimen/text_small" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -390,6 +395,7 @@
                     android:textSize="@dimen/text_small" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -448,6 +454,7 @@
                     android:textSize="@dimen/text_small" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -476,6 +483,7 @@
                     android:textSize="@dimen/text_small" />
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -547,6 +555,36 @@
                     android:textSize="@dimen/text_small" />
 
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:text="Booking Distance"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/text_small" />
+
+                <TextView
+                    android:id="@+id/outstation_distance_travelled"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/clanpro_narrnews"
+                    android:gravity="end"
+                    android:hint="-"
+                    android:padding="8dp"
+                    android:singleLine="true"
+                    android:textColor="@color/colorPrimaryText"
+                    android:textSize="@dimen/text_small" />
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -563,7 +601,7 @@
                     android:textSize="@dimen/text_small" />
 
                 <TextView
-                    android:id="@+id/outstation_distance_travelled"
+                    android:id="@+id/travelledDistance"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/clanpro_narrnews"
@@ -728,6 +766,7 @@
                 android:textSize="@dimen/text_small" />
 
         </LinearLayout>
+
         <LinearLayout
             android:id="@+id/discount_layout"
             android:layout_width="match_parent"
@@ -778,11 +817,11 @@
                 android:id="@+id/payable_amount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="@drawable/round_label"
                 android:fontFamily="@font/clanpro_medium"
                 android:gravity="end"
                 android:hint="-"
                 android:padding="8dp"
-                android:background="@drawable/round_label"
                 android:paddingStart="22dp"
                 android:paddingEnd="22dp"
                 android:singleLine="true"
@@ -924,19 +963,52 @@
 
             <TextView
                 android:id="@+id/lblPaymentType"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
+                android:layout_weight="1"
                 android:fontFamily="@font/clanpro_narrnews"
                 android:gravity="center_vertical"
                 android:padding="8dp"
-                tools:text="@string/cash"
                 android:textAllCaps="true"
                 android:textColor="@color/colorPrimaryText"
-                android:textSize="@dimen/text_small" />
+                android:textSize="@dimen/text_small"
+                android:text="Payment Mode" />
+
+            <TextView
+                android:id="@+id/lblPaymentTypeValue"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_weight="1"
+                android:fontFamily="@font/clanpro_narrnews"
+                android:gravity="end"
+                android:paddingTop="8dp"
+                android:paddingEnd="18dp"
+                android:paddingBottom="8dp"
+                android:textAllCaps="true"
+                android:textColor="@color/colorPrimaryText"
+                android:textSize="@dimen/text_small"
+                android:textStyle="bold"
+                tools:text="@string/cash" />
 
 
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/black" />
+        <TextView
+            android:id="@+id/noteLbl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:fontFamily="@font/clanpro_narrnews"
+            android:gravity="center_vertical"
+            android:padding="8dp"
+            android:textColor="@color/colorPrimaryText"
+            android:textSize="@dimen/text_small"
+            android:text="Note: Collect payment" />
 
 
         <Button
@@ -951,4 +1023,4 @@
 
     </LinearLayout>
 
-</android.support.v4.widget.NestedScrollView>
+</androidx.core.widget.NestedScrollView>

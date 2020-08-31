@@ -18,20 +18,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -46,6 +36,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
@@ -74,6 +74,8 @@ import com.eaglecabs.provider.data.network.model.OTPResponse;
 import com.eaglecabs.provider.data.network.model.TripResponse;
 import com.eaglecabs.provider.data.network.model.User;
 import com.eaglecabs.provider.ui.activity.aboutus.AboutActivity;
+import com.eaglecabs.provider.ui.activity.bankdetail.BankDetailActivity;
+import com.eaglecabs.provider.ui.activity.bankdetail.BankDetails;
 import com.eaglecabs.provider.ui.activity.document.DocumentActivity;
 import com.eaglecabs.provider.ui.activity.earnings.EarningsActivity;
 import com.eaglecabs.provider.ui.activity.fleet.VehiclesActivity;
@@ -107,6 +109,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
 import com.google.gson.JsonObject;
 
 import org.greenrobot.eventbus.EventBus;
@@ -171,7 +175,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     private boolean mLocationPermissionGranted;
     SupportMapFragment mapFragment;
     GoogleMap googleMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    public FusedLocationProviderClient mFusedLocationProviderClient;
     public static boolean myLocationCalculationCheck = false;
     BottomSheetBehavior bottomSheetBehavior;
     ConnectivityReceiver internetReceiver = new ConnectivityReceiver();
@@ -278,7 +282,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
 
         locationTracker = new LocationTracker("my.action")
-                .setInterval(10)
+                .setInterval(30)
                 .setGps(true)
                 .setNetWork(false)
                 .start(getBaseContext());
@@ -364,6 +368,10 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (id == R.id.nav_share) {
             shareApp();
+        } else if (id == R.id.nav_bank) {
+            Intent intent = new Intent(activity(), BankDetailActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activity().startActivity(intent);
         } else if (id == R.id.nav_document) {
             startActivity(new Intent(MainActivity.this, DocumentActivity.class));
         } else if (id == R.id.nav_notifications) {
@@ -455,7 +463,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             case R.id.navigation_img:
                 if (lblLocationType.getText().toString().equalsIgnoreCase(getString(R.string.pick_up_location))) {
                     Uri gmmIntentUri = Uri.parse("google.navigation:q=" + DATUM.getSAddress());
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
                 } else {
@@ -742,7 +750,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 changeFragment(null);
                 break;
             case "SEARCHING":
-                if (!TextUtils.isEmpty(DATUM.getBookingId())){
+                if (!TextUtils.isEmpty(DATUM.getBookingId())) {
                     changeFragment(new IncomingRequestFragment());
                 }
                 break;
@@ -765,6 +773,8 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 changeFragment(new StatusFlowFragment());
                 break;
             case "PICKEDUP":
+                SERVICE_STATUS = "PICKEDUP";
+
                 lblLocationType.setText(R.string.drop_location);
                 lblLocationName.setText(DATUM.getDAddress());
                 if (DATUM.getServiceRequired().equalsIgnoreCase("rental")) {
@@ -842,7 +852,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
             if (intent.hasExtra("providerAction")) {
                 getTripDetails(false);
-            }else{
+            } else {
                 getTripDetails(true);
             }
         }
@@ -882,8 +892,81 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         SharedHelper.putKey(this, "current_latitude", String.valueOf(location.getLatitude()));
         SharedHelper.putKey(this, "current_longitude", String.valueOf(location.getLongitude()));
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
+//        if (SERVICE_STATUS.equalsIgnoreCase("PICKEDUP")) {
+//            if (LAST_LAT > 0) {
+//                getDistance(location.getLatitude(), location.getLongitude(),LAST_LAT, LAST_LONG);
+//            } else {
+//                LAST_LAT = mLastKnownLocation.getLatitude();
+//                LAST_LONG = mLastKnownLocation.getLongitude();
+//            }
+//        }
         pushNotification(latLng, location);
         presenter.locationUpdateServer(latLng);
+    }
+
+
+    private void getDistance(double currentLat2, double currentLong2, double mallLat2, double mallLong2) {
+        if (ConnectivityReceiver.isConnected()) {
+           new AsyncTask<Void,Void,Double>() {
+               @Override
+               protected Double doInBackground(Void... voids) {
+
+                   Location loc1 = new Location("");
+                   loc1.setLatitude(currentLat2);
+                   loc1.setLongitude(currentLong2);
+
+                   Location loc2 = new Location("");
+                   loc2.setLatitude(mallLat2);
+                   loc2.setLongitude(mallLong2);
+
+                   return Double.valueOf(loc1.distanceTo(loc2));
+
+
+
+
+//                   double theta = lon1 - lon2;
+//                   double dist = Math.sin(deg2rad(lat1))
+//                           * Math.sin(deg2rad(lat2))
+//                           + Math.cos(deg2rad(lat1))
+//                           * Math.cos(deg2rad(lat2))
+//                           * Math.cos(deg2rad(theta));
+//                   dist = Math.acos(dist);
+//                   dist = rad2deg(dist);
+//                   dist = dist * 60 * 1.1515;
+//                   return dist;
+               }
+
+               @Override
+               protected void onPostExecute(Double dist) {
+                   super.onPostExecute(dist);
+                   if (dist>300 && dist<800){
+                       TRIPDISTANCE = TRIPDISTANCE+dist;
+
+                       LAST_LAT = mLastKnownLocation.getLatitude();
+                       LAST_LONG = mLastKnownLocation.getLongitude();
+                        Toast.makeText(MainActivity.this, "Trip Distance is "+DFORMAT.format(TRIPDISTANCE), Toast.LENGTH_SHORT).show();
+
+                   }else {
+                       Toast.makeText(MainActivity.this, "No Distance    "+0, Toast.LENGTH_SHORT).show();
+
+                   }
+
+
+                   //SharedHelper.putKey(MainActivity.this, "totalDist", String.valueOf(TRIPDISTANCE));
+
+               }
+           }.execute();
+        }
+
+    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
 
 

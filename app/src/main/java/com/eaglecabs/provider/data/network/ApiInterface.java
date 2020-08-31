@@ -23,6 +23,7 @@ import com.eaglecabs.provider.data.network.model.User;
 import com.eaglecabs.provider.data.network.model.Vehicle;
 import com.eaglecabs.provider.data.network.model.WalletResponse;
 import com.eaglecabs.provider.data.scheduledrides.ScheduledReidesResponse;
+import com.eaglecabs.provider.ui.activity.bankdetail.BankDetails;
 import com.google.gson.JsonObject;
 
 import java.util.HashMap;
@@ -107,6 +108,9 @@ public interface ApiInterface {
     @GET("api/provider/profile")
     Observable<User> getProfile();
 
+    @GET("api/provider/profile")
+    Observable<User> getBank();
+
     @Multipart
     @POST("api/provider/profile")
     Observable<User> profileUpdate(@PartMap Map<String, RequestBody> params, @Part MultipartBody.Part file);
@@ -114,6 +118,11 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("api/provider/logout")
     Observable<Object> logout(@FieldMap HashMap<String, Object> params);
+
+
+    @Multipart
+    @POST("api/provider/add_bank_detail")
+    Observable<Object> addUpdateBankDetail(@PartMap  HashMap<String, RequestBody> params, @Part MultipartBody.Part file);
 
     @GET("api/provider/trip")
     Observable<TripResponse> getTrip(@QueryMap HashMap<String, Object> params, @Query("manual_accept") int manual_accept);

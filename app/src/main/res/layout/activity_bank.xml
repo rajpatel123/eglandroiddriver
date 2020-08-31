@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    tools:context=".ui.activity.profile.ProfileActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:id="@+id/imgProfile"
+                    android:layout_width="@dimen/_250sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_gravity="center"
+                    android:scaleType="fitXY"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:src="@drawable/chk" />
+                <TextView
+                    android:id="@+id/checkHint"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Upload Cancelled Cheque"
+                    android:gravity="center"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginTop="40dp"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="@dimen/activity_vertical_margin"
+                            android:paddingStart="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:text="Account Number"
+                            android:textSize="@dimen/_12ssp" />
+
+
+                        <EditText
+                            android:id="@+id/txtAccountNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:imeOptions="actionNext"
+                            android:inputType="number"
+                            android:maxLines="1"
+                            android:maxLength="18"
+                            android:fontFamily="@font/clanpro_narrnews"
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingEnd="@dimen/activity_vertical_margin"
+                            android:paddingStart="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="@dimen/text_medium" />
+
+                    </LinearLayout>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/grey" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="@dimen/activity_vertical_margin"
+                            android:paddingStart="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:text="Account Holder Number"
+                            android:textSize="@dimen/_12ssp" />
+
+
+                        <EditText
+                            android:id="@+id/txtACHolderName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:imeOptions="actionNext"
+                            android:inputType="text|textCapSentences"
+                            android:maxLines="1"
+                            android:fontFamily="@font/clanpro_narrnews"
+
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingEnd="@dimen/activity_vertical_margin"
+                            android:paddingStart="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="@dimen/text_medium" />
+
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/grey" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="@dimen/activity_vertical_margin"
+                            android:paddingStart="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:text="Bank Name"
+                            android:textSize="@dimen/_12ssp" />
+
+
+                        <EditText
+                            android:id="@+id/txtbankName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:imeOptions="actionNext"
+                            android:inputType="text|textCapSentences"
+                            android:maxLines="1"
+                            android:fontFamily="@font/clanpro_narrnews"
+
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingEnd="@dimen/activity_vertical_margin"
+                            android:paddingStart="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="@dimen/text_medium" />
+
+
+                    </LinearLayout>
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/grey" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="@dimen/activity_vertical_margin"
+                            android:paddingStart="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/activity_vertical_margin"
+                            android:text="IFSC Code"
+                            android:textSize="@dimen/_12ssp" />
+
+
+                        <EditText
+                            android:id="@+id/txtIFSC"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:imeOptions="actionDone"
+                            android:inputType="text|textCapSentences"
+                            android:maxLines="1"
+                            android:fontFamily="@font/clanpro_narrnews"
+
+                            android:paddingBottom="@dimen/activity_vertical_margin"
+                            android:paddingEnd="@dimen/activity_vertical_margin"
+                            android:paddingStart="@dimen/activity_vertical_margin"
+                            android:paddingTop="@dimen/_7sdp"
+                            android:textColor="@color/colorPrimaryText"
+                            android:textSize="@dimen/text_medium" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:background="@color/grey" />
+
+
+
+
+                <Button
+                    android:id="@+id/btnSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_10sdp"
+                    android:layout_weight="1"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/save"
+                    android:textColor="#FFF" />
+
+                <TextView
+                    android:id="@+id/lblChangePassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:fontFamily="@font/clanpro_narrnews"
+                    android:gravity="center"
+                    android:padding="@dimen/activity_vertical_margin"
+                    android:visibility="gone"
+                    android:text="@string/looking_to_change_password"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/text_medium" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+
+    </LinearLayout>
+
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

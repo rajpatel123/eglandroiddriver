@@ -3,7 +3,7 @@ package com.eaglecabs.provider.ui.activity.profile;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;

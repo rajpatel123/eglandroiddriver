@@ -2,15 +2,15 @@ package com.eaglecabs.provider.ui.bottomsheetdialog.invoice_flow;
 
 import android.content.Intent;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
-import android.support.v4.widget.NestedScrollView;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.RequiresApi;
+import androidx.core.widget.NestedScrollView;
 
 import com.eaglecabs.provider.MvpApplication;
 import com.eaglecabs.provider.R;
@@ -18,6 +18,8 @@ import com.eaglecabs.provider.base.BaseBottomSheetDialogFragment;
 import com.eaglecabs.provider.data.network.model.Payment;
 import com.eaglecabs.provider.data.network.model.RentalHourPackage;
 import com.eaglecabs.provider.data.network.model.Request_;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -49,6 +51,15 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
     Button btnConfirmPayment;
     @BindView(R.id.lblPaymentType)
     TextView lblPaymentType;
+
+
+    @BindView(R.id.lblPaymentTypeValue)
+    TextView lblPaymentTypeValue;
+
+
+    @BindView(R.id.noteLbl)
+    TextView noteLbl;
+
     @BindView(R.id.total_distance)
     TextView totalDistance;
     @BindView(R.id.travel_time)
@@ -109,6 +120,10 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
     LinearLayout layout_outstation_flow;
     @BindView(R.id.outstation_distance_travelled)
     TextView outstationDistanceTravelled;
+
+
+    @BindView(R.id.travelledDistance)
+    TextView travelledDistance;
     @BindView(R.id.outstation_distance_fare)
     TextView outstationDistanceFare;
     @BindView(R.id.outstation_driver_beta)
@@ -139,7 +154,7 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
         setCancelable(false);
         getDialog().setOnShowListener(dialog -> {
             BottomSheetDialog d = (BottomSheetDialog) dialog;
-            View bottomSheetInternal = d.findViewById(android.support.design.R.id.design_bottom_sheet);
+            View bottomSheetInternal = d.findViewById(R.id.design_bottom_sheet);
             BottomSheetBehavior.from(bottomSheetInternal).setState(BottomSheetBehavior.STATE_EXPANDED);
         });
         getDialog().setCanceledOnTouchOutside(false);
@@ -150,8 +165,10 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
         if (datum != null) {
 
             bookingId.setText(datum.getBookingId());
-            startDate.setText(""+convertDateFormat(datum.getStartedAt()));
-            endDate.setText(""+convertDateFormat(datum.getFinishedAt()));
+            startDate.setText("" + convertDateFormat(datum.getStartedAt()));
+            endDate.setText("" + convertDateFormat(datum.getFinishedAt()));
+            outstationDistanceTravelled.setText(String.valueOf(datum.getDistance() + " km"));
+
             if (datum.getTollTax() != null && datum.getTollTax() > 0) {
                 toll_tax.setText(numberFormat.format(datum.getTollTax()));
                 tollTaxLl.setVisibility(View.VISIBLE);
@@ -160,7 +177,13 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
 
             }
             travelTime.setText(getString(R.string._min, datum.getTravelTime()));
-            lblPaymentType.setText(datum.getPaymentMode());
+            if (datum.getPaymentMode().equalsIgnoreCase("CASH")) {
+                noteLbl.setText("Note: Collect CASH PAYMENT");
+            } else {
+                noteLbl.setText("Note: Collect PAYTM PAYMENT");
+
+            }
+            lblPaymentTypeValue.setText(datum.getPaymentMode());
             Payment payment = datum.getPayment();
             if (payment != null) {
                 totalDistance.setText(String.valueOf(payment.getDistance() + " km"));
@@ -169,7 +192,7 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
                 totalAmount.setText(numberFormat.format(total));
                 peekHourCharges.setText(numberFormat.format(payment.getPeakPrice()));
                 payableAmount.setText(numberFormat.format(payment.getPayable()));
-                distanceFare.setText(numberFormat.format(payment.getDistance()));
+                distanceFare.setText(numberFormat.format(0.00));
                 rental_extra_KM_price.setText(numberFormat.format(payment.getRentalExtraKmPrice()));
                 rental_extra_min_price.setText(numberFormat.format(payment.getRental_extra_minute_price()));
                 rentalExtraHrKmPrice.setText(numberFormat.format(payment.getRentalExtraHrPrice()));
@@ -183,13 +206,13 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
 
                 //rental
                 RentalHourPackage rentalHourPackage = datum.getRentalPackage();
-                if(rentalHourPackage != null){
+                if (rentalHourPackage != null) {
                     rentalHours.setText(String.format("%s (%s Hrs)", getString(R.string.rental_normal_price), rentalHourPackage.getHour()));
                 }
                 rentalNormalPrice.setText(numberFormat.format(payment.getMinute()));
                 rentalTravelTime.setText(getString(R.string._min, datum.getTravelTime()));
                 rentalTotalDistance.setText(String.valueOf(datum.getDistance() + " km"));
-                if(payment.getRentalExtraHrPrice()!=null && payment.getRentalExtraKmPrice()!=null)
+                if (payment.getRentalExtraHrPrice() != null && payment.getRentalExtraKmPrice() != null)
                     rentalExtraHrKmPrice.setText(numberFormat.format(payment.getRentalExtraHrPrice() + payment.getRentalExtraKmPrice()));
 
 
@@ -198,12 +221,12 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
 
                 //outstationDriverBeta.setText(numberFormat.format(payment.getDriverBeta()));
 
-                outstationDistanceFare.setText(numberFormat.format(payment.getDistance()));
-                outstationDistanceTravelled.setText(String.valueOf(datum.getDistance() + " km"));
+                outstationDistanceFare.setText(numberFormat.format(0.00));
+                travelledDistance.setText(String.valueOf(payment.getDistance() + " km"));
                 outstationRoundSingle.setText(datum.getDay());
 
-                if(payment.getOutstationDays()!=null)
-                outstationNoOfDays.setText(String.format("%s Days", payment.getOutstationDays()));
+                if (payment.getOutstationDays() != null)
+                    outstationNoOfDays.setText(String.format("%s Days", payment.getOutstationDays()));
                 else
                     outstationNoOfDays.setText("-");
 
@@ -266,7 +289,7 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
     String convertDateFormat(String date) {
         String newDateString = null;
 
-        if (TextUtils.isEmpty(date)){
+        if (TextUtils.isEmpty(date)) {
 
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
@@ -274,7 +297,7 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
             newDateString = new SimpleDateFormat("dd-MMM-yyyy hh:mm a", Locale.getDefault()).format(dtf.format(now));
 
 
-        }else{
+        } else {
             SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
             try {
 

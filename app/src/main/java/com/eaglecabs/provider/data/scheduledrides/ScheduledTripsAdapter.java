@@ -1,13 +1,12 @@
 package com.eaglecabs.provider.data.scheduledrides;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -59,6 +58,7 @@ public class ScheduledTripsAdapter extends RecyclerView.Adapter<ScheduledTripsAd
         holder.dAddress.setText(""+scheduledReidesResponse.getDAddress());
 
         holder.lblDate.setText("Departure Date: "+scheduledReidesResponse.getScheduleAt());
+        holder.lblDateReturn.setText("Return  Date: "+scheduledReidesResponse.getOutReturn());
         holder.lblBookingid.setText("Booking Id: "+scheduledReidesResponse.getBookingId());
         holder.lblSeviceName.setText("Service Type :"+scheduledReidesResponse.getServiceType().getName());
         holder.lblBookingType.setText("Trip :"+scheduledReidesResponse.getDay());
@@ -86,7 +86,7 @@ public class ScheduledTripsAdapter extends RecyclerView.Adapter<ScheduledTripsAd
     class MyViewHolder extends RecyclerView.ViewHolder {
 
         private CardView itemView;
-        private TextView lblDate, lblBookingid, lblSeviceName, sAddress, dAddress, lblFare, lblPaid,lblBookingType,lblPaymentMode;
+        private TextView lblDate,lblDateReturn, lblBookingid, lblSeviceName, sAddress, dAddress, lblFare, lblPaid,lblBookingType,lblPaymentMode;
         private ImageView staticMap, avatar;
         private TextView btnReject, btnAccept;
 
@@ -95,6 +95,7 @@ public class ScheduledTripsAdapter extends RecyclerView.Adapter<ScheduledTripsAd
 
             itemView = view.findViewById(R.id.item_view);
             lblDate = view.findViewById(R.id.lblDate);
+            lblDateReturn = view.findViewById(R.id.lblDateReturn);
             sAddress = view.findViewById(R.id.sAddress);
             dAddress = view.findViewById(R.id.dAddress);
             lblBookingid = view.findViewById(R.id.lblBookingid);

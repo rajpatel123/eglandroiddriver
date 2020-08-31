@@ -44,6 +44,20 @@ public class Request_ {
     @SerializedName("paid")
     @Expose
     private Double paid;
+
+
+    @SerializedName("total_amount")
+    @Expose
+    private Double total_amount;
+
+    public Double getTotal_amount() {
+        return total_amount;
+    }
+
+    public void setTotal_amount(Double total_amount) {
+        this.total_amount = total_amount;
+    }
+
     @SerializedName("is_track")
     @Expose
     private String isTrack;

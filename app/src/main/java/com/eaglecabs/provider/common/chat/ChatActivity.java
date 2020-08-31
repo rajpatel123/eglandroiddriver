@@ -1,7 +1,7 @@
 package com.eaglecabs.provider.common.chat;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;

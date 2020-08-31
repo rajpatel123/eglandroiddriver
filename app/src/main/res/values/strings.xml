@@ -255,6 +255,7 @@
     <string name="wallet_balance">Wallet balance</string>
     <string name="wallet_">Wallet (%s)</string>
     <string name="profile_updated_successfuly">Profile updated successfully</string>
+    <string name="bank_updated_successfuly">Bank updated successfully</string>
     <string-array name="dial_codes">
         <item>+91</item>
     </string-array>
@@ -263,6 +264,7 @@
     <string name="today_earning">Today</string>
     <string name="past_earning">Past</string>
     <string name="scheduled_trips">Scheduled Trip</string>
+    <string name="bank">Bank Detail</string>
 
 
 </resources>

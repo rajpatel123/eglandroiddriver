@@ -6,8 +6,9 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.location.Location;
 import android.net.Uri;
-import android.support.v7.app.AlertDialog;
+import android.os.AsyncTask;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chaos.view.PinView;
@@ -25,6 +28,7 @@ import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseActivity;
 import com.eaglecabs.provider.base.BaseFragment;
+import com.eaglecabs.provider.common.ConnectivityReceiver;
 import com.eaglecabs.provider.common.SharedHelper;
 import com.eaglecabs.provider.common.Utilities;
 import com.eaglecabs.provider.common.chat.ChatActivity;
@@ -32,12 +36,16 @@ import com.eaglecabs.provider.data.network.model.Request_;
 import com.eaglecabs.provider.data.network.model.UserGetResponse;
 import com.eaglecabs.provider.ui.activity.main.MainActivity;
 import com.eaglecabs.provider.ui.bottomsheetdialog.cancel.CancelDialogFragment;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.Task;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
+import java.util.concurrent.Executor;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -45,7 +53,10 @@ import butterknife.OnClick;
 import butterknife.Unbinder;
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static com.eaglecabs.provider.MvpApplication.DEFAULT_ZOOM;
+import static com.eaglecabs.provider.MvpApplication.mLastKnownLocation;
 import static com.eaglecabs.provider.base.BaseActivity.DATUM;
+import static com.eaglecabs.provider.base.BaseActivity.TRIPDISTANCE;
 import static com.eaglecabs.provider.common.fcm.MyFirebaseMessagingService.INTENT_FILTER;
 
 public class StatusFlowFragment extends BaseFragment implements StatusFlowIView {
@@ -80,7 +91,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
     Context thisContext;
 
     MainActivity mActivity;
-    private String OTP_STATUS="";
+    private String OTP_STATUS = "";
 
     @Override
     public int getLayoutId() {
@@ -133,12 +144,14 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                 break;
             case R.id.btnStatus:
                 if (STATUS.equalsIgnoreCase("PICKEDUP")) {
+
                     if (data.getOtp() != null) {
                         showOTP();
                     } else {
                         statusUpdateCall(STATUS);
                     }
                 } else if (STATUS.equalsIgnoreCase("DROPPED")) {
+                    //getDeviceLocation();
                     confirmPopup();
                 } else {
                     statusUpdateCall(STATUS);
@@ -155,6 +168,53 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
         }
     }
 
+
+
+    private void getDistance(double currentLat2, double currentLong2, double mallLat2, double mallLong2) {
+        if (ConnectivityReceiver.isConnected()) {
+            new AsyncTask<Void,Void,Double>() {
+                @Override
+                protected Double doInBackground(Void... voids) {
+
+                    Location loc1 = new Location("");
+                    loc1.setLatitude(currentLat2);
+                    loc1.setLongitude(currentLong2);
+
+                    Location loc2 = new Location("");
+                    loc2.setLatitude(mallLat2);
+                    loc2.setLongitude(mallLong2);
+
+                    return Double.valueOf(loc1.distanceTo(loc2));
+
+
+
+
+//                   double theta = lon1 - lon2;
+//                   double dist = Math.sin(deg2rad(lat1))
+//                           * Math.sin(deg2rad(lat2))
+//                           + Math.cos(deg2rad(lat1))
+//                           * Math.cos(deg2rad(lat2))
+//                           * Math.cos(deg2rad(theta));
+//                   dist = Math.acos(dist);
+//                   dist = rad2deg(dist);
+//                   dist = dist * 60 * 1.1515;
+//                   return dist;
+                }
+
+                @Override
+                protected void onPostExecute(Double dist) {
+                    super.onPostExecute(dist);
+                    if (dist>300){
+                        TRIPDISTANCE = TRIPDISTANCE+dist;
+                    }
+
+                    //SharedHelper.putKey(MainActivity.this, "totalDist", String.valueOf(TRIPDISTANCE));
+
+                }
+            }.execute();
+        }
+
+    }
 
     public void changeFlow(String status) {
 
@@ -197,6 +257,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                 btnStatus.setText("PICKEDUP");
                 btnCancel.setVisibility(View.VISIBLE);
                 STATUS = "PICKEDUP";
+                mActivity.TRIPDISTANCE = 0.0;
                 statusArrivedImg.setImageResource(R.drawable.arrived_select);
                 statusPickedUpImg.setImageResource(R.drawable.pickup);
                 statusFinishedImg.setImageResource(R.drawable.finished);
@@ -205,7 +266,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                 if (data != null) {
                     ((MainActivity) thisContext).drawDirectionToStop(data.getRouteKey());
                 }
-                btnStatus.setText("TAP WHEN DROPPED");
+                btnStatus.setText("END TRIP");
                 STATUS = "DROPPED";
                 statusArrivedImg.setImageResource(R.drawable.arrived);
                 statusPickedUpImg.setImageResource(R.drawable.pickup_select);
@@ -250,11 +311,11 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
         KmDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         btnSubmit.setOnClickListener(view12 -> {
-            if(!txtTotalKm.getText().toString().isEmpty()) {
+            if (!txtTotalKm.getText().toString().isEmpty()) {
                 KmDialog.dismiss();
                 statusUpdateCallOutstation(STATUS, txtTotalKm.getText().toString());
-            }
-            else   Toast.makeText(activity(), "Enter your total kilo meter you are travelled", Toast.LENGTH_SHORT).show();
+            } else
+                Toast.makeText(activity(), "Enter your total kilo meter you are travelled", Toast.LENGTH_SHORT).show();
 
         });
 
@@ -285,13 +346,44 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
             map.put("status", status);
             map.put("_method", "PATCH");
             if (status.equalsIgnoreCase("DROPPED")) {
+                if (DATUM.getSLatitude() > 0) {
+                    Geocoder geocoder = new Geocoder(mActivity, Locale.getDefault());
+                    try {
+                        List<Address> addressesSS = geocoder.getFromLocation(DATUM.getSLatitude(), DATUM.getSLongitude(), 1);
+                        if (addressesSS != null && addressesSS.size() > 0) {
+                            String stateName = addressesSS.get(0).getAdminArea();
+                            map.put("sState", stateName);
+
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        List<Address> addressesDD = geocoder.getFromLocation(DATUM.getSLatitude(), DATUM.getSLongitude(), 1);
+                        if (addressesDD != null && addressesDD.size() > 0) {
+                            String dState = addressesDD.get(0).getAdminArea();
+                            map.put("dState", dState);
+
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+//                if (TRIPDISTANCE > 0) {
+//                    map.put("ride_distance",mActivity.DFORMAT.format(TRIPDISTANCE/1000));
+////                    map.put("ride_distance",11);
+//                   // Toast.makeText(mActivity, "Trip Distance is "+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+//                    mActivity.SERVICE_STATUS="no";
+//                }
                 map.put("latitude", SharedHelper.getKey(activity(), "current_latitude"));
                 map.put("longitude", SharedHelper.getKey(activity(), "current_longitude"));
                 map.put("address", getAddress(new LatLng(Double.parseDouble(SharedHelper.getKey(activity(), "current_latitude")), Double.parseDouble(SharedHelper.getKey(activity(), "current_longitude")))));
             }
             presenter.statusUpdate(map, datum.getId());
-
-
+            TRIPDISTANCE = 0.0;
+            mActivity.SERVICE_STATUS = "no";
 
 
         }
@@ -306,6 +398,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
             map.put("_method", "PATCH");
             map.put("driver_end_distance", km);
             if (status.equalsIgnoreCase("DROPPED")) {
+
                 map.put("latitude", SharedHelper.getKey(activity(), "current_latitude"));
                 map.put("longitude", SharedHelper.getKey(activity(), "current_longitude"));
                 map.put("address", getAddress(new LatLng(Double.parseDouble(SharedHelper.getKey(activity(), "current_latitude")), Double.parseDouble(SharedHelper.getKey(activity(), "current_longitude")))));
@@ -346,7 +439,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
         submitBtn.setOnClickListener(view1 -> {
             if (data.getOtp().equalsIgnoreCase(pinView.getText().toString())) {
                 Toast.makeText(thisContext, "OTP Verified!", Toast.LENGTH_SHORT).show();
-                OTP_STATUS="verified";
+                OTP_STATUS = "verified";
                 statusUpdateCall(STATUS);
 
                 otpDialog.dismiss();
@@ -378,6 +471,23 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
             Log.e("MAP", "getAddress: " + e);
         }
         return address;
+    }
+    void getDeviceLocation() {
+        try {
+                Task<Location> locationResult = mActivity.mFusedLocationProviderClient.getLastLocation();
+                locationResult.addOnCompleteListener(mActivity, task -> {
+                    if (task.isSuccessful() && task.getResult() != null) {
+                        mLastKnownLocation = task.getResult();
+                        getDistance(mLastKnownLocation.getLatitude(),mLastKnownLocation.getLatitude() ,
+                               Double.valueOf( SharedHelper.getKey(mActivity, "current_latitude")),
+                               Double.valueOf(SharedHelper.getKey(mActivity, "current_longitude")));
+
+                    }
+                });
+
+        } catch (SecurityException e) {
+            Log.e("Exception: %s", e.getMessage());
+        }
     }
 
 }

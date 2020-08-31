@@ -47,6 +47,69 @@ public class User {
     @Expose
     private String city;
 
+    @SerializedName("buser_name")
+    @Expose
+    private String buser_name;
+
+    @SerializedName("b_name")
+    @Expose
+    private String b_name;
+
+    public String getBuser_name() {
+        return buser_name;
+    }
+
+    public void setBuser_name(String buser_name) {
+        this.buser_name = buser_name;
+    }
+
+    public String getB_name() {
+        return b_name;
+    }
+
+    public void setB_name(String b_name) {
+        this.b_name = b_name;
+    }
+
+    public String getB_ifsc_code() {
+        return b_ifsc_code;
+    }
+
+    public void setB_ifsc_code(String b_ifsc_code) {
+        this.b_ifsc_code = b_ifsc_code;
+    }
+
+    public String getCheque_url() {
+        return cheque_url;
+    }
+
+    public void setCheque_url(String cheque_url) {
+        this.cheque_url = cheque_url;
+    }
+
+    public long getB_account() {
+        return b_account;
+    }
+
+    public void setB_account(long b_account) {
+        this.b_account = b_account;
+    }
+
+    @SerializedName("b_ifsc_code")
+    @Expose
+    private String b_ifsc_code;
+
+    @SerializedName("cheque_url")
+    @Expose
+    private String cheque_url;
+
+    @SerializedName("b_account")
+    @Expose
+    private long b_account;
+
+
+
+
     public String getService_type() {
         return service_type;
     }
