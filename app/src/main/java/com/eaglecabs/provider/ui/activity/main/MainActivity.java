@@ -282,7 +282,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
 
         locationTracker = new LocationTracker("my.action")
-                .setInterval(30)
+                .setInterval(60)
                 .setGps(true)
                 .setNetWork(false)
                 .start(getBaseContext());
@@ -329,13 +329,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(myReceiver);
-        unregisterReceiver(internetReceiver);
-        EventBus.getDefault().unregister(this);
-        if (gpsServiceIntent != null) stopService(gpsServiceIntent);
+//        unregisterReceiver(myReceiver);
+//        unregisterReceiver(internetReceiver);
+//        EventBus.getDefault().unregister(this);
+//        if (gpsServiceIntent != null) stopService(gpsServiceIntent);
 
-        if (locationTracker != null)
-            locationTracker.stopLocationService(this);
+//        if (locationTracker != null)
+//            locationTracker.stopLocationService(this);
 
     }
 
@@ -895,7 +895,9 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
 //        if (SERVICE_STATUS.equalsIgnoreCase("PICKEDUP")) {
 //            if (LAST_LAT > 0) {
-//                getDistance(location.getLatitude(), location.getLongitude(),LAST_LAT, LAST_LONG);
+//                if (location.getLatitude()>0){
+//                    getDistance(location.getLatitude(), location.getLongitude(),LAST_LAT, LAST_LONG);
+//                }
 //            } else {
 //                LAST_LAT = mLastKnownLocation.getLatitude();
 //                LAST_LONG = mLastKnownLocation.getLongitude();

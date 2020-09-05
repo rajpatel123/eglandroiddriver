@@ -58,6 +58,7 @@ public class EarningsPastTripAdapter extends RecyclerView.Adapter<EarningsPastTr
         else
             holder.lblAmount.setText("-");
         try {
+            if (ride.getAssignedAt()!=null)
             holder.lblDate.setText(getDate(ride.getAssignedAt()) + " "+getTime(ride.getAssignedAt()));
         } catch (ParseException e) {
             e.printStackTrace();

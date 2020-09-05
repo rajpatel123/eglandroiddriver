@@ -359,7 +359,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                         e.printStackTrace();
                     }
                     try {
-                        List<Address> addressesDD = geocoder.getFromLocation(DATUM.getSLatitude(), DATUM.getSLongitude(), 1);
+                        List<Address> addressesDD = geocoder.getFromLocation(DATUM.getDLatitude(), DATUM.getDLongitude(), 1);
                         if (addressesDD != null && addressesDD.size() > 0) {
                             String dState = addressesDD.get(0).getAdminArea();
                             map.put("dState", dState);

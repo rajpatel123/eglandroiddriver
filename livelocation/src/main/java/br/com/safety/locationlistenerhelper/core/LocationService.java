@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.telecom.Call;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -105,6 +107,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
                 LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
             }
         } catch (SecurityException ex) {
+            Log.d("Permission", "Denied");
         }
     }
 
@@ -124,6 +127,13 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         locationIntent.setAction(this.actionReceiver);
         locationIntent.putExtra(SettingsLocationTracker.LOCATION_MESSAGE, sbLocationData);
         sendBroadcast(locationIntent);
+
+        updateLocationToServer();
+    }
+
+    private void updateLocationToServer() {
+        Toast.makeText(this, "Location updated", Toast.LENGTH_SHORT).show();
+
     }
 
     private void sendCurrentLocationBroadCast(Location sbLocationData) {
