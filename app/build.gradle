@@ -17,11 +17,11 @@ def DEVICE_TYPE = '"android"'
 def GOOGLE_MAP_KEY = '"AIzaSyD9jpaIXfx5CeiZX-rCjOiu0hAA39yHzuY"'
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         applicationId "com.eaglecabs.provider"
         minSdkVersion 17
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 39
         versionName "40"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'

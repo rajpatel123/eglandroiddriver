@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.eaglecabs.provider">
 
     <uses-permission android:name="android.permission.INTERNET" />
@@ -25,7 +24,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.scheduled.EagleScheduledRidesAcrivity"
+        <activity
+            android:name=".ui.activity.scheduled.EagleScheduledRidesAcrivity"
             android:label="Scheduled Trips"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar"></activity>
@@ -47,6 +47,10 @@
             android:label="@string/choose_vehicle"
             android:parentActivityName=".ui.activity.main.MainActivity"
             android:screenOrientation="portrait" />
+        <service
+            android:name=".MyBackgroundLocationService"
+            android:enabled="true"
+            android:exported="false"/>
 
         <uses-library
             android:name="org.apache.http.legacy"
@@ -170,7 +174,6 @@
             android:screenOrientation="portrait" />
 
 
-
         <activity
             android:name=".ui.activity.help.HelpActivity"
             android:label="@string/help"
@@ -252,7 +255,7 @@
         </receiver>
         -->
 
-        <receiver android:name=".LocationReceiver"/>
+        <receiver android:name=".LocationReceiver" />
         <receiver
             android:name=".common.ConnectivityReceiver"
             android:enabled="true">

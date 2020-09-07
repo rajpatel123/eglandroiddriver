@@ -1,6 +1,8 @@
 package com.eaglecabs.provider;
 
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.location.Location;
 import androidx.multidex.MultiDex;
@@ -25,7 +27,7 @@ public class MvpApplication extends Application {
     public static final int PERMISSIONS_REQUEST_PHONE = 4;
     public static final int PICK_LOCATION_REQUEST_CODE = 3;
     private static MvpApplication mInstance;
-
+    public static final String CHANNEL_ID = "default-channel";
     @Override
     protected void attachBaseContext(Context base) {
         super.attachBaseContext(base);
@@ -38,6 +40,19 @@ public class MvpApplication extends Application {
         Fabric.with(this, new Crashlytics());
         Stetho.initializeWithDefaults(this);
         mInstance = this;
+
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            NotificationChannel notificationChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "LocationChannel",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+
+            NotificationManager manager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+            manager.createNotificationChannel(notificationChannel);
+
+        }
 
     }
 

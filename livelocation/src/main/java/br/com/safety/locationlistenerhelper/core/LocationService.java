@@ -1,14 +1,21 @@
 package br.com.safety.locationlistenerhelper.core;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
+import android.media.RingtoneManager;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.telecom.Call;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -16,8 +23,11 @@ import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 
+import java.util.Random;
+
+import br.com.safety.locationlistenerhelper.R;
+
 import static br.com.safety.locationlistenerhelper.core.SettingsLocationTracker.ACTION_CURRENT_LOCATION_BROADCAST;
-import static br.com.safety.locationlistenerhelper.core.SettingsLocationTracker.ACTION_PERMISSION_DEINED;
 
 /**
  * @author netodevel
@@ -50,6 +60,39 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     public void onCreate() {
         super.onCreate();
         appPreferences = new AppPreferences(getBaseContext());
+        startForeground(12345678, getNotification());
+    }
+
+    private Notification getNotification() {
+        Random random = new Random();
+        int notificationId = random.nextInt();
+
+
+        Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder notificationBuilder = null;
+        notificationBuilder = new NotificationCompat.Builder(this, "" + notificationId)
+                .setSmallIcon(R.drawable.googleg_disabled_color_18)
+                .setContentTitle(getString(R.string.app_name))
+                .setContentText("title")
+                .setAutoCancel(true)
+                .setOngoing(true)
+                .setSound(defaultSoundUri);
+
+
+        NotificationManager notificationManager =
+                (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel("" + notificationId,
+                    "notification",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            notificationManager.createNotificationChannel(channel);
+        }
+
+        Notification notification = notificationBuilder.build();
+        notificationManager.notify("test", notificationId /* ID of notification */, notification);
+        return notification;
     }
 
     @Override
@@ -59,7 +102,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
             this.actionReceiver = this.appPreferences.getString("ACTION", "LOCATION.ACTION");
         }
 
-        if (this.interval <= 0){
+        if (this.interval <= 0) {
             this.interval = this.appPreferences.getLong("LOCATION_INTERVAL", 10000L);
         }
 
@@ -96,7 +139,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         mLocationRequest.setFastestInterval(this.interval / 2);
         if (this.gps) {
             mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        } else if (this.netWork){
+        } else if (this.netWork) {
             mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
         }
     }
@@ -127,7 +170,6 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         locationIntent.setAction(this.actionReceiver);
         locationIntent.putExtra(SettingsLocationTracker.LOCATION_MESSAGE, sbLocationData);
         sendBroadcast(locationIntent);
-
         updateLocationToServer();
     }
 

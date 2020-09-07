@@ -59,6 +59,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chaos.view.PinView;
 import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.MvpApplication;
+import com.eaglecabs.provider.MyBackgroundLocationService;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseActivity;
 import com.eaglecabs.provider.common.ChatHeadService;
@@ -198,6 +199,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     String logout_message = "";
 
 
+
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -228,6 +230,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         registerReceiver(myReceiver, new IntentFilter(MyFirebaseMessagingService.INTENT_FILTER));
         // register connection status listener
         MvpApplication.getInstance().setConnectivityListener(this);
+
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -288,11 +291,22 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 .start(getBaseContext());
     }
 
+
+
+    private void startLocationService() {
+        //start background location service
+
+        Intent intent = new Intent(this, MyBackgroundLocationService.class);
+        ContextCompat.startForegroundService(this, intent);
+        Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
         checkConnection();
-
+        startLocationService();
         lblMenuName.setText(SharedHelper.getKey(this, "user_name"));
         lblWalletMessage.setText(SharedHelper.getKey(this, "wallet_message"));
         lblLoginHours.setText(getString(R.string.today_login_hours_, minitueToHourMin(SharedHelper.getKey(activity(), "login_mins", "0"))));
