@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.eaglecabs.provider.MyBackgroundLocationService;
 import com.google.gson.Gson;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseFragment;
@@ -101,6 +102,14 @@ public class OfflineFragment extends BaseFragment implements OfflineIView {
             if (jsonObj.has("error")){
                 Toast.makeText(activity(), jsonObj.optString("error"), Toast.LENGTH_SHORT).show();
                 ((MainActivity)activity()).getProfile();
+
+
+            }else{
+             if (jsonObj.has("status") && jsonObj.optString("status").equalsIgnoreCase("online")){
+                 Intent intent = new Intent(getActivity(), MyBackgroundLocationService.class);
+                 getActivity().startService(intent);
+                 //Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
+             }
             }
         } catch (Exception e) {
 

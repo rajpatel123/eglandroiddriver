@@ -60,7 +60,7 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
     public void onCreate() {
         super.onCreate();
         appPreferences = new AppPreferences(getBaseContext());
-        startForeground(12345678, getNotification());
+       // startForeground(12345678, getNotification());
     }
 
     private Notification getNotification() {
@@ -170,20 +170,21 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
         locationIntent.setAction(this.actionReceiver);
         locationIntent.putExtra(SettingsLocationTracker.LOCATION_MESSAGE, sbLocationData);
         sendBroadcast(locationIntent);
-        updateLocationToServer();
+       // updateLocationToServer();
     }
-
-    private void updateLocationToServer() {
-        Toast.makeText(this, "Location updated", Toast.LENGTH_SHORT).show();
-
-    }
-
     private void sendCurrentLocationBroadCast(Location sbLocationData) {
         Intent locationIntent = new Intent();
         locationIntent.setAction(ACTION_CURRENT_LOCATION_BROADCAST);
         locationIntent.putExtra(SettingsLocationTracker.LOCATION_MESSAGE, sbLocationData);
         sendBroadcast(locationIntent);
     }
+
+
+    private void updateLocationToServer() {
+        Toast.makeText(this, "Location updated", Toast.LENGTH_SHORT).show();
+
+    }
+
 
     private void sendPermissionDeinedBroadCast() {
         Intent locationIntent = new Intent();

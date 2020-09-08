@@ -17,13 +17,13 @@ def DEVICE_TYPE = '"android"'
 def GOOGLE_MAP_KEY = '"AIzaSyD9jpaIXfx5CeiZX-rCjOiu0hAA39yHzuY"'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 28
     defaultConfig {
         applicationId "com.eaglecabs.provider"
         minSdkVersion 17
-        targetSdkVersion 29
-        versionCode 39
-        versionName "40"
+        targetSdkVersion 28
+        versionCode 40
+        versionName "4.1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -57,7 +57,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            debuggable true
+            debuggable false
         }
 
         debug {

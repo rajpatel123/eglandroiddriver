@@ -144,8 +144,8 @@
     <string name="change_password">Change Password</string>
     <string name="current_password">Current Password</string>
     <string name="looking_to_change_password">Looking to change password</string>
-    <string name="go_offline">Click to Offline</string>
-    <string name="go_online">Click to Online</string>
+    <string name="go_offline">Offline</string>
+    <string name="go_online">Online</string>
     <string name="reject">Reject</string>
     <string name="accept">Accept</string>
     <string name="pick_up_location">Pick Up Location</string>

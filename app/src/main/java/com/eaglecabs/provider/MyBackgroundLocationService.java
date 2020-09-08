@@ -14,18 +14,35 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import com.eaglecabs.provider.ui.activity.main.MainActivity;
+import com.eaglecabs.provider.ui.activity.main.MainPresenter;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.JsonObject;
 
+import org.greenrobot.eventbus.EventBus;
+
+import java.util.HashMap;
 import java.util.List;
+
+import br.com.safety.locationlistenerhelper.core.AppPreferences;
+import br.com.safety.locationlistenerhelper.core.SettingsLocationTracker;
+
+import static br.com.safety.locationlistenerhelper.core.SettingsLocationTracker.ACTION_CURRENT_LOCATION_BROADCAST;
+import static com.eaglecabs.provider.MvpApplication.mLastKnownLocation;
+import static com.eaglecabs.provider.base.BaseActivity.DATUM;
 
 public class MyBackgroundLocationService extends Service {
     private static final String TAG = MyBackgroundLocationService.class.getSimpleName();
     private FusedLocationProviderClient mLocationClient;
     private LocationCallback mLocationCallback;
+    protected String actionReceiver;
+    private AppPreferences appPreferences;
+    MainPresenter<MainActivity> presenter = new MainPresenter<>();
 
     public MyBackgroundLocationService() {
     }
@@ -33,6 +50,9 @@ public class MyBackgroundLocationService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+
+        appPreferences = new AppPreferences(getBaseContext());
+
         mLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
         mLocationCallback = new LocationCallback() {
             @Override
@@ -46,21 +66,87 @@ public class MyBackgroundLocationService extends Service {
 
                 LocationResultHelper helper = new LocationResultHelper(getApplicationContext(), locations);
 
-                helper.showNotification();
+              //  helper.showNotification();
 
                 helper.saveLocationResults();
+                if (locations!=null && locations.size()>0){
+                    sendLocationBroadcast(locations.get(0));
+                    sendCurrentLocationBroadCast(locations.get(0));
+                    EventBus.getDefault().postSticky(locations.get(0));
 
-                Toast.makeText(getApplicationContext(), "Location received: " + locations.size(), Toast.LENGTH_SHORT).show();
+                    LatLng latLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
+                    pushNotification(latLng, mLastKnownLocation);
+                    presenter.locationUpdateServer(latLng);
+
+                }
+
+           //     Toast.makeText(getApplicationContext(), "Location received: " + locations.size(), Toast.LENGTH_SHORT).show();
 
             }
         };
     }
 
+
+    private void pushNotification(LatLng latlng, Location location) {
+
+        if (DATUM == null) {
+            return;
+        }
+
+        if (DATUM.getStatus().equalsIgnoreCase("ACCEPTED") || DATUM.getStatus().equalsIgnoreCase("STARTED") || DATUM.getStatus().equalsIgnoreCase("ARRIVED") ||
+                DATUM.getStatus().equalsIgnoreCase("PICKEDUP") || DATUM.getStatus().equalsIgnoreCase("DROPPED")) {
+
+            JsonObject jPayload = new JsonObject();
+            JsonObject jData = new JsonObject();
+
+            jData.addProperty("latitude", latlng.latitude);
+            jData.addProperty("longitude", latlng.longitude);
+            jPayload.addProperty("to", "/topics/" + DATUM.getId());
+            jPayload.addProperty("priority", "high");
+            jPayload.add("data", jData);
+            presenter.sendFCM(jPayload);
+        }
+
+        if (DATUM.getStatus().equalsIgnoreCase("PICKEDUP")) {
+            if (DATUM.getIsTrack().equalsIgnoreCase("YES")) {
+                HashMap<String, Object> map1 = new HashMap<>();
+                map1.put("latitude", latlng.latitude);
+                map1.put("longitude", latlng.longitude);
+                // presenter.calculateDistance(map1, DATUM.getId());
+                // serverlatlng = location;
+            }
+        }
+
+    }
+
+
+    private void sendLocationBroadcast(Location sbLocationData) {
+        Intent locationIntent = new Intent();
+        locationIntent.setAction("my.action");
+        locationIntent.putExtra(SettingsLocationTracker.LOCATION_MESSAGE, sbLocationData);
+        sendBroadcast(locationIntent);
+        updateLocationToServer();
+    }
+
+    private void updateLocationToServer() {
+
+    }
+
+    private void sendCurrentLocationBroadCast(Location sbLocationData) {
+        Intent locationIntent = new Intent();
+        locationIntent.setAction(ACTION_CURRENT_LOCATION_BROADCAST);
+        locationIntent.putExtra(SettingsLocationTracker.LOCATION_MESSAGE, sbLocationData);
+        sendBroadcast(locationIntent);
+    }
+
+
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         Log.d(TAG, "onStartCommand: called");
-
+        if (this.actionReceiver == null) {
+            this.actionReceiver = this.appPreferences.getString("ACTION", "LOCATION.ACTION");
+        }
         startForeground(1001, getNotification());
 
         getLocationUpdates();
@@ -85,10 +171,10 @@ public class MyBackgroundLocationService extends Service {
 
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        locationRequest.setInterval(5000);
-        locationRequest.setFastestInterval(4000);
+        locationRequest.setInterval(60*1000);
+        locationRequest.setFastestInterval(30000);
 
-        locationRequest.setMaxWaitTime(15 * 1000);
+        locationRequest.setMaxWaitTime(60* 1000);
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 != PackageManager.PERMISSION_GRANTED) {

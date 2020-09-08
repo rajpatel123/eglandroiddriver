@@ -60,7 +60,6 @@ public class PastTripFragment extends BaseFragment implements PastTripIView, Pas
 
         progressBar.setVisibility(View.VISIBLE);
         presenter.getHistory();
-
         return view;
     }
 

@@ -112,11 +112,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
@@ -285,7 +287,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
 
         locationTracker = new LocationTracker("my.action")
-                .setInterval(60)
+                .setInterval(665464660)
                 .setGps(true)
                 .setNetWork(false)
                 .start(getBaseContext());
@@ -298,7 +300,17 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
         Intent intent = new Intent(this, MyBackgroundLocationService.class);
         ContextCompat.startForegroundService(this, intent);
-        Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+  private void stopLocationService() {
+        //start background location service
+
+        Intent intent = new Intent(this, MyBackgroundLocationService.class);
+        stopService(intent);
+//        Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
 
     }
 
@@ -306,7 +318,6 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     protected void onResume() {
         super.onResume();
         checkConnection();
-        startLocationService();
         lblMenuName.setText(SharedHelper.getKey(this, "user_name"));
         lblWalletMessage.setText(SharedHelper.getKey(this, "wallet_message"));
         lblLoginHours.setText(getString(R.string.today_login_hours_, minitueToHourMin(SharedHelper.getKey(activity(), "login_mins", "0"))));
@@ -440,14 +451,14 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             Intent serviceIntent = new Intent(this, GPSTrackers.class);
             stopService(serviceIntent);
         }
-        if (!serviceRunningStatus) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                activity().startService(new Intent(activity(), GPSTrackers.class));
-            } else {
-                Intent serviceIntent = new Intent(activity(), GPSTrackers.class);
-                ContextCompat.startForegroundService(activity(), serviceIntent);
-            }
-        }
+//        if (!serviceRunningStatus) {
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+//                activity().startService(new Intent(activity(), GPSTrackers.class));
+//            } else {
+//                Intent serviceIntent = new Intent(activity(), GPSTrackers.class);
+//                ContextCompat.startForegroundService(activity(), serviceIntent);
+//            }
+//        }
     }
 
 
@@ -700,7 +711,11 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
             if (serviceStatus.equalsIgnoreCase("offline")) {
                 offlineFragment(serviceStatus);
+                stopLocationService();
+
             } else {
+                startLocationService();
+
                 offlineContainer.removeAllViews();
             }
 
@@ -712,7 +727,27 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
     @Override
     public void onSuccessProviderAvailable(Object object) {
+        String jsonInString = new Gson().toJson(object);
+        try {
+            JSONObject jsonObj = new JSONObject(jsonInString);
+            if (jsonObj.has("error")){
+                Toast.makeText(activity(), jsonObj.optString("error"), Toast.LENGTH_SHORT).show();
+                ((MainActivity)activity()).getProfile();
+
+
+            }else{
+                if (jsonObj.has("status") && jsonObj.optString("status").equalsIgnoreCase("online")){
+                 startLocationService();
+                    //Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
+                }else{
+                  stopLocationService();
+                }
+            }
+        } catch (Exception e) {
+
+        }
         offlineFragment("");
+        stopLocationService();
     }
 
     @Override
