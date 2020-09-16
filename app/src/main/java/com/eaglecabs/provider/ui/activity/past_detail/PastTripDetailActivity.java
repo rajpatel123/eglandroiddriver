@@ -136,6 +136,12 @@ public class PastTripDetailActivity extends BaseActivity implements PastTripDeta
 
         initPayment(historyDetail.getPaymentMode());
 
+        if (historyDetail.getStatus().equalsIgnoreCase("cancelled")){
+            viewReceipt.setVisibility(View.GONE);
+        }else{
+            viewReceipt.setVisibility(View.VISIBLE);
+
+        }
         User_Past user = historyDetail.getUser();
         if (user != null) {
             firstName.setText(user.getFirstName());

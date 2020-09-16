@@ -1,9 +1,11 @@
 package com.eaglecabs.provider.ui.bottomsheetdialog.cancel;
 
 import android.content.Intent;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseBottomSheetDialogFragment;
@@ -15,6 +17,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import es.dmoral.toasty.Toasty;
 
 import static com.eaglecabs.provider.common.fcm.MyFirebaseMessagingService.INTENT_FILTER;
 
@@ -66,10 +69,12 @@ public class CancelDialogFragment extends BaseBottomSheetDialogFragment implemen
 
     @Override
     public void onError(Throwable e) {
+        hideLoading();
 
+        //Log.d("Cancel", "cancel");
+        Toast.makeText(activity(), "Cannot cancel request at this stage!", Toast.LENGTH_SHORT).show();
 
     }
-
 
 
 }

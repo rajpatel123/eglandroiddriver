@@ -75,7 +75,7 @@ public class MyBackgroundLocationService extends Service {
                     EventBus.getDefault().postSticky(locations.get(0));
 
                     LatLng latLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
-                    pushNotification(latLng, mLastKnownLocation);
+                   // pushNotification(latLng, mLastKnownLocation);
                     presenter.locationUpdateServer(latLng);
 
                 }
@@ -87,37 +87,6 @@ public class MyBackgroundLocationService extends Service {
     }
 
 
-    private void pushNotification(LatLng latlng, Location location) {
-
-        if (DATUM == null) {
-            return;
-        }
-
-        if (DATUM.getStatus().equalsIgnoreCase("ACCEPTED") || DATUM.getStatus().equalsIgnoreCase("STARTED") || DATUM.getStatus().equalsIgnoreCase("ARRIVED") ||
-                DATUM.getStatus().equalsIgnoreCase("PICKEDUP") || DATUM.getStatus().equalsIgnoreCase("DROPPED")) {
-
-            JsonObject jPayload = new JsonObject();
-            JsonObject jData = new JsonObject();
-
-            jData.addProperty("latitude", latlng.latitude);
-            jData.addProperty("longitude", latlng.longitude);
-            jPayload.addProperty("to", "/topics/" + DATUM.getId());
-            jPayload.addProperty("priority", "high");
-            jPayload.add("data", jData);
-            presenter.sendFCM(jPayload);
-        }
-
-        if (DATUM.getStatus().equalsIgnoreCase("PICKEDUP")) {
-            if (DATUM.getIsTrack().equalsIgnoreCase("YES")) {
-                HashMap<String, Object> map1 = new HashMap<>();
-                map1.put("latitude", latlng.latitude);
-                map1.put("longitude", latlng.longitude);
-                // presenter.calculateDistance(map1, DATUM.getId());
-                // serverlatlng = location;
-            }
-        }
-
-    }
 
 
     private void sendLocationBroadcast(Location sbLocationData) {

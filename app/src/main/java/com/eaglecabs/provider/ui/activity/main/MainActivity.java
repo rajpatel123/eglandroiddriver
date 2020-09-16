@@ -287,7 +287,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
 
         locationTracker = new LocationTracker("my.action")
-                .setInterval(665464660)
+                .setInterval(30)
                 .setGps(true)
                 .setNetWork(false)
                 .start(getBaseContext());

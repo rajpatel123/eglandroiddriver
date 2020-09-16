@@ -334,7 +334,8 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
 
 
     @Override
-    public void onError(Throwable e) {
+    public void onError(Throwable e)
+    {
         hideLoading();
     }
 

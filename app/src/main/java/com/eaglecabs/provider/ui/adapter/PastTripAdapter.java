@@ -68,7 +68,7 @@ public class PastTripAdapter extends RecyclerView.Adapter<PastTripAdapter.MyView
         }
         else
         {
-            holder.payable.setText("-");
+            holder.payable.setText(historyList.getStatus());
 
         }
         if(historyList.getServicetype()!=null)

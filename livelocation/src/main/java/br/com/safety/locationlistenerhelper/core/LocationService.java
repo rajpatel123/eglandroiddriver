@@ -200,8 +200,8 @@ public class LocationService extends Service implements GoogleApiClient.Connecti
 
     @Override
     public void onDestroy() {
-        stopLocationUpdates();
-        mGoogleApiClient.disconnect();
+     //   stopLocationUpdates();
+       // mGoogleApiClient.disconnect();
         super.onDestroy();
     }
 

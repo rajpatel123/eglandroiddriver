@@ -126,7 +126,7 @@
 
     <!-- Summary-->
     <string name="total_rides">TOTAL NO OF RIDES</string>
-    <string name="revenue">REVENUE</string>
+    <string name="revenue">Completed Ride Earning</string>
     <string name="schedule_rides">NO OF SCHEDULED RIDES</string>
     <string name="canceled_rides">CANCELLED RIDES</string>
     <string name="past_trip_detail">Past Trip Detail</string>

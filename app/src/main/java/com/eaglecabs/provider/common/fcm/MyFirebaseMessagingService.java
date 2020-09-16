@@ -130,6 +130,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             if(messageBody.equalsIgnoreCase("New Incoming Ride")){
 
                 Intent mainIntent = new Intent(this, MainActivity.class);
+                mainIntent.putExtra("isNotification", 1);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainIntent);
             }
@@ -188,7 +189,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
     private int getNotificationIcon(NotificationCompat.Builder notificationBuilder) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             notificationBuilder.setColor(ContextCompat.getColor(getApplicationContext(), R.color.colorPrimary));
-            return R.drawable.ic_stat_ic_notification;
+            return R.drawable.logo;
         } else {
             return R.mipmap.ic_launcher;
         }
