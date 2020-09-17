@@ -25,6 +25,7 @@ import static com.eaglecabs.provider.base.BaseActivity.DATUM;
 public class LocationReceiver extends BroadcastReceiver {
     MainPresenter<MainActivity> presenter = new MainPresenter<>();
 
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (null != intent && intent.getAction().equals("my.action")) {
