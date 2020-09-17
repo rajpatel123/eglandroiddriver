@@ -124,7 +124,24 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnSave:
-                profileUpdate();
+                String mob1 = emergencyMobile1.getText().toString();
+                String mob2 = emergencyMobile2.getText().toString();
+                if (emergencyMobile1.getText().length() == 10 && !mob1.equals("0000000000")) {
+                    if (emergencyMobile2.getText().toString().isEmpty()) {
+                        profileUpdate();
+                    } else if (emergencyMobile2.getText().length() == 10 && !mob2.equals("0000000000")) {
+                        profileUpdate();
+                    } else {
+                        Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+
+                } else {
+                    Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
+                    return;
+                }
+
+
                 break;
             case R.id.lblChangePassword:
                 startActivity(new Intent(ProfileActivity.this, ChangePasswordActivtiy.class));
