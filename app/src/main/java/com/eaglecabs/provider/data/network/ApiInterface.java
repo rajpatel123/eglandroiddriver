@@ -273,4 +273,8 @@ public interface ApiInterface {
 
     @GET("api/provider/wallet/passbooks")
     Observable<WalletResponse> walletHistory();
+
+    @FormUrlEncoded
+    @POST("api/user/get_version")
+    Observable<Object> versionStatus(@FieldMap HashMap<String, String> params);
 }

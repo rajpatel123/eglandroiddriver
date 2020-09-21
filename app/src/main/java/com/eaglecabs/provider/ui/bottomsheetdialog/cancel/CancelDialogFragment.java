@@ -12,6 +12,7 @@ import com.eaglecabs.provider.base.BaseBottomSheetDialogFragment;
 import com.eaglecabs.provider.common.SharedHelper;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -47,12 +48,22 @@ public class CancelDialogFragment extends BaseBottomSheetDialogFragment implemen
 
     @OnClick(R.id.btnSubmit)
     public void onViewClicked() {
+        int cancelReasonLength = comments.getText().length();
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("id", SharedHelper.getKey(getContext(), "cancel_id"));
-        map.put("cancel_reason", comments.getText().toString());
-        showLoading();
-        presenter.cancelRequest(map);
+        if (comments.getText().toString().isEmpty()) {
+
+            Toast.makeText(getContext(), "Please enter cancel reason", Toast.LENGTH_SHORT).show();
+        } else if (cancelReasonLength > 15) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("id", SharedHelper.getKey(Objects.requireNonNull(getContext()), "cancel_id"));
+            map.put("cancel_reason", comments.getText().toString());
+            showLoading();
+            presenter.cancelRequest(map);
+
+        } else {
+            Toast.makeText(getContext(), "Please enter min 15 character reason  for canceling. ", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
