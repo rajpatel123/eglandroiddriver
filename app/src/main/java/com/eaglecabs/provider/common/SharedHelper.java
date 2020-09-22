@@ -43,10 +43,23 @@ public class SharedHelper {
     }
 
 
+    public static void putKey(Context context, String Key, float value) {
+        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+        editor = sharedPreferences.edit();
+        editor.putFloat(Key, value);
+        editor.apply();
+    }
+
 
     public static Integer getIntKey(Context context, String Key) {
         sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
-        return sharedPreferences.getInt(Key,  -1);
+        return sharedPreferences.getInt(Key, -1);
+    }
+
+
+    public static float getDoubleKey(Context context, String Key) {
+        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+        return sharedPreferences.getFloat(Key, -1.0f);
     }
 
     public static boolean getBoolKey(Context context, String Key) {
@@ -92,7 +105,6 @@ public class SharedHelper {
         editor.putString("location", Value);
         editor.apply();
     }
-
 
 
 }

@@ -25,6 +25,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.chaos.view.PinView;
 import com.eaglecabs.provider.BuildConfig;
+import com.eaglecabs.provider.MyBackgroundLocationService;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseActivity;
 import com.eaglecabs.provider.base.BaseFragment;
@@ -47,6 +48,7 @@ import java.util.Locale;
 import java.util.Objects;
 import java.util.concurrent.Executor;
 
+import br.com.safety.locationlistenerhelper.core.AppUtils;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -372,12 +374,18 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
 
                 }
 
-//                if (TRIPDISTANCE > 0) {
-//                    map.put("ride_distance",mActivity.DFORMAT.format(TRIPDISTANCE/1000));
-////                    map.put("ride_distance",11);
-//                   // Toast.makeText(mActivity, "Trip Distance is "+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-//                    mActivity.SERVICE_STATUS="no";
-//                }
+                if (SharedHelper.getDoubleKey(mActivity, "tripDistance") > 0) {
+                    map.put("ride_distance",SharedHelper.getDoubleKey(mActivity, "tripDistance")/1000);
+                    //AppUtils.writeToFile(" Total Distance in KM :"+map.get("ride_distance"),mActivity);
+
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+
+                    SharedHelper.putKey(mActivity, "TotalD",""+map.get("ride_distance"));
+
+                    SharedHelper.putKey(mActivity, "tripStatus", "");
+                    SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
+
+                }
                 map.put("latitude", SharedHelper.getKey(activity(), "current_latitude"));
                 map.put("longitude", SharedHelper.getKey(activity(), "current_longitude"));
                 map.put("address", getAddress(new LatLng(Double.parseDouble(SharedHelper.getKey(activity(), "current_latitude")), Double.parseDouble(SharedHelper.getKey(activity(), "current_longitude")))));

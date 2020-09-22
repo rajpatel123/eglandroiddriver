@@ -133,6 +133,11 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
                 mainIntent.putExtra("isNotification", 1);
                 mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(mainIntent);
+            }else if (messageBody.equalsIgnoreCase("User Cancelled the Ride")){
+                Intent mainIntent = new Intent(this, MainActivity.class);
+                mainIntent.putExtra("isNotification", 1);
+                mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(mainIntent);
             }
         }
 
