@@ -266,7 +266,16 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
                         Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
-                    presenter.verifyMobileAlreadyExits(txtPhoneNumber.getText().toString());
+                    String mob = txtPhoneNumber.getText().toString();
+                    if (txtPhoneNumber.getText().length() == 10 && !mob.equals("0000000000")) {
+
+                        presenter.verifyMobileAlreadyExits(txtPhoneNumber.getText().toString());
+
+                    } else {
+                        Toast.makeText(this, getString(R.string.validmobile), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                 } else {
                     if (CommonValidation.Validation(txtPhoneNumber.getText().toString().trim())) {
                         Toasty.error(this, getString(R.string.invalid_mobile), Toast.LENGTH_SHORT, true).show();
@@ -284,7 +293,24 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
                         contact1.setError("Required");
                         return;
                     }
-                    register();
+
+                    String mob1 = contact1.getText().toString();
+                    String mob2 = contact2.getText().toString();
+                    if (contact1.getText().length() == 10 && !mob1.equals("0000000000")) {
+                        if (contact2.getText().toString().isEmpty()) {
+                            register();
+                        } else if (contact2.getText().length() == 10 && !mob2.equals("0000000000")) {
+                            register();
+                        } else {
+                            Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
+                            return;
+                        }
+
+                    } else {
+                        Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+
                 }
 
 
