@@ -1,6 +1,7 @@
 package com.eaglecabs.provider.ui.activity.main;
 
 import com.eaglecabs.provider.base.BasePresenter;
+import com.eaglecabs.provider.data.models.VersionStatus;
 import com.eaglecabs.provider.data.network.APIClient;
 import com.eaglecabs.provider.data.network.ApiInterface;
 import com.eaglecabs.provider.data.network.model.OTPResponse;
@@ -150,5 +151,17 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
                             MainPresenter.this.getMvpView().onError((Throwable) throwable);
                         });
 
+    }
+
+    @Override
+    public void versionStatus(HashMap<String, String> params) {
+        Observable modelObservable = APIClient.getAPIClient().versionStatus(params);
+
+        modelObservable.subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(trendsResponse -> getMvpView().onSuccess((VersionStatus) trendsResponse),
+                        throwable -> getMvpView().onError((Throwable) throwable));
+
+        System.out.println("LOGGER modelObservable : "+params+": params :"+modelObservable);
     }
 }

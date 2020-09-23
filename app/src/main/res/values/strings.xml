@@ -263,8 +263,8 @@
 
     <string name="today_earning">Today</string>
     <string name="past_earning">Past</string>
-    <string name="scheduled_trips">Scheduled Trip</string>
-    <string name="bank">Bank Detail</string>
+    <string name="scheduled_trips">Scheduled Trips</string>
+    <string name="bank">Bank Details</string>
 
 
 </resources>

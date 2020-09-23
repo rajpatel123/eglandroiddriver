@@ -100,7 +100,7 @@
                             android:paddingEnd="@dimen/activity_vertical_margin"
                             android:paddingStart="@dimen/activity_vertical_margin"
                             android:paddingTop="@dimen/activity_vertical_margin"
-                            android:text="Account Holder Number"
+                            android:text="Account Holder Name"
                             android:textSize="@dimen/_12ssp" />
 
 
@@ -112,8 +112,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="text|textCapSentences"
                             android:maxLines="1"
+                            android:maxLength="30"
                             android:fontFamily="@font/clanpro_narrnews"
-
+                            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:paddingBottom="@dimen/activity_vertical_margin"
                             android:paddingEnd="@dimen/activity_vertical_margin"
                             android:paddingStart="@dimen/activity_vertical_margin"
@@ -152,8 +153,9 @@
                             android:imeOptions="actionNext"
                             android:inputType="text|textCapSentences"
                             android:maxLines="1"
+                            android:maxLength="30"
                             android:fontFamily="@font/clanpro_narrnews"
-
+                            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:paddingBottom="@dimen/activity_vertical_margin"
                             android:paddingEnd="@dimen/activity_vertical_margin"
                             android:paddingStart="@dimen/activity_vertical_margin"
@@ -193,7 +195,6 @@
                             android:inputType="text|textCapSentences"
                             android:maxLines="1"
                             android:fontFamily="@font/clanpro_narrnews"
-
                             android:paddingBottom="@dimen/activity_vertical_margin"
                             android:paddingEnd="@dimen/activity_vertical_margin"
                             android:paddingStart="@dimen/activity_vertical_margin"

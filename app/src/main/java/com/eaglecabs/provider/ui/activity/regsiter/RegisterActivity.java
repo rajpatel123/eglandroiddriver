@@ -266,8 +266,8 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
                         Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
-                    String mob = txtPhoneNumber.getText().toString();
-                    if (txtPhoneNumber.getText().length() == 10 && !mob.equals("0000000000")) {
+
+                    if (isValid(txtPhoneNumber.getText().toString())) {
 
                         presenter.verifyMobileAlreadyExits(txtPhoneNumber.getText().toString());
 
@@ -294,12 +294,11 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
                         return;
                     }
 
-                    String mob1 = contact1.getText().toString();
-                    String mob2 = contact2.getText().toString();
-                    if (contact1.getText().length() == 10 && !mob1.equals("0000000000")) {
+
+                    if (isValid(contact1.getText().toString())) {
                         if (contact2.getText().toString().isEmpty()) {
                             register();
-                        } else if (contact2.getText().length() == 10 && !mob2.equals("0000000000")) {
+                        } else if (isValid(contact2.getText().toString())) {
                             register();
                         } else {
                             Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
