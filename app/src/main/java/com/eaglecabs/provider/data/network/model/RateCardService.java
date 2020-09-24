@@ -1,5 +1,8 @@
 package com.eaglecabs.provider.data.network.model;
 
+import java.util.List;
+
+import com.eaglecabs.provider.data.network.model.RentalHourPackage;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
@@ -116,7 +119,9 @@ public class RateCardService {
     @SerializedName("rental_minute_price")
     @Expose
     private Integer rentalMinutePrice;
-
+    @SerializedName("rental_hour_package")
+    @Expose
+    private List<RentalHourPackage> rentalHourPackage = null;
 
     public Integer getId() {
         return id;
@@ -414,4 +419,13 @@ public class RateCardService {
         this.rentalMinutePrice = rentalMinutePrice;
     }
 
-  }
+    public List<RentalHourPackage> getRentalHourPackage() {
+        return rentalHourPackage;
+    }
+
+    public void setRentalHourPackage(List<RentalHourPackage> rentalHourPackage) {
+        this.rentalHourPackage = rentalHourPackage;
+    }
+
+}
+

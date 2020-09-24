@@ -18,13 +18,12 @@ public class RateCardPresenter<V extends RatecardIView> extends BasePresenter<V>
     @Override
     public void services(HashMap<String, Object> serviceMap) {
 
-        Observable modelObservable = APIClient.getAPIClient().services(serviceMap);
+        Observable modelObservable = APIClient.getAPIClient().servicesForRateCard(serviceMap);
 
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(trendsResponse -> {
-                            List<RateCardService> serviceList = new ArrayList<>();
-                            getMvpView().onSuccess(serviceList);
+                            getMvpView().onSuccess((List<RateCardService>) trendsResponse);
                         },
                         (Consumer) throwable -> getMvpView().onError((Throwable) throwable));
     }

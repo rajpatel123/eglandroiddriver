@@ -131,7 +131,9 @@ public class MyBackgroundLocationService extends Service {
                 .setContentTitle("Eagle")
                 .setContentText("Eagle service is running")
                 .setSmallIcon(R.mipmap.ic_launcher)
+                .setVibrate(null)
                 .setAutoCancel(true);
+
 
         return notificationBuilder.build();
     }

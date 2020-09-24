@@ -3,6 +3,7 @@ package com.eaglecabs.provider.data.network;
 import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.data.models.CityResponse;
 import com.eaglecabs.provider.data.models.UpcomingAcceptedTripsModel;
+import com.eaglecabs.provider.data.models.VersionStatus;
 import com.eaglecabs.provider.data.network.model.AddressResponse;
 import com.eaglecabs.provider.data.network.model.Document;
 import com.eaglecabs.provider.data.network.model.EarningsList;
@@ -277,9 +278,9 @@ public interface ApiInterface {
 
     @FormUrlEncoded
     @POST("api/user/get_version")
-    Observable<Object> versionStatus(@FieldMap HashMap<String, String> params);
+    Observable<VersionStatus> versionStatus(@FieldMap HashMap<String, String> params);
 
     @FormUrlEncoded
     @POST("api/user/services")
-    Observable<List<RateCardService>> services(@FieldMap Map<String, Object> params);
+    Observable<List<RateCardService>> servicesForRateCard(@FieldMap Map<String, Object> params);
 }
