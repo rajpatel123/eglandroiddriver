@@ -61,7 +61,7 @@ import pub.devrel.easypermissions.EasyPermissions;
 import static com.eaglecabs.provider.common.Constants.MULTIPLE_PERMISSION;
 import static com.eaglecabs.provider.common.Constants.RC_MULTIPLE_PERMISSION_CODE;
 
-public class    BankDetailActivity extends BaseActivity implements BankIView, EasyPermissions.PermissionCallbacks {
+public class BankDetailActivity extends BaseActivity implements BankIView, EasyPermissions.PermissionCallbacks {
 
     @BindView(R.id.imgProfile)
     ImageView imgProfile;

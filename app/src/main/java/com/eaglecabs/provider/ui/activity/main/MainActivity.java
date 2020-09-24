@@ -86,6 +86,7 @@ import com.eaglecabs.provider.ui.activity.invite.InviteActivity;
 import com.eaglecabs.provider.ui.activity.location_pick.LocationPickActivity;
 import com.eaglecabs.provider.ui.activity.notification.NotificationActivity;
 import com.eaglecabs.provider.ui.activity.profile.ProfileActivity;
+import com.eaglecabs.provider.ui.activity.rate_card.RateCardActivity;
 import com.eaglecabs.provider.ui.activity.scheduled.EagleScheduledRidesAcrivity;
 import com.eaglecabs.provider.ui.activity.splash.SplashActivity;
 import com.eaglecabs.provider.ui.activity.summary.SummaryActivity;
@@ -387,6 +388,8 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             Log.e("Earning", "inside");
             startActivity(new Intent(MainActivity.this, EarningsActivity.class));
             Log.e("Earning", "outside");
+        }else if(id==R.id.nav_rate_card){
+            startActivity(new Intent(MainActivity.this, RateCardActivity.class));
         } else if (id == R.id.nav_summary) {
             startActivity(new Intent(MainActivity.this, SummaryActivity.class));
         } else if (id == R.id.nav_scheduled_trips) {

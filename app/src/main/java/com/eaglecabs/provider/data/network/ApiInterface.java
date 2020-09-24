@@ -13,6 +13,7 @@ import com.eaglecabs.provider.data.network.model.HistoryList;
 import com.eaglecabs.provider.data.network.model.MyOTP;
 import com.eaglecabs.provider.data.network.model.Notification;
 import com.eaglecabs.provider.data.network.model.OTPResponse;
+import com.eaglecabs.provider.data.network.model.RateCardService;
 import com.eaglecabs.provider.data.network.model.Rating;
 import com.eaglecabs.provider.data.network.model.ServicesModel;
 import com.eaglecabs.provider.data.network.model.Status;
@@ -277,4 +278,8 @@ public interface ApiInterface {
     @FormUrlEncoded
     @POST("api/user/get_version")
     Observable<Object> versionStatus(@FieldMap HashMap<String, String> params);
+
+    @FormUrlEncoded
+    @POST("api/user/services")
+    Observable<List<RateCardService>> services(@FieldMap Map<String, Object> params);
 }

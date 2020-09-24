@@ -265,6 +265,7 @@
     <string name="past_earning">Past</string>
     <string name="scheduled_trips">Scheduled Trips</string>
     <string name="bank">Bank Details</string>
+    <string name="rate_card">Rate Card</string>
 
 
 </resources>
