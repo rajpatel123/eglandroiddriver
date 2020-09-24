@@ -374,6 +374,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         }
 
         if (getIntent() != null && getIntent().hasExtra("isNotification")) {
+            Log.d("From Notification", "Calling");
             presenter.getTrip(params, false);
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
@@ -1019,11 +1020,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if (intent.hasExtra("providerAction")) {
-                getTripDetails(false);
-            } else {
-                getTripDetails(true);
-            }
+            getTripDetails(true);
+
+//            if (intent.hasExtra("providerAction")) {
+//                getTripDetails(false);
+//            } else {
+//                getTripDetails(true);
+//            }
         }
     };
 

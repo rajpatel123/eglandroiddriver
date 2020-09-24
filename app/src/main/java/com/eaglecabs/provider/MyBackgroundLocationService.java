@@ -77,21 +77,21 @@ public class MyBackgroundLocationService extends Service {
                     SharedHelper.putKey(MyBackgroundLocationService.this, "current_longitude", String.valueOf(locations.get(0).getLongitude()));
 
 
-                    if (SharedHelper.getKey(MyBackgroundLocationService.this, "tripStatus").equalsIgnoreCase("PICKEDUP")){
-
-
-                        if (SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLat")>-1.0){
-                            getDistance(locations.get(0).getLatitude(), locations.get(0).getLongitude(),
-                                    SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLat"),
-                                    SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLong")
-                            );
-                        }else{
-                            SharedHelper.putKey(MyBackgroundLocationService.this, "lastLat", (float) locations.get(0).getLatitude());
-                            SharedHelper.putKey(MyBackgroundLocationService.this, "lastLong", (float) locations.get(0).getLongitude());
-
-                        }
-
-                    }
+//                    if (SharedHelper.getKey(MyBackgroundLocationService.this, "tripStatus").equalsIgnoreCase("PICKEDUP")){
+//
+//
+//                        if (SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLat")>-1.0){
+//                            getDistance(locations.get(0).getLatitude(), locations.get(0).getLongitude(),
+//                                    SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLat"),
+//                                    SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLong")
+//                            );
+//                        }else{
+//                            SharedHelper.putKey(MyBackgroundLocationService.this, "lastLat", (float) locations.get(0).getLatitude());
+//                            SharedHelper.putKey(MyBackgroundLocationService.this, "lastLong", (float) locations.get(0).getLongitude());
+//
+//                        }
+//
+//                    }
 
 
                     sendLocationBroadcast(locations.get(0));

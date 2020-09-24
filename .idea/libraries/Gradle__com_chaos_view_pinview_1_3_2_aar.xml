@@ -1,9 +1,9 @@
 <component name="libraryTable">
   <library name="Gradle: com.chaos.view:pinview:1.3.2@aar">
     <CLASSES>
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d8235d8837dd0a684573212c03ac34fa/jetified-pinview-1.3.2/AndroidManifest.xml" />
-      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d8235d8837dd0a684573212c03ac34fa/jetified-pinview-1.3.2/jars/classes.jar!/" />
-      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/d8235d8837dd0a684573212c03ac34fa/jetified-pinview-1.3.2/res" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bc807eb148a638becf600d7b02466d8/jetified-pinview-1.3.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bc807eb148a638becf600d7b02466d8/jetified-pinview-1.3.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/2bc807eb148a638becf600d7b02466d8/jetified-pinview-1.3.2/res" />
     </CLASSES>
     <JAVADOC>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.chaos.view/pinview/1.3.2/bc0744bf3b51d27cb420c7ff61072343dd912a1e/pinview-1.3.2-javadoc.jar!/" />
