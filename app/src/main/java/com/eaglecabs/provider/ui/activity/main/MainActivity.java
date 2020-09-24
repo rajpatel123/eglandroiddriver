@@ -86,6 +86,7 @@ import com.eaglecabs.provider.ui.activity.invite.InviteActivity;
 import com.eaglecabs.provider.ui.activity.location_pick.LocationPickActivity;
 import com.eaglecabs.provider.ui.activity.notification.NotificationActivity;
 import com.eaglecabs.provider.ui.activity.profile.ProfileActivity;
+import com.eaglecabs.provider.ui.activity.rate_card.RateCardActivity;
 import com.eaglecabs.provider.ui.activity.scheduled.EagleScheduledRidesAcrivity;
 import com.eaglecabs.provider.ui.activity.splash.SplashActivity;
 import com.eaglecabs.provider.ui.activity.summary.SummaryActivity;
@@ -284,13 +285,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
         presenter.getProfile();
 
-        new AppUpdater(activity())
-                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
-                .setDisplay(Display.DIALOG)
-                .setButtonDoNotShowAgain(null)
-                .setButtonDismiss(null)
-                .setCancelable(false)
-                .start();
+//        new AppUpdater(activity())
+//                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
+//                .setDisplay(Display.DIALOG)
+//                .setButtonDoNotShowAgain(null)
+//                .setButtonDismiss(null)
+//                .setCancelable(false)
+//                .start();
 
         showFloatingView(activity(), true);
 
@@ -428,6 +429,8 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             Log.e("Earning", "inside");
             startActivity(new Intent(MainActivity.this, EarningsActivity.class));
             Log.e("Earning", "outside");
+        }else if(id==R.id.nav_rate_card){
+            startActivity(new Intent(MainActivity.this, RateCardActivity.class));
         } else if (id == R.id.nav_summary) {
             startActivity(new Intent(MainActivity.this, SummaryActivity.class));
         } else if (id == R.id.nav_scheduled_trips) {
@@ -852,6 +855,9 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             if (versionStatus.getData().getFourceUpgrade()==1){
                 //force user to upgrade the app
                 forceToUpgradeDialog(true);
+            }else{
+              //  forceToUpgradeDialog(false);
+
             }
 
             //Need to handle skip as well
@@ -874,7 +880,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         TextView title = view.findViewById(R.id.title);
         TextView message = view.findViewById(R.id.message);
         title.setText("New Version Available       "+ BuildConfig.VERSION_NAME);
-        message.setText("In order to continue, you must update the Eagle  application. This should only take a few moments.\n");
+        message.setText("In order to continue, you must update the Eagle Driver application. This should only take a few moments.\n");
         builder.setView(view);
 
         //builder.setMessage("In order to continue, you must update the DNA  application. This should only take a few moments.\n");
@@ -883,7 +889,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
             } catch (android.content.ActivityNotFoundException anfe) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.eaglecabs.app")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.eaglecabs.provider")));
             }
 
 //            clearApplicationData();
