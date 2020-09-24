@@ -1,6 +1,7 @@
 package com.eaglecabs.provider.ui.activity.main;
 
 import com.eaglecabs.provider.base.MvpView;
+import com.eaglecabs.provider.data.models.VersionStatus;
 import com.eaglecabs.provider.data.network.model.OTPResponse;
 import com.eaglecabs.provider.data.network.model.TripResponse;
 import com.eaglecabs.provider.data.network.model.User;
@@ -15,7 +16,7 @@ public interface MainIView extends MvpView {
 
     void onSuccessServerLocationUpdate(Object object);
     void onSuccessInstant(OTPResponse object);
-
+    void onSuccess(VersionStatus versionStatus);
     void onSuccessInstantNow(Object object);
 
 }

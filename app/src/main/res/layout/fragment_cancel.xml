@@ -38,9 +38,15 @@
                 android:layout_height="@dimen/_70sdp"
                 android:background="@drawable/edit_text_rounded_corner_bg"
                 android:gravity="start"
+                android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
                 android:hint="@string/write_your_comments"
-                android:padding="@dimen/_8sdp"
+                android:padding="@dimen/_16sdp"
                 android:layout_marginTop="@dimen/_20sdp"
+                android:inputType="textMultiLine"
+                android:lines="4"
+                android:maxLength="50"
+                android:maxLines="3"
+                android:scrollbars="vertical"
                 android:textSize="@dimen/text_small" />
 
             <Button

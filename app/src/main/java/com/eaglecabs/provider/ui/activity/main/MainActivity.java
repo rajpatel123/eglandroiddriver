@@ -70,6 +70,7 @@ import com.eaglecabs.provider.common.PolyUtils;
 import com.eaglecabs.provider.common.SharedHelper;
 import com.eaglecabs.provider.common.Utilities;
 import com.eaglecabs.provider.common.fcm.MyFirebaseMessagingService;
+import com.eaglecabs.provider.data.models.VersionStatus;
 import com.eaglecabs.provider.data.network.model.Fleet;
 import com.eaglecabs.provider.data.network.model.OTPResponse;
 import com.eaglecabs.provider.data.network.model.TripResponse;
@@ -85,6 +86,7 @@ import com.eaglecabs.provider.ui.activity.invite.InviteActivity;
 import com.eaglecabs.provider.ui.activity.location_pick.LocationPickActivity;
 import com.eaglecabs.provider.ui.activity.notification.NotificationActivity;
 import com.eaglecabs.provider.ui.activity.profile.ProfileActivity;
+import com.eaglecabs.provider.ui.activity.rate_card.RateCardActivity;
 import com.eaglecabs.provider.ui.activity.scheduled.EagleScheduledRidesAcrivity;
 import com.eaglecabs.provider.ui.activity.splash.SplashActivity;
 import com.eaglecabs.provider.ui.activity.summary.SummaryActivity;
@@ -348,6 +350,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         gpsServiceIntent = new Intent(this, GPSTrackers.class);
         startService(gpsServiceIntent);
 
+        getVersionStatus();
 
     }
 
@@ -385,6 +388,8 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             Log.e("Earning", "inside");
             startActivity(new Intent(MainActivity.this, EarningsActivity.class));
             Log.e("Earning", "outside");
+        }else if(id==R.id.nav_rate_card){
+            startActivity(new Intent(MainActivity.this, RateCardActivity.class));
         } else if (id == R.id.nav_summary) {
             startActivity(new Intent(MainActivity.this, SummaryActivity.class));
         } else if (id == R.id.nav_scheduled_trips) {
@@ -570,6 +575,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         }
     }
 
+    private void getVersionStatus(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("app_type", "2");
+        presenter.versionStatus(map);
+        System.out.println("LOGGER map : "+map);
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -788,6 +800,76 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         otpDialog.cancel();
 
     }
+
+    @Override
+    public void onSuccess(VersionStatus versionStatus) {
+        System.out.println("LOGGER getName : "+versionStatus.getData().getName());
+        System.out.println("LOGGER getId : "+versionStatus.getData().getId());
+
+        if (versionStatus==null)
+            return;
+
+
+        if (BuildConfig.VERSION_CODE<Integer.parseInt(versionStatus.getData().getVersionCode())){
+            if (versionStatus.getData().getFourceUpgrade()==1){
+                //force user to upgrade the app
+                forceToUpgradeDialog(true);
+            }
+
+            //Need to handle skip as well
+
+        }
+        System.out.println("LOGGER getName : "+versionStatus.toString());
+//        System.out.println("LOGGER getVersionName : "+versionStatus.getVersionName());
+
+    }
+
+
+    private void forceToUpgradeDialog(boolean isForceUpdate) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        //builder.setTitle("Update Available!");
+        builder.setCancelable(false);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.upgrade_view,null);
+
+        TextView title = view.findViewById(R.id.title);
+        TextView message = view.findViewById(R.id.message);
+        title.setText("New Version Available       "+ BuildConfig.VERSION_NAME);
+        message.setText("In order to continue, you must update the Eagle  application. This should only take a few moments.\n");
+        builder.setView(view);
+
+        //builder.setMessage("In order to continue, you must update the DNA  application. This should only take a few moments.\n");
+
+        builder.setPositiveButton("Update", (dialog, which) -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
+            } catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.eaglecabs.app")));
+            }
+
+//            clearApplicationData();
+//            DnaPrefs.putBoolean(this, Constants.LoginCheck, false);
+//            LoginManager.getInstance().logOut();
+
+
+            dialog.dismiss();
+        });
+
+        /*if (!isForceUpdate) {
+            builder.setNegativeButton("Later", (dialog, which) -> {
+                DnaPrefs.putBoolean(MainActivity.this, Constants.SOFT_UPGRADE_SKIP, true);
+                dialog.dismiss();
+            });
+        }
+*/
+        AlertDialog dialog = builder.show();
+
+        if (isFinishing() && dialog != null) {
+            dialog.dismiss();
+        }
+    }
+
 
     public void changeFlow(String status) {
         Utilities.printV("Current status==>", status);

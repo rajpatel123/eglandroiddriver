@@ -20,4 +20,6 @@ public interface MainIPresenter<V extends MainIView> extends MvpPresenter<V> {
 
     void instantRideSendRequest(HashMap<String, Object> obj);
 
+    void versionStatus(HashMap<String, String> params);
+
 }
