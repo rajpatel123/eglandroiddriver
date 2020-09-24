@@ -13,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
-public class RateCardPresenter<V extends RatecardIView> extends BasePresenter<V> implements RateCardIPresenter<V> {
+public  class RateCardPresenter<V extends RatecardIView> extends BasePresenter<V> implements RateCardIPresenter<V> {
 
     @Override
     public void services(HashMap<String, Object> serviceMap) {
@@ -22,11 +22,10 @@ public class RateCardPresenter<V extends RatecardIView> extends BasePresenter<V>
 
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(trendsResponse -> {
-                            List<RateCardService> serviceList = new ArrayList<>();
-                            getMvpView().onSuccess(serviceList);
-                        },
-                        (Consumer) throwable -> getMvpView().onError((Throwable) throwable));
+                .subscribe(trendsResponse -> getMvpView().onSuccess((List<RateCardService>) trendsResponse),
+
+                        throwable -> getMvpView().onError((Throwable) throwable));
+
     }
 
     @Override
@@ -38,4 +37,5 @@ public class RateCardPresenter<V extends RatecardIView> extends BasePresenter<V>
     public void estimateFare(HashMap<String, Object> parms) {
 
     }
+
 }

@@ -5,16 +5,11 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.data.network.model.RateCardService;
 
@@ -22,8 +17,8 @@ import java.util.List;
 
 public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHolder> {
     private List<RateCardService> list;
-    private Context context;
-    private int lastCheckedPos = 0;
+     Context context;
+     int lastCheckedPos = 0;
 
     public ServiceAdapter(Context context, List<RateCardService> list) {
         this.context = context;
@@ -32,19 +27,20 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
     }
 
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView serviceName, perKm, perMinute,basekm,basefare;
+    public static class MyViewHolder extends RecyclerView.ViewHolder {
+        private TextView serviceName, OutstationPerKm, OutstationPerMinute
+                ,RentalPerKm,RentalPerMinute;
 
         MyViewHolder(View view) {
             super(view);
             serviceName = view.findViewById(R.id.service_name);
-            perKm = view.findViewById(R.id.per_km);
-            perMinute = view.findViewById(R.id.per_minute);
-            basekm = view.findViewById(R.id.base_km);
-            basefare = view.findViewById(R.id.base_fare);
+            OutstationPerKm = view.findViewById(R.id.Outstation_per_km);
+            OutstationPerMinute = view.findViewById(R.id.Outstation_per_minute);
+
+            RentalPerKm = view.findViewById(R.id.Rental_per_km);
+            RentalPerMinute = view.findViewById(R.id.Rental_per_minute);
 
         }
-
 
     }
 
@@ -64,10 +60,11 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         RateCardService item = list.get(position);
 
         holder.serviceName.setText(item.getName());
-        holder.perMinute.setText("\u2022 Extra time will be charged to you at \u20B9" + item.getRentalMinutePrice() + " per minute.");
-//        holder.perKm("Extra distance will be charged to you at \u20B9" + item.getRentalKmPrice() + " per km.");
-//        holder.basekm("Extra distance will be charged to you at \u20B9" + item.setOutstationBaseKm() + " per km.");
+        holder.OutstationPerMinute.setText("\u2022 One way fare  \u20B9" + item.getOutstationOnewayPrice() + " per km.");
+        holder.OutstationPerKm.setText("\u2022 Round Trip fare \u20B9" + item.getRoundtripKm() + " per km.");
 
+        holder.RentalPerMinute.setText("\u2022 Extra time will be charged at \u20B9" + item.getRentalMinutePrice() + " per minute.");
+        holder.RentalPerKm.setText("\u2022 Extra km will be charged at \u20B9" + item.getRentalKmPrice() + " per km.");
 
     }
 
@@ -76,7 +73,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
         return list.size();
     }
 
-
+/*
     public RateCardService getSelectedService() {
         if (list.size() > 0) {
             return list.get(lastCheckedPos);
@@ -87,7 +84,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
 
     public RateCardService getItem(int pos) {
         return list.get(pos);
-    }
+    }*/
 
 
 }
