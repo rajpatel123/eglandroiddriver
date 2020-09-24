@@ -24,7 +24,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".ui.activity.rate_card.RateCardActivity"></activity>
+
         <activity
             android:name=".ui.activity.scheduled.EagleScheduledRidesAcrivity"
             android:label="Scheduled Trips"
@@ -125,6 +125,14 @@
             android:label="@string/your_trips"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ui.activity.rate_card.RateCardActivity"
+            android:label="@string/rate_card"
+            android:parentActivityName=".ui.activity.main.MainActivity" />
+        <activity
+            android:name=".ui.activity.rate_card.TermsAndConditionActivity"
+            android:label="@string/terms_condition"
+            android:parentActivityName=".ui.activity.rate_card.RateCardActivity" />
         <activity
             android:name=".ui.activity.profile.ProfileActivity"
             android:label="@string/profile"

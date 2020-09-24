@@ -13,7 +13,7 @@
             android:title="@string/scheduled_trips" />
         <item
             android:id="@+id/nav_rate_card"
-            android:title="@string/rate_card" />
+            android:title= "@string/rate_card" />
 
         <item
             android:id="@+id/nav_earnings"
