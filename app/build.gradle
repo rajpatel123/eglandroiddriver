@@ -22,8 +22,8 @@ android {
         applicationId "com.eaglecabs.provider"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 43
-        versionName "4.3"
+        versionCode 44
+        versionName "4.4"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -57,7 +57,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            debuggable true
+            debuggable false
         }
 
         debug {
