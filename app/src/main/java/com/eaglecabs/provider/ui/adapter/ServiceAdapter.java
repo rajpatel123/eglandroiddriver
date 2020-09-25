@@ -29,7 +29,7 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
 
     public static class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView serviceName, OutstationPerKm, OutstationPerMinute
-                ,RentalPerKm,RentalPerMinute;
+                ,RentalPerKm,RentalPerMinute,packageHour,packageKm;
 
         MyViewHolder(View view) {
             super(view);
@@ -39,6 +39,9 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
 
             RentalPerKm = view.findViewById(R.id.Rental_per_km);
             RentalPerMinute = view.findViewById(R.id.Rental_per_minute);
+
+            packageHour = view.findViewById(R.id.package_hour);
+            packageKm = view.findViewById(R.id.package_km);
 
         }
 
@@ -65,6 +68,9 @@ public class ServiceAdapter extends RecyclerView.Adapter<ServiceAdapter.MyViewHo
 
         holder.RentalPerMinute.setText("\u2022 Extra time will be charged at \u20B9" + item.getRentalMinutePrice() + " per minute.");
         holder.RentalPerKm.setText("\u2022 Extra km will be charged at \u20B9" + item.getRentalKmPrice() + " per km.");
+
+        holder.packageHour.setText("(A) "+item.getRentalHourPackage().get(1).getHour()+"hours , "+item.getRentalHourPackage().get(1).getKm()+"km , \u20B9"+item.getRentalHourPackage().get(1).getPrice()+".");
+        holder.packageKm.setText("(B) "+item.getRentalHourPackage().get(2).getHour()+"hour , "+item.getRentalHourPackage().get(2).getKm()+"km , \u20B9"+item.getRentalHourPackage().get(2).getPrice()+".");
 
     }
 
