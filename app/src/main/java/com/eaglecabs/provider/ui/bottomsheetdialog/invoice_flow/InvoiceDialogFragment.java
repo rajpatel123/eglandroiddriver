@@ -179,7 +179,9 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
             travelTime.setText(getString(R.string._min, datum.getTravelTime()));
             if (datum.getPaymentMode().equalsIgnoreCase("CASH")) {
                 noteLbl.setText("Note: Collect CASH PAYMENT");
+
             } else {
+                btnConfirmPayment.setVisibility(View.GONE);
                 noteLbl.setText("Note: Collect PAYTM PAYMENT");
 
             }
