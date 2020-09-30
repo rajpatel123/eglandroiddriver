@@ -2,7 +2,7 @@ package com.eaglecabs.provider.ui.activity.email;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.design.widget.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -96,7 +96,7 @@ public class EmailActivity extends BaseActivity implements EmailIView {
         SharedHelper.putKey(this, "access_token", user.getAccessToken());
         SharedHelper.putKey(this, "user_id", String.valueOf(user.getId()));
         SharedHelper.putKey(this, "loggged_in", "true");
-        Toasty.success(activity(), "Loggedin Successfully!", Toast.LENGTH_SHORT).show();
+        Toasty.success(activity(), "Logged in Successfully!", Toast.LENGTH_SHORT).show();
         startActivity(new Intent(this, MainActivity.class).addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK));
         finish();
     }
@@ -141,7 +141,6 @@ public class EmailActivity extends BaseActivity implements EmailIView {
             map.put("device_type", BuildConfig.DEVICE_TYPE);
             showLoading();
             presenter.verifyOTP(map);
-            Toast.makeText(this, "Thanks your Mobile is successfully verified", Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -1,6 +1,6 @@
 package com.eaglecabs.provider.data.network;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.util.Log;
 
 import com.eaglecabs.provider.BuildConfig;

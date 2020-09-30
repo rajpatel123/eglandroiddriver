@@ -76,7 +76,7 @@ public class User_Past {
     private Object expiredAt;
     @SerializedName("wallet_balance")
     @Expose
-    private Integer walletBalance;
+    private double walletBalance;
     @SerializedName("rating")
     @Expose
     private String rating;
@@ -283,7 +283,7 @@ public class User_Past {
         this.expiredAt = expiredAt;
     }
 
-    public Integer getWalletBalance() {
+    public double getWalletBalance() {
         return walletBalance;
     }
 

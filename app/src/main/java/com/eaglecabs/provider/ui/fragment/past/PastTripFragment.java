@@ -2,9 +2,9 @@ package com.eaglecabs.provider.ui.fragment.past;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.widget.DefaultItemAnimator;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -60,7 +60,6 @@ public class PastTripFragment extends BaseFragment implements PastTripIView, Pas
 
         progressBar.setVisibility(View.VISIBLE);
         presenter.getHistory();
-
         return view;
     }
 

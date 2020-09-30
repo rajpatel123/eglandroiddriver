@@ -1,7 +1,6 @@
 package com.eaglecabs.provider.base;
 
 import android.annotation.TargetApi;
-import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -9,8 +8,8 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -25,11 +24,14 @@ import com.eaglecabs.provider.ui.activity.splash.SplashActivity;
 
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -49,6 +51,11 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
     public static HashMap<String, Object> RIDE_REQUEST = new HashMap<>();
     Toast mToast;
     public static Request_ DATUM = null;
+    public static String SERVICE_STATUS = "null";
+    public static double TRIPDISTANCE = 0.0;
+    public static Double LAST_LAT = 0.0;
+    public static DecimalFormat DFORMAT = new DecimalFormat("0.00");
+    public static Double LAST_LONG = 0.0;
     public static Integer time_to_left = 60;
 
     public static HistoryDetail DATUM_history_detail = null;
@@ -224,5 +231,25 @@ public abstract class BaseActivity extends AppCompatActivity implements MvpView 
                 startActivity(new Intent(activity(), SplashActivity.class));
             }
         }
+    }
+
+
+    /*for mobile number validation*/
+    public static boolean isValid(String s) {
+
+        // The given argument to compile() method
+        // is regular expression. With the help of
+        // regular expression we can validate mobile
+        // number.
+        // 1) Begins with 0 or 91
+        // 2) Then contains 7 or 8 or 9.
+        // 3) Then contains 9 digits
+        Pattern p = Pattern.compile("(0/91)?[6-9][0-9]{9}");
+
+        // Pattern class contains matcher() method
+        // to find matching between given number
+        // and regular expression
+        Matcher m = p.matcher(s);
+        return (m.find() && m.group().equals(s));
     }
 }

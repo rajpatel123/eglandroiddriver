@@ -1,11 +1,13 @@
 package com.eaglecabs.provider.ui.activity.your_trips;
 
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.support.v7.widget.Toolbar;
+import com.google.android.material.tabs.TabLayout;
+
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.widget.Toolbar;
+
 import android.view.MenuItem;
 
 import com.eaglecabs.provider.R;
@@ -41,9 +43,8 @@ public class YourTripActivity extends BaseActivity implements YourTripIView {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-
-        tabs.addTab(tabs.newTab().setText(getString(R.string.past)));
         tabs.addTab(tabs.newTab().setText(getString(R.string.upcoming)));
+        tabs.addTab(tabs.newTab().setText(getString(R.string.past)));
 
         adapter = new TabPagerAdapter(getSupportFragmentManager(), tabs.getTabCount());
         container.setAdapter(adapter);
@@ -81,9 +82,9 @@ public class YourTripActivity extends BaseActivity implements YourTripIView {
 
             switch (position) {
                 case 0:
-                    return new PastTripFragment();
-                case 1:
                     return new UpcomingTripFragment();
+                case 1:
+                    return new PastTripFragment();
                 default:
                     return null;
             }

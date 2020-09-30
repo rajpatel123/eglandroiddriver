@@ -17,10 +17,10 @@ import android.location.LocationProvider;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.NotificationCompat;
-import android.telecom.Call;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.NotificationCompat;
+
 import android.util.Log;
 
 import com.eaglecabs.provider.R;
@@ -36,11 +36,9 @@ import java.util.HashMap;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
 import static com.eaglecabs.provider.base.BaseActivity.DATUM;
-import static com.eaglecabs.provider.data.network.APIClient.getAPIClient;
 
 /**
  * Created by santhosh@appoets.com on 11-10-2017.

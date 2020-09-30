@@ -11,6 +11,9 @@
         <item
             android:id="@+id/nav_scheduled_trips"
             android:title="@string/scheduled_trips" />
+        <item
+            android:id="@+id/nav_rate_card"
+            android:title= "@string/rate_card" />
 
         <item
             android:id="@+id/nav_earnings"
@@ -27,6 +30,10 @@
         <item
             android:id="@+id/nav_wallet"
             android:title="@string/wallet"/>
+
+        <item
+            android:id="@+id/nav_bank"
+            android:title="@string/bank"/>
         <item
             android:id="@+id/nav_help"
             android:title="@string/help" />

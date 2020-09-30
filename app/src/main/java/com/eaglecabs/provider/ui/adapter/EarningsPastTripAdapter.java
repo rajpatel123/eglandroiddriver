@@ -1,8 +1,8 @@
 package com.eaglecabs.provider.ui.adapter;
 
 import android.content.Context;
-import android.support.annotation.NonNull;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,6 +58,7 @@ public class EarningsPastTripAdapter extends RecyclerView.Adapter<EarningsPastTr
         else
             holder.lblAmount.setText("-");
         try {
+            if (ride.getAssignedAt()!=null)
             holder.lblDate.setText(getDate(ride.getAssignedAt()) + " "+getTime(ride.getAssignedAt()));
         } catch (ParseException e) {
             e.printStackTrace();

@@ -18,20 +18,10 @@ import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.net.ConnectivityManager;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.Gravity;
@@ -47,6 +37,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.akexorcist.googledirection.DirectionCallback;
 import com.akexorcist.googledirection.GoogleDirection;
 import com.akexorcist.googledirection.constant.TransportMode;
@@ -59,6 +59,7 @@ import com.bumptech.glide.request.RequestOptions;
 import com.chaos.view.PinView;
 import com.eaglecabs.provider.BuildConfig;
 import com.eaglecabs.provider.MvpApplication;
+import com.eaglecabs.provider.MyBackgroundLocationService;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.base.BaseActivity;
 import com.eaglecabs.provider.common.ChatHeadService;
@@ -69,11 +70,14 @@ import com.eaglecabs.provider.common.PolyUtils;
 import com.eaglecabs.provider.common.SharedHelper;
 import com.eaglecabs.provider.common.Utilities;
 import com.eaglecabs.provider.common.fcm.MyFirebaseMessagingService;
+import com.eaglecabs.provider.data.models.VersionStatus;
 import com.eaglecabs.provider.data.network.model.Fleet;
 import com.eaglecabs.provider.data.network.model.OTPResponse;
 import com.eaglecabs.provider.data.network.model.TripResponse;
 import com.eaglecabs.provider.data.network.model.User;
 import com.eaglecabs.provider.ui.activity.aboutus.AboutActivity;
+import com.eaglecabs.provider.ui.activity.bankdetail.BankDetailActivity;
+import com.eaglecabs.provider.ui.activity.bankdetail.BankDetails;
 import com.eaglecabs.provider.ui.activity.document.DocumentActivity;
 import com.eaglecabs.provider.ui.activity.earnings.EarningsActivity;
 import com.eaglecabs.provider.ui.activity.fleet.VehiclesActivity;
@@ -82,6 +86,7 @@ import com.eaglecabs.provider.ui.activity.invite.InviteActivity;
 import com.eaglecabs.provider.ui.activity.location_pick.LocationPickActivity;
 import com.eaglecabs.provider.ui.activity.notification.NotificationActivity;
 import com.eaglecabs.provider.ui.activity.profile.ProfileActivity;
+import com.eaglecabs.provider.ui.activity.rate_card.RateCardActivity;
 import com.eaglecabs.provider.ui.activity.scheduled.EagleScheduledRidesAcrivity;
 import com.eaglecabs.provider.ui.activity.splash.SplashActivity;
 import com.eaglecabs.provider.ui.activity.summary.SummaryActivity;
@@ -107,12 +112,24 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.navigation.NavigationView;
+import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -171,7 +188,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     private boolean mLocationPermissionGranted;
     SupportMapFragment mapFragment;
     GoogleMap googleMap;
-    private FusedLocationProviderClient mFusedLocationProviderClient;
+    public FusedLocationProviderClient mFusedLocationProviderClient;
     public static boolean myLocationCalculationCheck = false;
     BottomSheetBehavior bottomSheetBehavior;
     ConnectivityReceiver internetReceiver = new ConnectivityReceiver();
@@ -192,6 +209,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     NumberFormat numberFormat;
 
     String logout_message = "";
+
 
 
     @Override
@@ -224,6 +242,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         registerReceiver(myReceiver, new IntentFilter(MyFirebaseMessagingService.INTENT_FILTER));
         // register connection status listener
         MvpApplication.getInstance().setConnectivityListener(this);
+
 
         if (!EventBus.getDefault().isRegistered(this)) {
             EventBus.getDefault().register(this);
@@ -266,29 +285,81 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
         presenter.getProfile();
 
-        new AppUpdater(activity())
-                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
-                .setDisplay(Display.DIALOG)
-                .setButtonDoNotShowAgain(null)
-                .setButtonDismiss(null)
-                .setCancelable(false)
-                .start();
+//        new AppUpdater(activity())
+//                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
+//                .setDisplay(Display.DIALOG)
+//                .setButtonDoNotShowAgain(null)
+//                .setButtonDismiss(null)
+//                .setCancelable(false)
+//                .start();
 
         showFloatingView(activity(), true);
 
 
         locationTracker = new LocationTracker("my.action")
-                .setInterval(10)
+                .setInterval(30)
                 .setGps(true)
                 .setNetWork(false)
                 .start(getBaseContext());
+    }
+
+    private String readFromFile(Context context) {
+
+        String ret = "";
+        String filepath = "EagleProvider";
+        File myExternalFile;
+        String myData = "";
+
+        myExternalFile = new File(context.getExternalFilesDir(filepath), "Location_Data.txt");
+        if (!myExternalFile.exists()){
+            try {
+                myExternalFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            FileInputStream fis = new FileInputStream(myExternalFile);
+            DataInputStream in = new DataInputStream(fis);
+            BufferedReader br =
+                    new BufferedReader(new InputStreamReader(in));
+            String strLine;
+            while ((strLine = br.readLine()) != null) {
+                myData = myData + strLine;
+            }
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("filenot", "found");
+        }
+
+        return myData.toString();
+    }
+
+    private void startLocationService() {
+        //start background location service
+
+        Intent intent = new Intent(this, MyBackgroundLocationService.class);
+        ContextCompat.startForegroundService(this, intent);
+        //Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+
+    }
+
+
+  private void stopLocationService() {
+        //start background location service
+
+        Intent intent = new Intent(this, MyBackgroundLocationService.class);
+        stopService(intent);
+//        Toast.makeText(this, "Service Started", Toast.LENGTH_SHORT).show();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         checkConnection();
-
         lblMenuName.setText(SharedHelper.getKey(this, "user_name"));
         lblWalletMessage.setText(SharedHelper.getKey(this, "wallet_message"));
         lblLoginHours.setText(getString(R.string.today_login_hours_, minitueToHourMin(SharedHelper.getKey(activity(), "login_mins", "0"))));
@@ -304,6 +375,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         }
 
         if (getIntent() != null && getIntent().hasExtra("isNotification")) {
+            Log.d("From Notification", "Calling");
             presenter.getTrip(params, false);
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
@@ -319,19 +391,20 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         gpsServiceIntent = new Intent(this, GPSTrackers.class);
         startService(gpsServiceIntent);
 
+        getVersionStatus();
 
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unregisterReceiver(myReceiver);
-        unregisterReceiver(internetReceiver);
-        EventBus.getDefault().unregister(this);
-        if (gpsServiceIntent != null) stopService(gpsServiceIntent);
+//        unregisterReceiver(myReceiver);
+//        unregisterReceiver(internetReceiver);
+//        EventBus.getDefault().unregister(this);
+//        if (gpsServiceIntent != null) stopService(gpsServiceIntent);
 
-        if (locationTracker != null)
-            locationTracker.stopLocationService(this);
+//        if (locationTracker != null)
+//            locationTracker.stopLocationService(this);
 
     }
 
@@ -356,6 +429,8 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             Log.e("Earning", "inside");
             startActivity(new Intent(MainActivity.this, EarningsActivity.class));
             Log.e("Earning", "outside");
+        }else if(id==R.id.nav_rate_card){
+            startActivity(new Intent(MainActivity.this, RateCardActivity.class));
         } else if (id == R.id.nav_summary) {
             startActivity(new Intent(MainActivity.this, SummaryActivity.class));
         } else if (id == R.id.nav_scheduled_trips) {
@@ -364,6 +439,10 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             startActivity(new Intent(MainActivity.this, HelpActivity.class));
         } else if (id == R.id.nav_share) {
             shareApp();
+        } else if (id == R.id.nav_bank) {
+            Intent intent = new Intent(activity(), BankDetailActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+            activity().startActivity(intent);
         } else if (id == R.id.nav_document) {
             startActivity(new Intent(MainActivity.this, DocumentActivity.class));
         } else if (id == R.id.nav_notifications) {
@@ -418,14 +497,14 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             Intent serviceIntent = new Intent(this, GPSTrackers.class);
             stopService(serviceIntent);
         }
-        if (!serviceRunningStatus) {
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
-                activity().startService(new Intent(activity(), GPSTrackers.class));
-            } else {
-                Intent serviceIntent = new Intent(activity(), GPSTrackers.class);
-                ContextCompat.startForegroundService(activity(), serviceIntent);
-            }
-        }
+//        if (!serviceRunningStatus) {
+//            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+//                activity().startService(new Intent(activity(), GPSTrackers.class));
+//            } else {
+//                Intent serviceIntent = new Intent(activity(), GPSTrackers.class);
+//                ContextCompat.startForegroundService(activity(), serviceIntent);
+//            }
+//        }
     }
 
 
@@ -455,7 +534,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             case R.id.navigation_img:
                 if (lblLocationType.getText().toString().equalsIgnoreCase(getString(R.string.pick_up_location))) {
                     Uri gmmIntentUri = Uri.parse("google.navigation:q=" + DATUM.getSAddress());
-                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
                 } else {
@@ -537,6 +616,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         }
     }
 
+    private void getVersionStatus(){
+        HashMap<String, String> map = new HashMap<>();
+        map.put("app_type", "2");
+        presenter.versionStatus(map);
+        System.out.println("LOGGER map : "+map);
+
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
@@ -678,7 +764,11 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
             if (serviceStatus.equalsIgnoreCase("offline")) {
                 offlineFragment(serviceStatus);
+                stopLocationService();
+
             } else {
+                startLocationService();
+
                 offlineContainer.removeAllViews();
             }
 
@@ -690,7 +780,27 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
     @Override
     public void onSuccessProviderAvailable(Object object) {
+        String jsonInString = new Gson().toJson(object);
+        try {
+            JSONObject jsonObj = new JSONObject(jsonInString);
+            if (jsonObj.has("error")){
+                Toast.makeText(activity(), jsonObj.optString("error"), Toast.LENGTH_SHORT).show();
+                ((MainActivity)activity()).getProfile();
+
+
+            }else{
+                if (jsonObj.has("status") && jsonObj.optString("status").equalsIgnoreCase("online")){
+                 startLocationService();
+                    //Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
+                }else{
+                  stopLocationService();
+                }
+            }
+        } catch (Exception e) {
+
+        }
         offlineFragment("");
+        stopLocationService();
     }
 
     @Override
@@ -732,6 +842,79 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
     }
 
+    @Override
+    public void onSuccess(VersionStatus versionStatus) {
+        System.out.println("LOGGER getName : "+versionStatus.getData().getName());
+        System.out.println("LOGGER getId : "+versionStatus.getData().getId());
+
+        if (versionStatus==null)
+            return;
+
+
+        if (BuildConfig.VERSION_CODE<Integer.parseInt(versionStatus.getData().getVersionCode())){
+            if (versionStatus.getData().getFourceUpgrade()==1){
+                //force user to upgrade the app
+                forceToUpgradeDialog(true);
+            }else{
+              //  forceToUpgradeDialog(false);
+
+            }
+
+            //Need to handle skip as well
+
+        }
+        System.out.println("LOGGER getName : "+versionStatus.toString());
+//        System.out.println("LOGGER getVersionName : "+versionStatus.getVersionName());
+
+    }
+
+
+    private void forceToUpgradeDialog(boolean isForceUpdate) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        //builder.setTitle("Update Available!");
+        builder.setCancelable(false);
+
+        LayoutInflater inflater = LayoutInflater.from(this);
+        View view = inflater.inflate(R.layout.upgrade_view,null);
+
+        TextView title = view.findViewById(R.id.title);
+        TextView message = view.findViewById(R.id.message);
+        title.setText("New Version Available       "+ BuildConfig.VERSION_NAME);
+        message.setText("In order to continue, you must update the Eagle Driver application. This should only take a few moments.\n");
+        builder.setView(view);
+
+        //builder.setMessage("In order to continue, you must update the DNA  application. This should only take a few moments.\n");
+
+        builder.setPositiveButton("Update", (dialog, which) -> {
+            try {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
+            } catch (android.content.ActivityNotFoundException anfe) {
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.eaglecabs.provider")));
+            }
+
+//            clearApplicationData();
+//            DnaPrefs.putBoolean(this, Constants.LoginCheck, false);
+//            LoginManager.getInstance().logOut();
+
+
+            dialog.dismiss();
+        });
+
+        /*if (!isForceUpdate) {
+            builder.setNegativeButton("Later", (dialog, which) -> {
+                DnaPrefs.putBoolean(MainActivity.this, Constants.SOFT_UPGRADE_SKIP, true);
+                dialog.dismiss();
+            });
+        }
+*/
+        AlertDialog dialog = builder.show();
+
+        if (isFinishing() && dialog != null) {
+            dialog.dismiss();
+        }
+    }
+
+
     public void changeFlow(String status) {
         Utilities.printV("Current status==>", status);
         dismissDialog("INVOICE");
@@ -742,7 +925,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 changeFragment(null);
                 break;
             case "SEARCHING":
-                if (!TextUtils.isEmpty(DATUM.getBookingId())){
+                if (!TextUtils.isEmpty(DATUM.getBookingId())) {
                     changeFragment(new IncomingRequestFragment());
                 }
                 break;
@@ -765,6 +948,9 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 changeFragment(new StatusFlowFragment());
                 break;
             case "PICKEDUP":
+                SERVICE_STATUS = "PICKEDUP";
+                SharedHelper.putKey(this, "tripStatus", "PICKEDUP");
+
                 lblLocationType.setText(R.string.drop_location);
                 lblLocationName.setText(DATUM.getDAddress());
                 if (DATUM.getServiceRequired().equalsIgnoreCase("rental")) {
@@ -840,11 +1026,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if (intent.hasExtra("providerAction")) {
-                getTripDetails(false);
-            }else{
-                getTripDetails(true);
-            }
+            getTripDetails(true);
+
+//            if (intent.hasExtra("providerAction")) {
+//                getTripDetails(false);
+//            } else {
+//                getTripDetails(true);
+//            }
         }
     };
 
@@ -882,8 +1070,73 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         SharedHelper.putKey(this, "current_latitude", String.valueOf(location.getLatitude()));
         SharedHelper.putKey(this, "current_longitude", String.valueOf(location.getLongitude()));
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
+
         pushNotification(latLng, location);
         presenter.locationUpdateServer(latLng);
+    }
+
+
+//    private void getDistance(double currentLat2, double currentLong2, double mallLat2, double mallLong2) {
+//        if (ConnectivityReceiver.isConnected()) {
+//           new AsyncTask<Void,Void,Double>() {
+//               @Override
+//               protected Double doInBackground(Void... voids) {
+//
+//                   Location loc1 = new Location("");
+//                   loc1.setLatitude(currentLat2);
+//                   loc1.setLongitude(currentLong2);
+//
+//                   Location loc2 = new Location("");
+//                   loc2.setLatitude(mallLat2);
+//                   loc2.setLongitude(mallLong2);
+//
+//                   return Double.valueOf(loc1.distanceTo(loc2));
+//
+//
+//
+//
+////                   double theta = lon1 - lon2;
+////                   double dist = Math.sin(deg2rad(lat1))
+////                           * Math.sin(deg2rad(lat2))
+////                           + Math.cos(deg2rad(lat1))
+////                           * Math.cos(deg2rad(lat2))
+////                           * Math.cos(deg2rad(theta));
+////                   dist = Math.acos(dist);
+////                   dist = rad2deg(dist);
+////                   dist = dist * 60 * 1.1515;
+////                   return dist;
+//               }
+//
+//               @Override
+//               protected void onPostExecute(Double dist) {
+//                   super.onPostExecute(dist);
+//                   if (dist>300 && dist<800){
+//                       TRIPDISTANCE = TRIPDISTANCE+dist;
+//
+//                       LAST_LAT = mLastKnownLocation.getLatitude();
+//                       LAST_LONG = mLastKnownLocation.getLongitude();
+//                        Toast.makeText(MainActivity.this, "Trip Distance is "+DFORMAT.format(TRIPDISTANCE), Toast.LENGTH_SHORT).show();
+//
+//                   }else {
+//                       Toast.makeText(MainActivity.this, "No Distance    "+0, Toast.LENGTH_SHORT).show();
+//
+//                   }
+//
+//
+//                   //SharedHelper.putKey(MainActivity.this, "totalDist", String.valueOf(TRIPDISTANCE));
+//
+//               }
+//           }.execute();
+//        }
+//
+//    }
+
+    private double deg2rad(double deg) {
+        return (deg * Math.PI / 180.0);
+    }
+
+    private double rad2deg(double rad) {
+        return (rad * 180.0 / Math.PI);
     }
 
 
@@ -1010,6 +1263,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        Log.d("Location Data",readFromFile(this));
     }
 
     @OnClick(R.id.btnInstant)

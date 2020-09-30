@@ -84,7 +84,6 @@ public class SplashActivity extends BaseActivity implements SplashIView {
     protected void onStart() {
         super.onStart();
         enableGPS();
-
     }
 
     protected void enableGPS() {

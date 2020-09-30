@@ -3,7 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="eglandroiddriver/app" />
-      <module fileurl="file://$PROJECT_DIR$/eglandroiddriver.iml" filepath="$PROJECT_DIR$/eglandroiddriver.iml" group="eglandroiddriver" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/eglandroiddriver.iml" filepath="$PROJECT_DIR$/.idea/modules/eglandroiddriver.iml" group="eglandroiddriver" />
       <module fileurl="file://$PROJECT_DIR$/livelocation/livelocation.iml" filepath="$PROJECT_DIR$/livelocation/livelocation.iml" group="eglandroiddriver/livelocation" />
     </modules>
   </component>

@@ -43,7 +43,7 @@ public class HistoryList {
     private String paymentMode;
     @SerializedName("paid")
     @Expose
-    private Integer paid;
+    private Double paid;
     @SerializedName("is_track")
     @Expose
     private String isTrack;
@@ -100,7 +100,7 @@ public class HistoryList {
     private String finishedAt;
     @SerializedName("user_rated")
     @Expose
-    private Integer userRated;
+    private Double userRated;
     @SerializedName("provider_rated")
     @Expose
     private Integer providerRated;
@@ -241,11 +241,11 @@ public class HistoryList {
         this.paymentMode = paymentMode;
     }
 
-    public Integer getPaid() {
+    public Double getPaid() {
         return paid;
     }
 
-    public void setPaid(Integer paid) {
+    public void setPaid(Double paid) {
         this.paid = paid;
     }
 
@@ -393,11 +393,11 @@ public class HistoryList {
         this.finishedAt = finishedAt;
     }
 
-    public Integer getUserRated() {
+    public Double getUserRated() {
         return userRated;
     }
 
-    public void setUserRated(Integer userRated) {
+    public void setUserRated(Double userRated) {
         this.userRated = userRated;
     }
 

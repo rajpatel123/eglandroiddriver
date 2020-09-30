@@ -3,7 +3,7 @@ package com.eaglecabs.provider.ui.activity.profile;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
@@ -124,7 +124,23 @@ public class ProfileActivity extends BaseActivity implements ProfileIView, EasyP
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btnSave:
-                profileUpdate();
+
+                if (isValid(emergencyMobile1.getText().toString())) {
+                    if (emergencyMobile2.getText().toString().isEmpty()) {
+                        profileUpdate();
+                    } else if (isValid(emergencyMobile2.getText().toString())) {
+                        profileUpdate();
+                    } else {
+                        Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+
+                } else {
+                    Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
+                    return;
+                }
+
+
                 break;
             case R.id.lblChangePassword:
                 startActivity(new Intent(ProfileActivity.this, ChangePasswordActivtiy.class));

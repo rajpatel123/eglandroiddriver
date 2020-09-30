@@ -2,7 +2,7 @@ package com.eaglecabs.provider.ui.activity.regsiter;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -266,7 +266,16 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
                         Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
                         return;
                     }
-                    presenter.verifyMobileAlreadyExits(txtPhoneNumber.getText().toString());
+
+                    if (isValid(txtPhoneNumber.getText().toString())) {
+
+                        presenter.verifyMobileAlreadyExits(txtPhoneNumber.getText().toString());
+
+                    } else {
+                        Toast.makeText(this, getString(R.string.validmobile), Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+
                 } else {
                     if (CommonValidation.Validation(txtPhoneNumber.getText().toString().trim())) {
                         Toasty.error(this, getString(R.string.invalid_mobile), Toast.LENGTH_SHORT, true).show();
@@ -284,7 +293,23 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
                         contact1.setError("Required");
                         return;
                     }
-                    register();
+
+
+                    if (isValid(contact1.getText().toString())) {
+                        if (contact2.getText().toString().isEmpty()) {
+                            register();
+                        } else if (isValid(contact2.getText().toString())) {
+                            register();
+                        } else {
+                            Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
+                            return;
+                        }
+
+                    } else {
+                        Toasty.error(this, getString(R.string.validmobile), Toast.LENGTH_SHORT, true).show();
+                        return;
+                    }
+
                 }
 
 

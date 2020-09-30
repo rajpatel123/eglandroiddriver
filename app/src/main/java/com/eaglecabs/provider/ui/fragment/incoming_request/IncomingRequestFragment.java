@@ -70,6 +70,9 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
     @BindView(R.id.leaveTime)
     TextView leaveTime;
 
+    @BindView(R.id.totalFare)
+    TextView totalFare;
+
 
     @BindView(R.id.returnTime)
     TextView returnTime;
@@ -145,13 +148,18 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
                 if (data.getDay().equalsIgnoreCase("round")) {
                     returnTimeLL.setVisibility(View.VISIBLE);
                     rideTypes.setText("Outstation" + "\nRound");
-                     leaveTime.setText(data.getOut_leave());
+                    leaveTime.setText(data.getOut_leave());
                     returnTime.setText(data.getOut_return());
                 } else {
                     leaveTime.setText(data.getOut_leave());
                     returnTimeLL.setVisibility(View.GONE);
                     rideTypes.setText("Outstation" + "\nOneway");
                 }
+
+                if (data.getTotal_amount() > 0) {
+                    totalFare.setText("Total Fare : " + data.getTotal_amount());
+                }
+
             } else {
                 rideTypes.setText("Daily");
 
@@ -171,7 +179,7 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
             public void onFinish() {
                 stopMediaPlayer();
 
-                mActivity.getTripDetails(false);
+                mActivity.getTripDetails(true);
 
                 Intent intent = new Intent(INTENT_FILTER);
                 context.sendBroadcast(intent);
@@ -253,7 +261,7 @@ public class IncomingRequestFragment extends BaseFragment implements IncomingReq
         stopMediaPlayer();
         hideLoading();
         activity().getSupportFragmentManager().beginTransaction().remove(IncomingRequestFragment.this).commit();
-            Intent intent = new Intent(INTENT_FILTER);
+        Intent intent = new Intent(INTENT_FILTER);
         intent.putExtra("providerAction", 1);
         context.sendBroadcast(intent);
     }

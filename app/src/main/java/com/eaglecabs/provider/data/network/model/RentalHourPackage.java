@@ -1,14 +1,9 @@
 package com.eaglecabs.provider.data.network.model;
-
-import android.support.annotation.NonNull;
-
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-/**
- * Created by santhosh@appoets.com on 19-06-2018.
- */
 public class RentalHourPackage {
+
     @SerializedName("id")
     @Expose
     private Integer id;
@@ -65,9 +60,4 @@ public class RentalHourPackage {
         this.price = price;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return hour + "hour / " + km + " KM";
-    }
 }

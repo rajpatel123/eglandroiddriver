@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,7 +7,7 @@
     tools:context=".ui.activity.regsiter.RegisterActivity">
 
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,7 +18,6 @@
             android:orientation="vertical">
 
             <include layout="@layout/toolbar_main" />
-
 
 
             <TextView
@@ -35,15 +34,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="gone"
-                android:padding="12dp">
+                android:padding="12dp"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="12dp"
                     android:fontFamily="@font/clanpro_narrnews"
                     android:text="@string/email"
-                    android:layout_marginStart="12dp"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="14sp" />
 
@@ -52,10 +51,10 @@
                     android:id="@+id/txtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textEmailAddress"
-                    android:textColor="@color/colorPrimaryText"
-                    android:padding="12dp"
                     android:background="@drawable/border_bottom"
+                    android:inputType="textEmailAddress"
+                    android:padding="12dp"
+                    android:textColor="@color/colorPrimaryText"
                     android:textSize="16sp" />
 
 
@@ -90,17 +89,18 @@
                         android:entries="@array/dial_codes"
                         android:spinnerMode="dialog"
                         tools:listitem="@layout/spinner1" />
-                <EditText
-                    android:id="@+id/txtPhoneNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="phone"
-                    android:hint="9876543210"
-                    android:background="@null"
-                    android:maxLength="10"
-                    android:padding="12dp"
-                    android:textColor="@color/colorPrimaryText"
-                    android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/txtPhoneNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:hint="9876543210"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:padding="12dp"
+                        android:textColor="@color/colorPrimaryText"
+                        android:textSize="16sp" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -121,8 +121,8 @@
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginEnd="2dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -140,20 +140,20 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/border_bottom"
+                            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:hint="@string/first_name"
                             android:inputType="textPersonName"
                             android:padding="12dp"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="@dimen/text_medium" />
 
-
                     </LinearLayout>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
                         android:layout_marginStart="2dp"
+                        android:layout_weight="1"
                         android:orientation="vertical">
 
                         <TextView
@@ -167,16 +167,17 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/border_bottom"
+                            android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ "
                             android:hint="@string/last_name"
                             android:inputType="textPersonName"
                             android:padding="12dp"
                             android:textColor="@color/colorPrimaryText"
                             android:textSize="@dimen/text_medium" />
 
-
                     </LinearLayout>
 
                 </LinearLayout>
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -186,24 +187,23 @@
                     <CheckBox
                         android:id="@+id/dailyRidesCHK"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Daily Rides"
-                        android:layout_height="wrap_content"/>
+                        android:text="Daily Rides" />
 
                     <CheckBox
                         android:id="@+id/rentalsRidesCHK"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Rental Rides"
-                        android:layout_height="wrap_content"/>
+                        android:text="Rental Rides" />
 
                     <CheckBox
                         android:id="@+id/outStationRidesCHK"
                         android:layout_width="0dp"
+                        android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="Out Station"
-                        android:layout_height="wrap_content"/>
-
+                        android:text="Out Station" />
 
 
                 </LinearLayout>
@@ -224,44 +224,41 @@
                         android:textSize="@dimen/text_small" />
 
                     <EditText
-                        android:id="@+id/contact_1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/border_bottom"
-                        android:hint="@string/phone_number"
-                        android:inputType="phone"
-                        android:padding="12dp"
-                        android:maxLength="10"
-                        android:textColor="@color/colorPrimaryText"
-                        android:textSize="@dimen/text_medium" />
-
-                    <EditText
                         android:id="@+id/contact_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/border_bottom"
                         android:hint="@string/phone_number"
                         android:inputType="phone"
+                        android:maxLength="10"
                         android:padding="12dp"
                         android:textColor="@color/colorPrimaryText"
-                        android:textSize="@dimen/text_medium"
-                        android:maxLength="10"
-                        />
+                        android:textSize="@dimen/text_medium" />
 
 
                     <Spinner
                         android:id="@+id/citySP"
                         android:layout_width="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:minHeight="40dp"
                         android:layout_height="match_parent"
-                        />
+                        android:layout_marginTop="10dp"
+                        android:minHeight="40dp" />
+
+                    <EditText
+                        android:id="@+id/contact_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/border_bottom"
+                        android:hint="@string/phone_number"
+                        android:inputType="phone"
+                        android:maxLength="10"
+                        android:padding="12dp"
+                        android:textColor="@color/colorPrimaryText"
+                        android:textSize="@dimen/text_medium" />
 
 
                 </LinearLayout>
 
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -330,15 +327,14 @@
                 android:padding="12dp"
                 android:visibility="gone">
 
-                <android.support.v7.widget.RecyclerView
+                <androidx.recyclerview.widget.RecyclerView
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/_200sdp">
 
-                </android.support.v7.widget.RecyclerView>
+                </androidx.recyclerview.widget.RecyclerView>
 
 
             </LinearLayout>
-
 
 
             <LinearLayout
@@ -372,10 +368,9 @@
 
         </LinearLayout>
 
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
-
-    <android.support.design.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -384,4 +379,4 @@
         android:src="@drawable/ic_right" />
 
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
