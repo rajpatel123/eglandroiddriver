@@ -379,11 +379,22 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                     //AppUtils.writeToFile(" Total Distance in KM :"+map.get("ride_distance"),mActivity);
 
                     Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
 
                     SharedHelper.putKey(mActivity, "TotalD",""+map.get("ride_distance"));
 
                     SharedHelper.putKey(mActivity, "tripStatus", "");
                     SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
+
+                }else{
+                    Toast.makeText(mActivity, "Distance Failed:", Toast.LENGTH_SHORT).show();
 
                 }
                 map.put("latitude", SharedHelper.getKey(activity(), "current_latitude"));

@@ -77,21 +77,21 @@ public class MyBackgroundLocationService extends Service {
                     SharedHelper.putKey(MyBackgroundLocationService.this, "current_longitude", String.valueOf(locations.get(0).getLongitude()));
 
 
-//                    if (SharedHelper.getKey(MyBackgroundLocationService.this, "tripStatus").equalsIgnoreCase("PICKEDUP")){
-//
-//
-//                        if (SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLat")>-1.0){
-//                            getDistance(locations.get(0).getLatitude(), locations.get(0).getLongitude(),
-//                                    SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLat"),
-//                                    SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLong")
-//                            );
-//                        }else{
-//                            SharedHelper.putKey(MyBackgroundLocationService.this, "lastLat", (float) locations.get(0).getLatitude());
-//                            SharedHelper.putKey(MyBackgroundLocationService.this, "lastLong", (float) locations.get(0).getLongitude());
-//
-//                        }
-//
-//                    }
+                    if (SharedHelper.getKey(MyBackgroundLocationService.this, "tripStatus").equalsIgnoreCase("PICKEDUP")){
+
+
+                        if (SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLat")>-1.0){
+                            getDistance(locations.get(0).getLatitude(), locations.get(0).getLongitude(),
+                                    SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLat"),
+                                    SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "lastLong")
+                            );
+                        }else{
+                            SharedHelper.putKey(MyBackgroundLocationService.this, "lastLat", (float) locations.get(0).getLatitude());
+                            SharedHelper.putKey(MyBackgroundLocationService.this, "lastLong", (float) locations.get(0).getLongitude());
+
+                        }
+
+                    }
 
 
                     sendLocationBroadcast(locations.get(0));
@@ -145,16 +145,22 @@ public class MyBackgroundLocationService extends Service {
                 protected void onPostExecute(Double dist) {
                     super.onPostExecute(dist);
                     if (dist > 300) {
-                        double distance =  SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "tripDistance");
-                        distance = distance + dist;
+                      try{
+                          double distance =  SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "tripDistance");
+                          distance = distance + dist;
 
-                        SharedHelper.putKey(MyBackgroundLocationService.this, "tripDistance", (float) distance);
+                          SharedHelper.putKey(MyBackgroundLocationService.this, "tripDistance", (float) distance);
 
-                        SharedHelper.putKey(MyBackgroundLocationService.this, "lastLat", mallLat2);
-                        SharedHelper.putKey(MyBackgroundLocationService.this, "lastLong", mallLong2);
+                          SharedHelper.putKey(MyBackgroundLocationService.this, "lastLat", mallLat2);
+                          SharedHelper.putKey(MyBackgroundLocationService.this, "lastLong", mallLong2);
 
-                        String data ="Latitude: "+ String.valueOf(mallLat2)+ " Longitude : "+ String.valueOf(mallLong2)+" Distance gap "+dist+"\n";
-                        SharedHelper.putKey(MyBackgroundLocationService.this, ""+System.currentTimeMillis(), data);
+                          String data ="Latitude: "+ String.valueOf(mallLat2)+ " Longitude : "+ String.valueOf(mallLong2)+" Distance gap "+dist+"\n";
+                          SharedHelper.putKey(MyBackgroundLocationService.this, ""+System.currentTimeMillis(), data);
+
+                      }catch (Exception e){
+                         e.printStackTrace();
+
+                      }
 
                         // AppUtils.writeToFile(data, MyBackgroundLocationService.this);
 
