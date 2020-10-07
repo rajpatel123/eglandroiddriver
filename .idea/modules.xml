@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Driver_Eagle.iml" filepath="$PROJECT_DIR$/.idea/modules/Driver_Eagle.iml" group="Driver_Eagle" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Driver_Eagle/app" />
-      <module fileurl="file://$PROJECT_DIR$/livelocation/livelocation.iml" filepath="$PROJECT_DIR$/livelocation/livelocation.iml" group="Driver_Eagle/livelocation" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Eagle_driver.iml" filepath="$PROJECT_DIR$/.idea/modules/Eagle_driver.iml" group="Eagle_driver" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Eagle_driver/app" />
+      <module fileurl="file://$PROJECT_DIR$/livelocation/livelocation.iml" filepath="$PROJECT_DIR$/livelocation/livelocation.iml" group="Eagle_driver/livelocation" />
     </modules>
   </component>
 </project>
