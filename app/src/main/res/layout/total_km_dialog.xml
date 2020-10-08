@@ -27,7 +27,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingStart="12dp"
-                    android:text="Enter total traveled Kilo meter"
+                    android:text="Enter total traveled kilometre"
                     android:textAllCaps="false"
                     android:textColor="@color/colorPrimaryText"
                     android:textSize="@dimen/text_medium" />
