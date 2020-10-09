@@ -388,6 +388,8 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                     SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
 
                 }else{
+                    map.put("ride_distance",0.0);
+
                     SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
                     Toast.makeText(mActivity, "Distance Failed:", Toast.LENGTH_SHORT).show();
 
