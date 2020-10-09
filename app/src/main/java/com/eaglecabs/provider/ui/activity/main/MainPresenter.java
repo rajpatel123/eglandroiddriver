@@ -159,7 +159,8 @@ public class MainPresenter<V extends MainIView> extends BasePresenter<V> impleme
 
         modelObservable.subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(trendsResponse -> getMvpView().onSuccess((VersionStatus) trendsResponse),
+                .subscribe(trendsResponse ->
+                                getMvpView().onSuccess((VersionStatus) trendsResponse),
                         throwable -> getMvpView().onError((Throwable) throwable));
 
         System.out.println("LOGGER modelObservable : "+params+": params :"+modelObservable);

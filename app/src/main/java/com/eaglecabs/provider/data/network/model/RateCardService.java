@@ -1,9 +1,10 @@
 package com.eaglecabs.provider.data.network.model;
 
+import java.util.List;
+
+import com.eaglecabs.provider.data.network.model.RentalHourPackage;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
-
-import java.util.List;
 
 public class RateCardService {
 
@@ -427,3 +428,4 @@ public class RateCardService {
     }
 
 }
+

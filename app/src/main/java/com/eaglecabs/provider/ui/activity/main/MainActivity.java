@@ -122,6 +122,14 @@ import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 import org.json.JSONObject;
 
+import java.io.BufferedReader;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -277,13 +285,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
         presenter.getProfile();
 
-        new AppUpdater(activity())
-                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
-                .setDisplay(Display.DIALOG)
-                .setButtonDoNotShowAgain(null)
-                .setButtonDismiss(null)
-                .setCancelable(false)
-                .start();
+//        new AppUpdater(activity())
+//                .setUpdateFrom(UpdateFrom.GOOGLE_PLAY)
+//                .setDisplay(Display.DIALOG)
+//                .setButtonDoNotShowAgain(null)
+//                .setButtonDismiss(null)
+//                .setCancelable(false)
+//                .start();
 
         showFloatingView(activity(), true);
 
@@ -295,7 +303,39 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 .start(getBaseContext());
     }
 
+    private String readFromFile(Context context) {
 
+        String ret = "";
+        String filepath = "EagleProvider";
+        File myExternalFile;
+        String myData = "";
+
+        myExternalFile = new File(context.getExternalFilesDir(filepath), "Location_Data.txt");
+        if (!myExternalFile.exists()){
+            try {
+                myExternalFile.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        try {
+            FileInputStream fis = new FileInputStream(myExternalFile);
+            DataInputStream in = new DataInputStream(fis);
+            BufferedReader br =
+                    new BufferedReader(new InputStreamReader(in));
+            String strLine;
+            while ((strLine = br.readLine()) != null) {
+                myData = myData + strLine;
+            }
+            in.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.d("filenot", "found");
+        }
+
+        return myData.toString();
+    }
 
     private void startLocationService() {
         //start background location service
@@ -335,6 +375,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         }
 
         if (getIntent() != null && getIntent().hasExtra("isNotification")) {
+            Log.d("From Notification", "Calling");
             presenter.getTrip(params, false);
             Bundle extras = getIntent().getExtras();
             if (extras != null) {
@@ -814,6 +855,9 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             if (versionStatus.getData().getFourceUpgrade()==1){
                 //force user to upgrade the app
                 forceToUpgradeDialog(true);
+            }else{
+              //  forceToUpgradeDialog(false);
+
             }
 
             //Need to handle skip as well
@@ -836,7 +880,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         TextView title = view.findViewById(R.id.title);
         TextView message = view.findViewById(R.id.message);
         title.setText("New Version Available       "+ BuildConfig.VERSION_NAME);
-        message.setText("In order to continue, you must update the Eagle  application. This should only take a few moments.\n");
+        message.setText("In order to continue, you must update the Eagle Driver application. This should only take a few moments.\n");
         builder.setView(view);
 
         //builder.setMessage("In order to continue, you must update the DNA  application. This should only take a few moments.\n");
@@ -845,7 +889,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             try {
                 startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + BuildConfig.APPLICATION_ID)));
             } catch (android.content.ActivityNotFoundException anfe) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.eaglecabs.app")));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.eaglecabs.provider")));
             }
 
 //            clearApplicationData();
@@ -905,6 +949,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 break;
             case "PICKEDUP":
                 SERVICE_STATUS = "PICKEDUP";
+                SharedHelper.putKey(this, "tripStatus", "PICKEDUP");
 
                 lblLocationType.setText(R.string.drop_location);
                 lblLocationName.setText(DATUM.getDAddress());
@@ -981,11 +1026,13 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         @Override
         public void onReceive(Context context, Intent intent) {
 
-            if (intent.hasExtra("providerAction")) {
-                getTripDetails(false);
-            } else {
-                getTripDetails(true);
-            }
+            getTripDetails(true);
+
+//            if (intent.hasExtra("providerAction")) {
+//                getTripDetails(false);
+//            } else {
+//                getTripDetails(true);
+//            }
         }
     };
 
@@ -1024,75 +1071,65 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         SharedHelper.putKey(this, "current_longitude", String.valueOf(location.getLongitude()));
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-//        if (SERVICE_STATUS.equalsIgnoreCase("PICKEDUP")) {
-//            if (LAST_LAT > 0) {
-//                if (location.getLatitude()>0){
-//                    getDistance(location.getLatitude(), location.getLongitude(),LAST_LAT, LAST_LONG);
-//                }
-//            } else {
-//                LAST_LAT = mLastKnownLocation.getLatitude();
-//                LAST_LONG = mLastKnownLocation.getLongitude();
-//            }
-//        }
         pushNotification(latLng, location);
         presenter.locationUpdateServer(latLng);
     }
 
 
-    private void getDistance(double currentLat2, double currentLong2, double mallLat2, double mallLong2) {
-        if (ConnectivityReceiver.isConnected()) {
-           new AsyncTask<Void,Void,Double>() {
-               @Override
-               protected Double doInBackground(Void... voids) {
-
-                   Location loc1 = new Location("");
-                   loc1.setLatitude(currentLat2);
-                   loc1.setLongitude(currentLong2);
-
-                   Location loc2 = new Location("");
-                   loc2.setLatitude(mallLat2);
-                   loc2.setLongitude(mallLong2);
-
-                   return Double.valueOf(loc1.distanceTo(loc2));
-
-
-
-
-//                   double theta = lon1 - lon2;
-//                   double dist = Math.sin(deg2rad(lat1))
-//                           * Math.sin(deg2rad(lat2))
-//                           + Math.cos(deg2rad(lat1))
-//                           * Math.cos(deg2rad(lat2))
-//                           * Math.cos(deg2rad(theta));
-//                   dist = Math.acos(dist);
-//                   dist = rad2deg(dist);
-//                   dist = dist * 60 * 1.1515;
-//                   return dist;
-               }
-
-               @Override
-               protected void onPostExecute(Double dist) {
-                   super.onPostExecute(dist);
-                   if (dist>300 && dist<800){
-                       TRIPDISTANCE = TRIPDISTANCE+dist;
-
-                       LAST_LAT = mLastKnownLocation.getLatitude();
-                       LAST_LONG = mLastKnownLocation.getLongitude();
-                        Toast.makeText(MainActivity.this, "Trip Distance is "+DFORMAT.format(TRIPDISTANCE), Toast.LENGTH_SHORT).show();
-
-                   }else {
-                       Toast.makeText(MainActivity.this, "No Distance    "+0, Toast.LENGTH_SHORT).show();
-
-                   }
-
-
-                   //SharedHelper.putKey(MainActivity.this, "totalDist", String.valueOf(TRIPDISTANCE));
-
-               }
-           }.execute();
-        }
-
-    }
+//    private void getDistance(double currentLat2, double currentLong2, double mallLat2, double mallLong2) {
+//        if (ConnectivityReceiver.isConnected()) {
+//           new AsyncTask<Void,Void,Double>() {
+//               @Override
+//               protected Double doInBackground(Void... voids) {
+//
+//                   Location loc1 = new Location("");
+//                   loc1.setLatitude(currentLat2);
+//                   loc1.setLongitude(currentLong2);
+//
+//                   Location loc2 = new Location("");
+//                   loc2.setLatitude(mallLat2);
+//                   loc2.setLongitude(mallLong2);
+//
+//                   return Double.valueOf(loc1.distanceTo(loc2));
+//
+//
+//
+//
+////                   double theta = lon1 - lon2;
+////                   double dist = Math.sin(deg2rad(lat1))
+////                           * Math.sin(deg2rad(lat2))
+////                           + Math.cos(deg2rad(lat1))
+////                           * Math.cos(deg2rad(lat2))
+////                           * Math.cos(deg2rad(theta));
+////                   dist = Math.acos(dist);
+////                   dist = rad2deg(dist);
+////                   dist = dist * 60 * 1.1515;
+////                   return dist;
+//               }
+//
+//               @Override
+//               protected void onPostExecute(Double dist) {
+//                   super.onPostExecute(dist);
+//                   if (dist>300 && dist<800){
+//                       TRIPDISTANCE = TRIPDISTANCE+dist;
+//
+//                       LAST_LAT = mLastKnownLocation.getLatitude();
+//                       LAST_LONG = mLastKnownLocation.getLongitude();
+//                        Toast.makeText(MainActivity.this, "Trip Distance is "+DFORMAT.format(TRIPDISTANCE), Toast.LENGTH_SHORT).show();
+//
+//                   }else {
+//                       Toast.makeText(MainActivity.this, "No Distance    "+0, Toast.LENGTH_SHORT).show();
+//
+//                   }
+//
+//
+//                   //SharedHelper.putKey(MainActivity.this, "totalDist", String.valueOf(TRIPDISTANCE));
+//
+//               }
+//           }.execute();
+//        }
+//
+//    }
 
     private double deg2rad(double deg) {
         return (deg * Math.PI / 180.0);
@@ -1226,6 +1263,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
+        Log.d("Location Data",readFromFile(this));
     }
 
     @OnClick(R.id.btnInstant)
