@@ -362,7 +362,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                         e.printStackTrace();
                     }
                     try {
-                        List<Address> addressesDD = geocoder.getFromLocation(DATUM.getDLatitude(), DATUM.getDLongitude(), 1);
+                        List<Address> addressesDD = geocoder.getFromLocation(SharedHelper.getDoubleKey(mActivity, "lastLat"), SharedHelper.getDoubleKey(mActivity, "lastLong"), 1);
                         if (addressesDD != null && addressesDD.size() > 0) {
                             String dState = addressesDD.get(0).getAdminArea();
                             map.put("dState", dState);
@@ -374,18 +374,12 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
 
                 }
 
+            //    SharedHelper.putKey(mActivity, "tripDistance",57000);
+
                 if (SharedHelper.getDoubleKey(mActivity, "tripDistance") > 0) {
                     map.put("ride_distance",SharedHelper.getDoubleKey(mActivity, "tripDistance")/1000);
                     //AppUtils.writeToFile(" Total Distance in KM :"+map.get("ride_distance"),mActivity);
 
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
                     Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
 
                     SharedHelper.putKey(mActivity, "TotalD",""+map.get("ride_distance"));
@@ -394,6 +388,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                     SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
 
                 }else{
+                    SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
                     Toast.makeText(mActivity, "Distance Failed:", Toast.LENGTH_SHORT).show();
 
                 }
