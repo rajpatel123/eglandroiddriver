@@ -37,7 +37,7 @@ public class LocationReceiver extends BroadcastReceiver {
            // SharedHelper.putKey(this, "current_longitude", String.valueOf(mLastKnownLocation.getLongitude()));
             LatLng latLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
             pushNotification(latLng, mLastKnownLocation);
-            presenter.locationUpdateServer(latLng);
+            //presenter.locationUpdateServer(latLng);
             //send your call to api or do any things with the of location data
         }
     }

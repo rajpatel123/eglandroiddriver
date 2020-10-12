@@ -14,6 +14,7 @@ def BASE_IMAGE_URL_DEV = '"http://13.233.243.86/storage/"'
 def CLIENT_SECRET = '"C6e7Lwqo8pr0oabsnTKNr0PkO7zWzarQQQh8em0o"'
 def CLIENT_ID = '"2"'
 def DEVICE_TYPE = '"android"'
+//def GOOGLE_MAP_KEY = '"AIzaSyAUvmFW44ZiBf1MzIg78U3Yv5zsqEkTyLM"'
 def GOOGLE_MAP_KEY = '"AIzaSyD9jpaIXfx5CeiZX-rCjOiu0hAA39yHzuY"'
 
 android {
@@ -22,8 +23,8 @@ android {
         applicationId "com.eaglecabs.provider"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 46
-        versionName "4.6"
+        versionCode 47
+        versionName "4.7"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -57,7 +58,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            debuggable true
+            debuggable false
         }
 
         debug {
