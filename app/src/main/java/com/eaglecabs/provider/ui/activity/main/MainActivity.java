@@ -1072,7 +1072,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         pushNotification(latLng, location);
-        presenter.locationUpdateServer(latLng);
+       // presenter.locationUpdateServer(latLng);
     }
 
 
