@@ -202,7 +202,7 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
                 rentalExtraHrKmPrice.setText(numberFormat.format(payment.getRentalExtraHrPrice()));
                 tax.setText(numberFormat.format(payment.getTax()));
                 tax2.setText(numberFormat.format(payment.getTax()));
-                discountLayout.setVisibility(payment.getDiscount() > 0 ? View.VISIBLE : View.GONE);
+               // discountLayout.setVisibility(payment.getDiscount() > 0 ? View.VISIBLE : View.GONE);
                 discount.setText(numberFormat.format(payment.getDiscount()));
                 nightFare.setText(numberFormat.format(payment.getNightFare()));
                 commission.setText(numberFormat.format(payment.getProviderCommission()));
