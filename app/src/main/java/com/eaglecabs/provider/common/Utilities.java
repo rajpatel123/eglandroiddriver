@@ -34,16 +34,30 @@ public class Utilities {
         System.out.println(TAG + "==>" + message);
     }
 
+    @SuppressLint("SimpleDateFormat")
     public static String getTime(String date) throws ParseException {
-        Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(date);
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(d);
+        Calendar cal = null;
+        try {
+            Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(date);
+            cal = Calendar.getInstance();
+            cal.setTime(d);
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
+
+        assert cal != null;
         return new SimpleDateFormat("hh:mm a").format(cal.getTime());
     }
+
     /* new */
     @SuppressLint("SimpleDateFormat")
     public static String getDate(String date) throws ParseException {
-        Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(date);
+        Date d = null;
+        try {
+            d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(date);
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
         return new SimpleDateFormat("dd-MM-YYYY").format(d);
     }
 
@@ -59,7 +73,7 @@ public class Utilities {
             handler.postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                   //textview.setText(finalCount + "/" + target);
+                    //textview.setText(finalCount + "/" + target);
                     textview.setText(String.valueOf(finalCount));
                 }
             }, time);

@@ -1,5 +1,6 @@
 package com.eaglecabs.provider.ui.bottomsheetdialog.invoice_flow;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Build;
 import android.text.TextUtils;
@@ -148,6 +149,7 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
         return R.layout.fragment_invoice_dialog;
     }
 
+    @SuppressLint("SetTextI18n")
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void initView(View view) {
@@ -163,11 +165,14 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
         numberFormat = MvpApplication.getNumberFormat();
         Request_ datum = DATUM;
         if (datum != null) {
-
-            bookingId.setText(datum.getBookingId());
-            startDate.setText("" + convertDateFormat(datum.getStartedAt()));
-            endDate.setText("" + convertDateFormat(datum.getFinishedAt()));
-            outstationDistanceTravelled.setText(String.valueOf(datum.getDistance() + " km"));
+            try {
+                bookingId.setText(datum.getBookingId());
+                startDate.setText("" + convertDateFormat(datum.getStartedAt()));
+                endDate.setText("" + convertDateFormat(datum.getFinishedAt()));
+                outstationDistanceTravelled.setText(String.valueOf(datum.getDistance() + " km"));
+            } catch (IllegalArgumentException i) {
+                i.printStackTrace();
+            }
 
             if (datum.getTollTax() != null && datum.getTollTax() > 0) {
                 toll_tax.setText(numberFormat.format(datum.getTollTax()));
@@ -202,7 +207,7 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
                 rentalExtraHrKmPrice.setText(numberFormat.format(payment.getRentalExtraHrPrice()));
                 tax.setText(numberFormat.format(payment.getTax()));
                 tax2.setText(numberFormat.format(payment.getTax()));
-               // discountLayout.setVisibility(payment.getDiscount() > 0 ? View.VISIBLE : View.GONE);
+                // discountLayout.setVisibility(payment.getDiscount() > 0 ? View.VISIBLE : View.GONE);
                 discount.setText(numberFormat.format(payment.getDiscount()));
                 nightFare.setText(numberFormat.format(payment.getNightFare()));
                 commission.setText(numberFormat.format(payment.getProviderCommission()));
@@ -297,9 +302,12 @@ public class InvoiceDialogFragment extends BaseBottomSheetDialogFragment impleme
 
             DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
             LocalDateTime now = LocalDateTime.now();
+            try {
+                newDateString = new SimpleDateFormat("dd-MMM-yyyy hh:mm a", Locale.getDefault()).format(dtf.format(now));
 
-            newDateString = new SimpleDateFormat("dd-MMM-yyyy hh:mm a", Locale.getDefault()).format(dtf.format(now));
-
+            } catch (IllegalArgumentException i) {
+                i.printStackTrace();
+            }
 
         } else {
             SimpleDateFormat spf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss", Locale.getDefault());
