@@ -317,11 +317,11 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                 KmDialog.dismiss();
                 statusUpdateCallOutstation(STATUS, txtTotalKm.getText().toString());
             } else
-                Toast.makeText(activity(), "Enter your total kilo meter you are travelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity(), "Enter your total kilometre you are travelled", Toast.LENGTH_SHORT).show();
 
         });
 
-        btnCancel.setOnClickListener(view1 -> otpDialog.dismiss());
+        btnCancel.setOnClickListener(view12 -> KmDialog.dismiss());
         KmDialog.show();
     }
 
@@ -454,7 +454,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
         otpDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         submitBtn.setOnClickListener(view1 -> {
-            if (data.getOtp().equalsIgnoreCase(pinView.getText().toString())) {
+            if (data.getOtp().equalsIgnoreCase(Objects.requireNonNull(pinView.getText()).toString())) {
                 Toast.makeText(thisContext, "OTP Verified!", Toast.LENGTH_SHORT).show();
                 OTP_STATUS = "verified";
                 statusUpdateCall(STATUS);
