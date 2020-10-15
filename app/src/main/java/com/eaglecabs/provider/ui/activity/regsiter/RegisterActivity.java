@@ -1,7 +1,9 @@
 package com.eaglecabs.provider.ui.activity.regsiter;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -478,15 +480,20 @@ public class RegisterActivity extends BaseActivity implements RegisterIView {
             flater = context.getLayoutInflater();
         }
 
+
+
+
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView,  ViewGroup parent) {
 
             Result rowItem = getItem(position);
 
-            View rowview = flater.inflate(R.layout.listitems_layout, null, true);
+            @SuppressLint({"ViewHolder", "InflateParams"}) View rowview = flater.inflate(R.layout.listitems_layout, null, true);
 
             TextView txtTitle = (TextView) rowview.findViewById(R.id.title);
-            txtTitle.setText(rowItem.getCityName());
+            if (rowItem != null) {
+                txtTitle.setText(rowItem.getCityName());
+            }
 
             return rowview;
         }
