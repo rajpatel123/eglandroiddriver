@@ -3,10 +3,12 @@ package com.eaglecabs.provider.ui.fragment.earning;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.Bundle;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +57,7 @@ public class TodayEarning extends Fragment implements TodayEarningsIView {
     TodayEarningsPresenter<TodayEarning> presenter = new TodayEarningsPresenter<>();
 
     ProgressDialog progressDialog;
+
     public TodayEarning() {
 
     }
@@ -66,9 +69,9 @@ public class TodayEarning extends Fragment implements TodayEarningsIView {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_today_earning, container, false);
-        ButterKnife.bind(this,v);
+        ButterKnife.bind(this, v);
         presenter.attachView(this);
         progressDialog = new ProgressDialog(getActivity());
         progressDialog.setMessage("Please wait");
@@ -97,15 +100,28 @@ public class TodayEarning extends Fragment implements TodayEarningsIView {
     }
 
     public void showLoading() {
+        try {
         progressDialog.show();
+        } catch (IllegalArgumentException i) {
+            i.printStackTrace();
+        }
     }
 
     public void hideLoading() {
+        try {
         progressDialog.dismiss();
+        } catch (IllegalArgumentException i) {
+            i.printStackTrace();
+        }
     }
 
     public void onError(Throwable e) {
-       hideLoading();
+        try {
+            hideLoading();
+        } catch (IllegalArgumentException i) {
+            i.printStackTrace();
+        }
+
     }
 
     private void loadAdapter(EarningsList earningsLists) {
@@ -132,8 +148,6 @@ public class TodayEarning extends Fragment implements TodayEarningsIView {
         }
 
     }
-
-
 
 
 }

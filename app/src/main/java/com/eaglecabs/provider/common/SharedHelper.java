@@ -16,38 +16,65 @@ public class SharedHelper {
     public static SharedPreferences.Editor editor;
 
     public static void putKey(Context context, String Key, String Value) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putString(Key, Value);
-        editor.apply();
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putString(Key, Value);
+            editor.apply();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
 
     }
 
     public static String getKey(Context context, String Key) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
+
         return sharedPreferences.getString(Key, "");
     }
 
     public static void putKey(Context context, String Key, Boolean Value) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putBoolean(Key, Value);
-        editor.apply();
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putBoolean(Key, Value);
+            editor.apply();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
+
     }
 
     public static void putKey(Context context, String Key, Integer value) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putInt(Key, value);
-        editor.apply();
+        try {
+
+
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putInt(Key, value);
+            editor.apply();
+
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
+
     }
 
 
     public static void putKey(Context context, String Key, float value) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putFloat(Key, value);
-        editor.apply();
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putFloat(Key, value);
+            editor.apply();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
+
     }
 
 
@@ -58,7 +85,12 @@ public class SharedHelper {
 
 
     public static float getDoubleKey(Context context, String Key) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
+
         return sharedPreferences.getFloat(Key, -1.0f);
     }
 
@@ -68,26 +100,44 @@ public class SharedHelper {
     }
 
     public static String getKey(Context context, String Key, String defaultValue) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
         return sharedPreferences.getString(Key, defaultValue);
     }
 
     public static void clearSharedPreferences(Context context) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
-        sharedPreferences.edit().clear().apply();
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+            sharedPreferences.edit().clear().apply();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
     }
 
 
     public static void putKeyFCM(Context context, String Key, String Value) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".fcm", Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putString(Key, Value);
-        editor.apply();
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".fcm", Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putString(Key, Value);
+            editor.apply();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
 
     }
 
     public static String getKeyFCM(Context context, String Key) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".fcm", Context.MODE_PRIVATE);
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID + ".fcm", Context.MODE_PRIVATE);
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
+
         return sharedPreferences.getString(Key, "");
     }
 
@@ -100,10 +150,14 @@ public class SharedHelper {
     }
 
     public static void putLocation(Context context, String Value) {
-        sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
-        editor = sharedPreferences.edit();
-        editor.putString("location", Value);
-        editor.apply();
+        try {
+            sharedPreferences = context.getSharedPreferences(BuildConfig.APPLICATION_ID, Context.MODE_PRIVATE);
+            editor = sharedPreferences.edit();
+            editor.putString("location", Value);
+            editor.apply();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
+        }
     }
 
 

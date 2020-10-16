@@ -211,7 +211,6 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     String logout_message = "";
 
 
-
     @Override
     public int getLayoutId() {
         return R.layout.activity_main;
@@ -219,18 +218,24 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
     @Override
     public void initView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
-            setShowWhenLocked(true);
-            setTurnScreenOn(true);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-        } else {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
-                    WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
-                    WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
-                    WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+        try {
+
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O_MR1) {
+                setShowWhenLocked(true);
+                setTurnScreenOn(true);
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+            } else {
+                getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON |
+                        WindowManager.LayoutParams.FLAG_DISMISS_KEYGUARD |
+                        WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+                        WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+            }
+        } catch (RuntimeException r) {
+            r.printStackTrace();
         }
         ButterKnife.bind(this);
         presenter.attachView(this);
@@ -311,7 +316,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         String myData = "";
 
         myExternalFile = new File(context.getExternalFilesDir(filepath), "Location_Data.txt");
-        if (!myExternalFile.exists()){
+        if (!myExternalFile.exists()) {
             try {
                 myExternalFile.createNewFile();
             } catch (IOException e) {
@@ -347,7 +352,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     }
 
 
-  private void stopLocationService() {
+    private void stopLocationService() {
         //start background location service
 
         Intent intent = new Intent(this, MyBackgroundLocationService.class);
@@ -429,7 +434,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             Log.e("Earning", "inside");
             startActivity(new Intent(MainActivity.this, EarningsActivity.class));
             Log.e("Earning", "outside");
-        }else if(id==R.id.nav_rate_card){
+        } else if (id == R.id.nav_rate_card) {
             startActivity(new Intent(MainActivity.this, RateCardActivity.class));
         } else if (id == R.id.nav_summary) {
             startActivity(new Intent(MainActivity.this, SummaryActivity.class));
@@ -508,6 +513,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     }
 
 
+    @SuppressLint("WrongConstant")
     @OnClick({R.id.menu, R.id.nav_view, R.id.btnGoOffline, R.id.navigation_img, R.id.gps})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -534,7 +540,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             case R.id.navigation_img:
                 if (lblLocationType.getText().toString().equalsIgnoreCase(getString(R.string.pick_up_location))) {
                     Uri gmmIntentUri = Uri.parse("google.navigation:q=" + DATUM.getSAddress());
-                        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+                    Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
                     mapIntent.setPackage("com.google.android.apps.maps");
                     startActivity(mapIntent);
                 } else {
@@ -616,11 +622,11 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         }
     }
 
-    private void getVersionStatus(){
+    private void getVersionStatus() {
         HashMap<String, String> map = new HashMap<>();
         map.put("app_type", "2");
         presenter.versionStatus(map);
-        System.out.println("LOGGER map : "+map);
+        System.out.println("LOGGER map : " + map);
 
     }
 
@@ -783,17 +789,17 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         String jsonInString = new Gson().toJson(object);
         try {
             JSONObject jsonObj = new JSONObject(jsonInString);
-            if (jsonObj.has("error")){
+            if (jsonObj.has("error")) {
                 Toast.makeText(activity(), jsonObj.optString("error"), Toast.LENGTH_SHORT).show();
-                ((MainActivity)activity()).getProfile();
+                ((MainActivity) activity()).getProfile();
 
 
-            }else{
-                if (jsonObj.has("status") && jsonObj.optString("status").equalsIgnoreCase("online")){
-                 startLocationService();
+            } else {
+                if (jsonObj.has("status") && jsonObj.optString("status").equalsIgnoreCase("online")) {
+                    startLocationService();
                     //Toast.makeText(this, "Service Stopped", Toast.LENGTH_SHORT).show();
-                }else{
-                  stopLocationService();
+                } else {
+                    stopLocationService();
                 }
             }
         } catch (Exception e) {
@@ -844,26 +850,26 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
     @Override
     public void onSuccess(VersionStatus versionStatus) {
-        System.out.println("LOGGER getName : "+versionStatus.getData().getName());
-        System.out.println("LOGGER getId : "+versionStatus.getData().getId());
+        System.out.println("LOGGER getName : " + versionStatus.getData().getName());
+        System.out.println("LOGGER getId : " + versionStatus.getData().getId());
 
-        if (versionStatus==null)
+        if (versionStatus == null)
             return;
 
 
-        if (BuildConfig.VERSION_CODE<Integer.parseInt(versionStatus.getData().getVersionCode())){
-            if (versionStatus.getData().getFourceUpgrade()==1){
+        if (BuildConfig.VERSION_CODE < Integer.parseInt(versionStatus.getData().getVersionCode())) {
+            if (versionStatus.getData().getFourceUpgrade() == 1) {
                 //force user to upgrade the app
                 forceToUpgradeDialog(true);
-            }else{
-              //  forceToUpgradeDialog(false);
+            } else {
+                //  forceToUpgradeDialog(false);
 
             }
 
             //Need to handle skip as well
 
         }
-        System.out.println("LOGGER getName : "+versionStatus.toString());
+        System.out.println("LOGGER getName : " + versionStatus.toString());
 //        System.out.println("LOGGER getVersionName : "+versionStatus.getVersionName());
 
     }
@@ -875,11 +881,11 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         builder.setCancelable(false);
 
         LayoutInflater inflater = LayoutInflater.from(this);
-        View view = inflater.inflate(R.layout.upgrade_view,null);
+        View view = inflater.inflate(R.layout.upgrade_view, null);
 
         TextView title = view.findViewById(R.id.title);
         TextView message = view.findViewById(R.id.message);
-        title.setText("New Version Available       "+ BuildConfig.VERSION_NAME);
+        title.setText("New Version Available       " + BuildConfig.VERSION_NAME);
         message.setText("In order to continue, you must update the Eagle Driver application. This should only take a few moments.\n");
         builder.setView(view);
 
@@ -1072,7 +1078,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         pushNotification(latLng, location);
-       // presenter.locationUpdateServer(latLng);
+        // presenter.locationUpdateServer(latLng);
     }
 
 
@@ -1263,7 +1269,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ButterKnife.bind(this);
-        Log.d("Location Data",readFromFile(this));
+        Log.d("Location Data", readFromFile(this));
     }
 
     @OnClick(R.id.btnInstant)
