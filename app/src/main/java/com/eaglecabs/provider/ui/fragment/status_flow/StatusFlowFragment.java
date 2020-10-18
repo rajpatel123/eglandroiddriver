@@ -380,7 +380,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                     map.put("ride_distance",SharedHelper.getDoubleKey(mActivity, "tripDistance")/1000);
                     //AppUtils.writeToFile(" Total Distance in KM :"+map.get("ride_distance"),mActivity);
 
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
 
                     SharedHelper.putKey(mActivity, "TotalD",""+map.get("ride_distance"));
 
@@ -391,7 +391,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                     map.put("ride_distance",0.0);
 
                     SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
-                    Toast.makeText(mActivity, "Distance Failed:", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(mActivity, "Distance Failed:", Toast.LENGTH_SHORT).show();
 
                 }
                 map.put("latitude", SharedHelper.getKey(activity(), "current_latitude"));
