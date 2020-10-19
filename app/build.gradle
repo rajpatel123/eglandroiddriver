@@ -35,7 +35,7 @@ android {
         buildConfigField "String", "DEVICE_TYPE", DEVICE_TYPE
         buildConfigField "String", "STRIPE_PK", '""'
         buildConfigField "String", "google_map_key", GOOGLE_MAP_KEY
-        buildConfigField "String", "FCM_SERRVER_KEY", '"AIzaSyDZ-DNVQW4DDOso9CsP2k-Nlg1AWXKuSQw"'
+        buildConfigField "String", "FCM_SERRVER_KEY", '"AAAA3JV7yMk:APA91bGP63YOxfKilckf85Y7qHYu8jVSUsOYFHnR3c5pAPi1bhsQaeQy7l4uYFmO02zqi67L5USRggIxmjMULlXI9MS2D5GPfz-1Ufj1kJKYyGMdQEv_5puWGIV7zTT_Hy9URr2GZiG2"'
 
         manifestPlaceholders = [
                 google_map_key: GOOGLE_MAP_KEY
