@@ -59,8 +59,9 @@ public class EarningsPastTripAdapter extends RecyclerView.Adapter<EarningsPastTr
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Ride ride = list.get(position);
+        @SuppressLint("DefaultLocale") String value = String.format("%.2f", ride.getDistance());
 
-        holder.lblDistance.setText(ride.getDistance() + " Km");
+        holder.lblDistance.setText(value + " Km");
         if (ride.getPayment() != null)
             holder.lblAmount.setText(numberFormat.format(ride.getPayment().getProviderPay()));
         else

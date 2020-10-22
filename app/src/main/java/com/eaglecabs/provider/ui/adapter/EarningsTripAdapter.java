@@ -1,5 +1,6 @@
 package com.eaglecabs.provider.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import com.eaglecabs.provider.MvpApplication;
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.data.network.model.Ride;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.util.List;
@@ -50,11 +52,12 @@ public class EarningsTripAdapter extends RecyclerView.Adapter<EarningsTripAdapte
         return new MyViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Ride ride = list.get(position);
-
-        holder.lblDistance.setText(ride.getDistance() + " Km");
+        @SuppressLint("DefaultLocale") String value = String.format("%.2f", ride.getDistance());
+        holder.lblDistance.setText(value + " Km");
         if (ride.getPayment() != null)
             holder.lblAmount.setText(numberFormat.format(ride.getPayment().getProviderPay()));
         else
