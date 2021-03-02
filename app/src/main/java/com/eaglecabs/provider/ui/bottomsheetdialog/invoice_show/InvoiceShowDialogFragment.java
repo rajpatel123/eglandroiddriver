@@ -137,7 +137,7 @@ public class InvoiceShowDialogFragment extends BaseBottomSheetDialogFragment imp
                 payableAmount.setText(numberFormat.format(payment.getPayable()));
                 distanceFare.setText(numberFormat.format(payment.getDistance()));
                 tax.setText(numberFormat.format(payment.getTax()));
-                discountLayout.setVisibility(payment.getDiscount() > 0 ? View.VISIBLE : View.GONE);
+               // discountLayout.setVisibility(payment.getDiscount() > 0 ? View.VISIBLE : View.GONE);
                 discount.setText(numberFormat.format(payment.getDiscount()));
                 tax2.setText(numberFormat.format(payment.getTax()));
                 nightFare.setText(numberFormat.format(payment.getNightFare()));

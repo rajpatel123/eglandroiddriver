@@ -1,8 +1,11 @@
 package com.eaglecabs.provider.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +17,10 @@ import com.eaglecabs.provider.data.network.model.Ride;
 
 import java.text.NumberFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.eaglecabs.provider.common.Utilities.getTime;
 import static com.eaglecabs.provider.common.Utilities.getDate;
@@ -28,6 +34,7 @@ public class EarningsPastTripAdapter extends RecyclerView.Adapter<EarningsPastTr
     private List<Ride> list;
     private Context context;
     private NumberFormat numberFormat;
+
     public EarningsPastTripAdapter(List<Ride> list, Context con) {
         this.list = list;
         this.context = con;
@@ -48,20 +55,25 @@ public class EarningsPastTripAdapter extends RecyclerView.Adapter<EarningsPastTr
         return new MyViewHolder(itemView);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Ride ride = list.get(position);
 
-        holder.lblDistance.setText(ride.getDistance()+" Km");
-        if(ride.getPayment()!=null)
+        @SuppressLint("DefaultLocale") String value = String.format("%.2f", ride.getDistance());
+        holder.lblDistance.setText(value + " Km");
+
+        if (ride.getPayment() != null)
             holder.lblAmount.setText(numberFormat.format(ride.getPayment().getProviderPay()));
         else
             holder.lblAmount.setText("-");
         try {
-            if (ride.getAssignedAt()!=null)
-            holder.lblDate.setText(getDate(ride.getAssignedAt()) + " "+getTime(ride.getAssignedAt()));
+            holder.lblDate.setText(getDate(ride.getAssignedAt()) + " " + getTime(ride.getAssignedAt()));
+
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
         }
 
     }
@@ -81,8 +93,6 @@ public class EarningsPastTripAdapter extends RecyclerView.Adapter<EarningsPastTr
             lblDate = view.findViewById(R.id.lblDate);
             lblDistance = view.findViewById(R.id.lblDistance);
             lblAmount = view.findViewById(R.id.lblAmount);
-
-
 
 
         }

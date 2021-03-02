@@ -80,7 +80,7 @@ private Double totalAmount;
 private String isTrack;
 @SerializedName("distance")
 @Expose
-private Integer distance;
+private double distance;
 @SerializedName("travel_time")
 @Expose
 private Object travelTime;
@@ -376,11 +376,11 @@ public void setIsTrack(String isTrack) {
 this.isTrack = isTrack;
 }
 
-public Integer getDistance() {
+public double getDistance() {
 return distance;
 }
 
-public void setDistance(Integer distance) {
+public void setDistance(double distance) {
 this.distance = distance;
 }
 

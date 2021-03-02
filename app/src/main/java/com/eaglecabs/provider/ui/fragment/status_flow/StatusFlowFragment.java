@@ -317,11 +317,11 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                 KmDialog.dismiss();
                 statusUpdateCallOutstation(STATUS, txtTotalKm.getText().toString());
             } else
-                Toast.makeText(activity(), "Enter your total kilo meter you are travelled", Toast.LENGTH_SHORT).show();
+                Toast.makeText(activity(), "Enter your total kilometre you are travelled", Toast.LENGTH_SHORT).show();
 
         });
 
-        btnCancel.setOnClickListener(view1 -> otpDialog.dismiss());
+        btnCancel.setOnClickListener(view12 -> KmDialog.dismiss());
         KmDialog.show();
     }
 
@@ -362,7 +362,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                         e.printStackTrace();
                     }
                     try {
-                        List<Address> addressesDD = geocoder.getFromLocation(DATUM.getDLatitude(), DATUM.getDLongitude(), 1);
+                        List<Address> addressesDD = geocoder.getFromLocation(SharedHelper.getDoubleKey(mActivity, "lastLat"), SharedHelper.getDoubleKey(mActivity, "lastLong"), 1);
                         if (addressesDD != null && addressesDD.size() > 0) {
                             String dState = addressesDD.get(0).getAdminArea();
                             map.put("dState", dState);
@@ -374,19 +374,13 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
 
                 }
 
+            //    SharedHelper.putKey(mActivity, "tripDistance",57000);
+
                 if (SharedHelper.getDoubleKey(mActivity, "tripDistance") > 0) {
                     map.put("ride_distance",SharedHelper.getDoubleKey(mActivity, "tripDistance")/1000);
                     //AppUtils.writeToFile(" Total Distance in KM :"+map.get("ride_distance"),mActivity);
 
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
-                    Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(mActivity, "Distance:"+map.get("ride_distance"), Toast.LENGTH_SHORT).show();
 
                     SharedHelper.putKey(mActivity, "TotalD",""+map.get("ride_distance"));
 
@@ -394,7 +388,10 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
                     SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
 
                 }else{
-                    Toast.makeText(mActivity, "Distance Failed:", Toast.LENGTH_SHORT).show();
+                    map.put("ride_distance",0.0);
+
+                    SharedHelper.putKey(mActivity, "tripDistance", 0.0f);
+                    //Toast.makeText(mActivity, "Distance Failed:", Toast.LENGTH_SHORT).show();
 
                 }
                 map.put("latitude", SharedHelper.getKey(activity(), "current_latitude"));
@@ -457,7 +454,7 @@ public class StatusFlowFragment extends BaseFragment implements StatusFlowIView 
         otpDialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         submitBtn.setOnClickListener(view1 -> {
-            if (data.getOtp().equalsIgnoreCase(pinView.getText().toString())) {
+            if (data.getOtp().equalsIgnoreCase(Objects.requireNonNull(pinView.getText()).toString())) {
                 Toast.makeText(thisContext, "OTP Verified!", Toast.LENGTH_SHORT).show();
                 OTP_STATUS = "verified";
                 statusUpdateCall(STATUS);

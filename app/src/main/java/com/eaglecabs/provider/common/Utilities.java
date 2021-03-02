@@ -1,5 +1,6 @@
 package com.eaglecabs.provider.common;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -40,9 +41,10 @@ public class Utilities {
         return new SimpleDateFormat("hh:mm a").format(cal.getTime());
     }
     /* new */
+    @SuppressLint("SimpleDateFormat")
     public static String getDate(String date) throws ParseException {
         Date d = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.ENGLISH).parse(date);
-        return new SimpleDateFormat("DD-MM-YYYY").format(d);
+        return new SimpleDateFormat("dd-MM-YYYY").format(d);
     }
 
     public static void animateTextView(int initialValue, int finalValue, final int target, final TextView textview) {

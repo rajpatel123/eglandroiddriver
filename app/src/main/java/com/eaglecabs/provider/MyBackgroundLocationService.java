@@ -144,15 +144,15 @@ public class MyBackgroundLocationService extends Service {
                 @Override
                 protected void onPostExecute(Double dist) {
                     super.onPostExecute(dist);
-                    if (dist > 300) {
+                    if (dist > 250) {
                       try{
                           double distance =  SharedHelper.getDoubleKey(MyBackgroundLocationService.this, "tripDistance");
                           distance = distance + dist;
 
                           SharedHelper.putKey(MyBackgroundLocationService.this, "tripDistance", (float) distance);
 
-                          SharedHelper.putKey(MyBackgroundLocationService.this, "lastLat", mallLat2);
-                          SharedHelper.putKey(MyBackgroundLocationService.this, "lastLong", mallLong2);
+                          SharedHelper.putKey(MyBackgroundLocationService.this, "lastLat", (float) currentLat2);
+                          SharedHelper.putKey(MyBackgroundLocationService.this, "lastLong", (float) currentLong2);
 
                           String data ="Latitude: "+ String.valueOf(mallLat2)+ " Longitude : "+ String.valueOf(mallLong2)+" Distance gap "+dist+"\n";
                           SharedHelper.putKey(MyBackgroundLocationService.this, ""+System.currentTimeMillis(), data);

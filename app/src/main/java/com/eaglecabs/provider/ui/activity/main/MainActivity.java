@@ -174,6 +174,9 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
     TextView lblLocationType;
     @BindView(R.id.lblLocationName)
     TextView lblLocationName;
+
+    //@BindView(R.id.ChangeLocation)
+   // TextView ChangeLocation;
     @BindView(R.id.offline_container)
     FrameLayout offlineContainer;
     @BindView(R.id.nav_view)
@@ -520,6 +523,10 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
                 break;
             case R.id.nav_view:
                 break;
+
+//                case R.id.ChangeLocation:
+//
+//                break;
             case R.id.gps:
                 if (mLastKnownLocation != null) {
                     LatLng currentLatLng = new LatLng(mLastKnownLocation.getLatitude(), mLastKnownLocation.getLongitude());
@@ -950,7 +957,11 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
             case "PICKEDUP":
                 SERVICE_STATUS = "PICKEDUP";
                 SharedHelper.putKey(this, "tripStatus", "PICKEDUP");
-
+//                if (DATUM.getServiceRequired().equalsIgnoreCase("normal")){
+//                    ChangeLocation.setVisibility(View.VISIBLE);
+//                }else{
+//                    ChangeLocation.setVisibility(View.VISIBLE);
+//                }
                 lblLocationType.setText(R.string.drop_location);
                 lblLocationName.setText(DATUM.getDAddress());
                 if (DATUM.getServiceRequired().equalsIgnoreCase("rental")) {
@@ -1072,7 +1083,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
         LatLng latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
         pushNotification(latLng, location);
-        presenter.locationUpdateServer(latLng);
+       // presenter.locationUpdateServer(latLng);
     }
 
 
@@ -1141,7 +1152,7 @@ public class MainActivity extends BaseActivity implements MainIView, NavigationV
 
 
     public void drawRoute(LatLng source, LatLng destination) {
-        GoogleDirection.withServerKey(BuildConfig.google_map_key)
+        GoogleDirection.withServerKey(BuildConfig.google_map_direction_key)
                 .from(source)
                 .to(destination)
                 .transportMode(TransportMode.DRIVING)

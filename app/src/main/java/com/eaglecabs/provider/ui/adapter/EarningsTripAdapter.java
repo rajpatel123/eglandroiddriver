@@ -1,8 +1,11 @@
 package com.eaglecabs.provider.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +30,7 @@ public class EarningsTripAdapter extends RecyclerView.Adapter<EarningsTripAdapte
     private List<Ride> list;
     private Context context;
     private NumberFormat numberFormat;
+
     public EarningsTripAdapter(List<Ride> list, Context con) {
         this.list = list;
         this.context = con;
@@ -51,8 +55,10 @@ public class EarningsTripAdapter extends RecyclerView.Adapter<EarningsTripAdapte
     public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         Ride ride = list.get(position);
 
-        holder.lblDistance.setText(ride.getDistance()+" Km");
-        if(ride.getPayment()!=null)
+        @SuppressLint("DefaultLocale") String value = String.format("%.2f", ride.getDistance());
+        holder.lblDistance.setText(value + " Km");
+
+        if (ride.getPayment() != null)
             holder.lblAmount.setText(numberFormat.format(ride.getPayment().getProviderPay()));
         else
             holder.lblAmount.setText("-");
@@ -60,6 +66,8 @@ public class EarningsTripAdapter extends RecyclerView.Adapter<EarningsTripAdapte
             holder.lblTime.setText(getTime(ride.getAssignedAt()));
         } catch (ParseException e) {
             e.printStackTrace();
+        } catch (NullPointerException n) {
+            n.printStackTrace();
         }
 
 
@@ -80,7 +88,6 @@ public class EarningsTripAdapter extends RecyclerView.Adapter<EarningsTripAdapte
             lblTime = view.findViewById(R.id.lblTime);
             lblDistance = view.findViewById(R.id.lblDistance);
             lblAmount = view.findViewById(R.id.lblAmount);
-
 
 
         }

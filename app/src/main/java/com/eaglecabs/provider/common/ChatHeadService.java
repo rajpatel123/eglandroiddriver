@@ -15,6 +15,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.WindowManager;
+import android.widget.RelativeLayout;
 
 import com.eaglecabs.provider.R;
 import com.eaglecabs.provider.ui.activity.main.MainActivity;
@@ -51,7 +52,7 @@ public class ChatHeadService extends Service implements FloatingViewListener {
         final WindowManager windowManager = (WindowManager) getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metrics);
         final LayoutInflater inflater = LayoutInflater.from(this);
-        final CircleImageView iconView = (CircleImageView) inflater.inflate(R.layout.widget_chathead, null, false);
+        final RelativeLayout iconView = (RelativeLayout) inflater.inflate(R.layout.widget_chathead, null, false);
         iconView.setOnClickListener(v -> {
             if(Utilities.isAppIsInBackground(getApplicationContext())){
                 String isLogged = SharedHelper.getKey(getApplicationContext(), "loggged_in", "false");

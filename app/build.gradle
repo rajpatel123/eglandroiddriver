@@ -14,7 +14,10 @@ def BASE_IMAGE_URL_DEV = '"http://13.233.243.86/storage/"'
 def CLIENT_SECRET = '"C6e7Lwqo8pr0oabsnTKNr0PkO7zWzarQQQh8em0o"'
 def CLIENT_ID = '"2"'
 def DEVICE_TYPE = '"android"'
+//def GOOGLE_MAP_KEY = '"AIzaSyAUvmFW44ZiBf1MzIg78U3Yv5zsqEkTyLM"'
 def GOOGLE_MAP_KEY = '"AIzaSyD9jpaIXfx5CeiZX-rCjOiu0hAA39yHzuY"'
+def DIRECTION_KEY = '"AIzaSyBbp3N510LclOcI27eblf3oXES6qdf2Fk8"'
+
 
 android {
     compileSdkVersion 28
@@ -22,8 +25,8 @@ android {
         applicationId "com.eaglecabs.provider"
         minSdkVersion 17
         targetSdkVersion 28
-        versionCode 46
-        versionName "4.5"
+        versionCode 51
+        versionName "5.1"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
         vectorDrawables.useSupportLibrary = true
         multiDexEnabled true
@@ -34,10 +37,14 @@ android {
         buildConfigField "String", "DEVICE_TYPE", DEVICE_TYPE
         buildConfigField "String", "STRIPE_PK", '""'
         buildConfigField "String", "google_map_key", GOOGLE_MAP_KEY
-        buildConfigField "String", "FCM_SERRVER_KEY", '"AIzaSyDZ-DNVQW4DDOso9CsP2k-Nlg1AWXKuSQw"'
+        buildConfigField "String", "google_map_direction_key", DIRECTION_KEY
+
+        buildConfigField "String", "FCM_SERRVER_KEY", '"AAAA3JV7yMk:APA91bGP63YOxfKilckf85Y7qHYu8jVSUsOYFHnR3c5pAPi1bhsQaeQy7l4uYFmO02zqi67L5USRggIxmjMULlXI9MS2D5GPfz-1Ufj1kJKYyGMdQEv_5puWGIV7zTT_Hy9URr2GZiG2"'
 
         manifestPlaceholders = [
-                google_map_key: GOOGLE_MAP_KEY
+                google_map_key: GOOGLE_MAP_KEY,
+                google_map_direction_key:DIRECTION_KEY
+
         ]
     }
 
@@ -57,7 +64,7 @@ android {
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-            debuggable false
+            debuggable true
         }
 
         debug {
